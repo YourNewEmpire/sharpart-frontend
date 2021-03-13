@@ -13,7 +13,7 @@ const counterReducer = (state = {value: ""}, action) => {
             case GET_ACCOUNTS_SUCCESS:
                 return {...state, value: action.payload};
             case GET_ACCOUNT_FAILED: 
-                  return {...state, value: error}
+                  return {...state}
             default:
                 return {...state};
         }

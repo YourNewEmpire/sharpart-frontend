@@ -17,7 +17,7 @@ export const Nav = () => {
      
       return (
             <>
-                  <nav className='flex items-center flex-wrap bg-blue-400 p-3 '>
+                  <nav className='flex items-center flex-wrap bg-blue-400 p-3 shadow-lg'>
                         <Link href='/'>
                               <a className='inline-flex items-center p-2 mr-4 '>
                                     <svg
@@ -76,9 +76,9 @@ export const Nav = () => {
                                                 Contact us
               </a>
                                     </Link>
-                                    <button onClick={handleMmask} className=" hover:bg-orange-600 ">
+                                    <button onClick={handleMmask} className='   lg:inline-flex lg:w-auto w-full px-3 py-2 rounded  font-bold items-center justify-center hover:bg-amber-500'>
                                           MetaMask
-</button>
+                                    </button>
 
 
                               </div>
