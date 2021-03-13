@@ -1,5 +1,7 @@
 import Web3 from 'web3'
-import { toast } from "react-toastify";
+import { toast, Slide } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 export const INCREMENT_COUNTER = "INCREMENT_COUNTER";
 export const ACCOUNTS_STARTED = "ACCOUNTS_STARTED";
 export const GET_ACCOUNTS_SUCCESS = "GET_ACCOUNTS_SUCCESS";
