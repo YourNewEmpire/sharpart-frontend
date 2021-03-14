@@ -15,7 +15,6 @@ export default function Layout({ children }: Props): JSX.Element {
             <div className="bg-lightblue-900 min-h-full">
                   <Nav />
                   <div className="flex justify-end display block z-40"> 
-                  
                   {state.account.value}
                   </div>
                   <div className="container mx-auto darkblue" >

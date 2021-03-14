@@ -22,8 +22,8 @@ module.exports = {
       amber: colors.amber ,
     },
     fontFamily: {
-      sans: ['Roboto', 'sans-serif'],
-      serif: ['Roboto', 'serif'],
+      sans: ['Inter', 'sans-serif'],
+      serif: ['Inter', 'serif'],
     },
     boxShadow: {
       sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',

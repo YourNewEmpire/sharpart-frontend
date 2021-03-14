@@ -10,14 +10,13 @@ export default function Home() {
       <Head>
         <title>SharpArt</title>
         <link rel='icon' href='/favicon.ico' />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
       </Head>
-        <div>
-          <Link href="/Artists">View our artists</Link>
-        </div>
-
-        <div>
-          <h1>next app</h1>
-        </div>
+      <div className="flex items-center justify-center py-64 px-24">
+        <h1 className="text-6xl text-gray-200">This Is SharpArt</h1>
+      </div>
     </>
   );
 }
