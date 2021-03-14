@@ -4,9 +4,34 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchAccounts } from '../redux/actions/accountActions';
 
+type listItem = {
+      id: number,
+      text: string,
+      link: string
+}
+
+
 export const Nav = () => {
       const dispatch = useDispatch()
       const [active, setActive] = useState(false);
+      const listItems: listItem[] = [
+            {
+                  id: 1,
+                  text: 'Home',
+                  link: ''
+            },
+            {
+                  id: 2,
+                  text: 'Artists',
+                  link: 'artists'
+            },
+            {
+                  id: 3,
+                  text: 'Contact',
+                  link: 'contact'
+            },
+      ]
+
 
       const handleClick = () => {
             setActive(!active);
@@ -14,12 +39,12 @@ export const Nav = () => {
       const handleMmask = () => {
             dispatch(fetchAccounts())
       }
-     
+
       return (
             <>
                   <nav className='flex items-center flex-wrap bg-blue-400 p-3 shadow-lg'>
                         <Link href='/'>
-                              <a className='inline-flex items-center p-2 mr-4 '>
+                              <a className='inline-flex items-center p-2 mr-4 hover:shadow-lg rounded transition duration-500 ease-in-out transform  hover:scale-105  antialiased' >
                                     <svg
                                           viewBox='0 0 24 24'
                                           xmlns='http://www.w3.org/2000/svg'
@@ -29,9 +54,11 @@ export const Nav = () => {
                                     </svg>
                                     <span className='text-xl text-white font-bold uppercase tracking-wide'>
                                           SharpArt
-            </span>
+                                    </span>
                               </a>
                         </Link>
+
+
                         <button
                               className=' inline-flex p-3 hover:bg-darkblue-600 rounded lg:hidden text-white ml-auto hover:text-white outline-none'
                               onClick={handleClick}
@@ -53,43 +80,30 @@ export const Nav = () => {
                         </button>
 
 
-
                         <div
                               className={`${active ? '' : 'hidden'
                                     }   w-full lg:inline-flex lg:flex-grow lg:w-auto`}
                         >
-
-                              <div className='g:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto'>
-
-                                    <Link href='/'>
-                                          <a className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold items-center justify-center hover:bg-darkblue-600  '>
-                                                Home
-              </a>
-                                    </Link>
-                                    <Link href='/Artists'>
-                                          <a className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold items-center justify-center hover:bg-darkblue-600  ' >
-                                                Artists
-              </a>
-                                    </Link>
-                                    <Link href='/Contact'>
-                                          <a className='lg:inline-flex lg:w-auto w-full px-3 py-2 rounded  font-bold items-center justify-center hover:bg-darkblue-600'>
-                                                Contact us
-              </a>
-                                    </Link>
-                                    <button onClick={handleMmask} className='   lg:inline-flex lg:w-auto w-full px-3 py-2 rounded  font-bold items-center justify-center hover:bg-amber-500'>
+                              <div className='g:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto text-gray-100'  >
+                                    {listItems.map((listItem, index) => 
+                                          <Link key={index} href={`/` + listItem.link}>
+                                                <a className=' subpixel-antialiased lg:inline-flex lg:w-auto w-full px-3 py-2 rounded-lg font-bold items-center justify-center hover:bg-darkblue-600 hover:shadow-lg rounded transition duration-500 ease-in-out '>
+                                                      {listItem.text}
+                                                </a>
+                                          </Link>
+                                    )}
+                                    <button onClick={handleMmask} className='   lg:inline-flex px-3 py-2 rounded-lg  font-bold items-ltef hover:bg-amber-500 hover:shadow-lg rounded transition duration-500 ease-in-out'>
                                           MetaMask
                                     </button>
-
-
                               </div>
-                        </div>
+                        </div>        
                   </nav>
             </>
       );
 };
 
 
-  export default Nav;
+export default Nav;
 
 
 
