@@ -1,5 +1,6 @@
 import Web3 from 'web3'
 import { toast, Slide } from "react-toastify";
+import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const INCREMENT_COUNTER = "INCREMENT_COUNTER";
@@ -19,6 +20,7 @@ export const getAccountsFailed = error => ({
       type: GET_ACCOUNT_FAILED,
       error
 })
+
 export const fetchAccounts = () => async dispatch => {
       dispatch(getAccountsStarted())
       // @ts-ignore
@@ -29,13 +31,19 @@ export const fetchAccounts = () => async dispatch => {
             try {
                   // @ts-ignore
                   await window.ethereum.request({ method: 'eth_requestAccounts' })
-                  const accounts = await web3.eth.getAccounts();
+                  const accounts = await web3.eth.getAccounts().then(account => {
+                        const firstAccount = account[0]
+                        return firstAccount
+                  });
+
+
+
                   if (!accounts) {
                         dispatch(getAccountsFailed(" No Accounts detected in metamask"))
                         toast.error("No Accounts detected in metamask");
                   }
                   else {
-                        dispatch(getAccountsSuccess(accounts[0]))
+                        dispatch(getAccountsSuccess(accounts))
                         toast.success('MetaMask Connected', {
                               position: "top-right",
                               autoClose: 5000,
@@ -45,9 +53,9 @@ export const fetchAccounts = () => async dispatch => {
                               pauseOnHover: false,
                               draggable: true,
                               progress: undefined,
-                              })
+                        })
                   }
-                  
+
             } catch (err) {
                   dispatch(getAccountsFailed(err.toString()))
                   toast.error('Metamask undetected', {
@@ -59,7 +67,7 @@ export const fetchAccounts = () => async dispatch => {
                         pauseOnHover: false,
                         draggable: true,
                         progress: undefined,
-                        })
+                  })
             }
       }
       else {
@@ -73,7 +81,7 @@ export const fetchAccounts = () => async dispatch => {
                   pauseOnHover: false,
                   draggable: true,
                   progress: undefined,
-                  })
+            })
       }
       return 'done';
 }

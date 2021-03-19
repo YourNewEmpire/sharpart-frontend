@@ -1,15 +1,16 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
-import {useRouter} from 'next/router'
-
-
+import Head from 'next/head'
 export default function Artists() {
-  const router = useRouter()
   return (
     <>
+     <Head>
+        <title>SharpArt</title>
+        <link rel='icon' href='/favicon.ico' />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+      </Head>
       <div>
+        
         <h1>artists</h1>
-        <h2>This is {router.query.artist}</h2>
       </div>
       </>
   );
