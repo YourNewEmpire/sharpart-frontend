@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { fetchAccounts } from '../redux/actions/accountActions';
+
+import { useTheme } from 'next-themes'
+
 
 type listItem = {
       id: number,
@@ -12,8 +13,11 @@ type listItem = {
 
 
 export const Nav = () => {
-      const dispatch = useDispatch()
       const [active, setActive] = useState(false);
+      const { theme, setTheme } = useTheme()
+
+
+      //nav items for map
       const listItems: listItem[] = [
             {
                   id: 1,
@@ -30,21 +34,24 @@ export const Nav = () => {
                   text: 'Contact',
                   link: 'contact'
             },
+            {
+                  id: 4,
+                  text: 'Metamask' ,
+                  link: 'signin'
+            }
       ]
 
 
       const handleClick = () => {
             setActive(!active);
       };
-      const handleMmask = () => {
-            dispatch(fetchAccounts())
-      }
+
 
       return (
             <>
-                  <nav className='flex items-center flex-wrap bg-blue-400 p-3 shadow-lg'>
+                  <nav className='flex items-center flex-wrap dark:bg-blue-500 bg-pink-300 p-3 shadow-lg'>
                         <Link href='/'>
-                              <a className='inline-flex items-center p-2 mr-4 hover:shadow-lg rounded transition duration-500 ease-in-out transform  hover:scale-105  antialiased' >
+                              <a className='inline-flex items-center p-2 mr-4 hover:shadow-lg rounded-lg transition duration-500 ease-in-out transform  hover:scale-105  antialiased' >
                                     <svg
                                           viewBox='0 0 24 24'
                                           xmlns='http://www.w3.org/2000/svg'
@@ -56,11 +63,17 @@ export const Nav = () => {
                                           SharpArt
                                     </span>
                               </a>
-                        </Link>
 
+                        </Link>
+                        <button
+                              className=""
+                              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                        >
+                     Dark theme
+                        </button>
 
                         <button
-                              className=' inline-flex p-3 hover:bg-darkblue-600 rounded lg:hidden text-white ml-auto hover:text-white outline-none'
+                              className=' inline-flex p-3 rounded-lg lg:hidden text-white ml-auto hover:bg-darkblue-600  transition duration-500 ease-in-out hover:text-white outline-none'
                               onClick={handleClick}
                         >
                               <svg
@@ -85,18 +98,16 @@ export const Nav = () => {
                                     }   w-full lg:inline-flex lg:flex-grow lg:w-auto`}
                         >
                               <div className='g:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto text-gray-100'  >
-                                    {listItems.map((listItem, index) => 
+                                    {listItems.map((listItem, index) =>
                                           <Link key={index} href={`/` + listItem.link}>
-                                                <a className=' subpixel-antialiased lg:inline-flex lg:w-auto w-full px-3 py-2 rounded-lg font-bold items-center justify-center hover:bg-darkblue-600 hover:shadow-lg rounded transition duration-500 ease-in-out '>
+                                                <a className=' subpixel-antialiased text-gray-900 lg:inline-flex lg:w-auto w-full px-3 py-2 rounded-lg font-bold items-center justify-center hover:bg-darkblue-500 hover:text-gray-200 hover:shadow-lg  rounded transition duration-500 ease-in-out '>
                                                       {listItem.text}
                                                 </a>
                                           </Link>
                                     )}
-                                    <button onClick={handleMmask} className='   lg:inline-flex px-3 py-2 rounded-lg  font-bold items-ltef hover:bg-amber-500 hover:shadow-lg rounded transition duration-500 ease-in-out'>
-                                          MetaMask
-                                    </button>
+
                               </div>
-                        </div>        
+                        </div>
                   </nav>
             </>
       );
