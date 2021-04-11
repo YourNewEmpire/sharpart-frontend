@@ -1,23 +1,32 @@
-import "tailwindcss/tailwind.css";
-import type { AppProps } from 'next/app'
+import React, { ComponentType } from 'react'
+import { AppInitialProps } from 'next/app'
+import { Provider as ReduxContext} from 'react-redux';
+import store from '../src/store'
 import Layout from '../components/Layout';
-import { Provider } from 'react-redux';
-import { useStore } from '../redux/store';
 import { ToastContainer } from 'react-toastify'
 import { ThemeProvider } from 'next-themes'
 
-export default function App({ Component, pageProps }: AppProps) {
-  const store = useStore(pageProps.initialReduxState)
 
-  
+
+const MyApp = ({
+  Component,
+  pageProps,
+}: {
+  Component: ComponentType<AppInitialProps>
+  pageProps: AppInitialProps
+}) => {
+
+
   return (
-    <Provider store={store}>
+    <ReduxContext store={store}>
       <ThemeProvider attribute="class">
         <Layout>
           <Component {...pageProps} />
           <ToastContainer />
         </Layout>
       </ThemeProvider>
-    </Provider>
+    </ReduxContext>
   )
 }
+
+export default MyApp

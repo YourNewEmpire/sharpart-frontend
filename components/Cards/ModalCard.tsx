@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux'
 
 export default function ModalCard({ action1, action2, body }: ModalCardProps): JSX.Element {
 
-      const state = useSelector((state) => state)
-
       return (
             <div className=" 
             flex flex-col items-center justify-center 
