@@ -7,7 +7,7 @@ import {Childs} from '../interfaces/childs'
 export default function Layout({ children }: Childs): JSX.Element {
 
       return (
-            <div className="dark:bg-lightblue-900 bg-blue-200 min-h-full">
+            <div className=" bg-th-background min-h-full">
                   <Head>
                         <title>SharpTec</title>
                         <link rel='icon' href='/favicon.ico' />

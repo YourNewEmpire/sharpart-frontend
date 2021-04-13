@@ -2,30 +2,26 @@ import React from 'react'
 import { SimpleCardProps } from '../../interfaces/cards'
 
 export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Element {
-      
-      
-      
-      if( title && body ) return (
+
+
+
+      if (title && body) return (
             <div className=" 
-            grid
-            grid-cols-1
-            grid-rows-2
-            p-0
-            my-0
-            gap-4
+            flex
+            flex-col
+            space-y-2
+            lg:space-y-10
             rounded-lg
-            bg-lightblue-900
-            dark:bg-blue-200
+            bg-th-accent-medium
             bg-opacity-60
-           dark:bg-opacity-60
             ">
                   <div className=" py-2" >
-                        <p className=" text-center text-3xl dark:text-lightblue-900 text-blue-200">
+                        <p className=" text-center text-3xl text-th-primary-medium text-shadow-md">
                               {title}
                         </p>
                   </div>
                   <div className=" py-2"  >
-                        <p className="  text-center text-xl dark:text-lightblue-900 text-blue-200 break-all">
+                        <p className="  text-center text-xl  text-th-primary-light break-all">
                               {body}
                         </p>
                   </div>

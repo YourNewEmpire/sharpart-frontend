@@ -5,8 +5,7 @@ import store from '../src/store'
 import Layout from '../components/Layout';
 import { ToastContainer } from 'react-toastify'
 import { ThemeProvider } from 'next-themes'
-
-
+import '../styles/globals.css'
 
 const MyApp = ({
   Component,
@@ -15,11 +14,9 @@ const MyApp = ({
   Component: ComponentType<AppInitialProps>
   pageProps: AppInitialProps
 }) => {
-
-
   return (
     <ReduxContext store={store}>
-      <ThemeProvider attribute="class">
+      <ThemeProvider>
         <Layout>
           <Component {...pageProps} />
           <ToastContainer />

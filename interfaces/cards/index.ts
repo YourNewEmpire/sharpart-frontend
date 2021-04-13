@@ -1,7 +1,17 @@
+export type ListItem = { 
+      link: string,
+      name: string,
+
+}
+
 export interface CardProps {
       img: string
       title: string
       body: string
+}
+export interface ListCardProps {
+      title: string
+      body: ListItem[]
 }
 export interface SimpleCardProps {
       title: string
