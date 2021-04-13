@@ -2,12 +2,13 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  darkMode: 'class',
+
   theme: {
     screens: {
       sm: '480px',
       md: '768px',
       lg: '976px',
+      'lg2' : '1100px',
       xl: '1440px',
     },
     fontFamily: {
@@ -48,6 +49,7 @@ module.exports = {
         purple: colors.purple,  
         darkblue: colors.indigo,
         amber: colors.amber ,
+        fuchsia: colors.fuchsia,
         'th-background': 'var(--background)',
         'th-background-secondary': 'var(--background-secondary)',
         'th-foreground': 'var(--foreground)',
@@ -65,5 +67,6 @@ module.exports = {
     extend: {},
   },
   plugins: [
+    require('tailwindcss-textshadow')
   ],
 }
