@@ -1,7 +1,8 @@
 import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
 import { abi } from '../../public/GameItem.json'
-import Web3 from 'web3'
+import Web3 from 'web3';
+import axios from 'axios';
 import { toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -48,6 +49,8 @@ const accountSlice = createSlice({
  */
 export const selectAccount = (state: CoreState) => state.account.value
 export const selectUris = (state: CoreState) => state.account.uris
+export const selectError = (state: CoreState) => state.account.error
+
 
 export const {
       resetAccount,
@@ -57,6 +60,36 @@ export const {
       setUris
 } = accountSlice.actions
 
+export const ethOrbMoon = (user: string, eth: number) => async (dispatch: Dispatch) =>{
+      //dispatch loading
+      if (!user || user.length == 0) {
+            //dispatch failure
+
+      }
+      else {
+            try{
+
+                  console.log("game thunk")
+                  const res = await axios.post('/api/playgame', {
+                        user: user,
+                        ethPrice:  eth
+                      })
+                      .then( (response) => {
+                        console.log(response);
+                        return ' game done';
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      });
+                      console.log(res)
+            }
+            catch (error) {
+                  console.log("start game error:" , error)
+            }
+
+      }
+}
+
 export const setAccountThunk = () => async (dispatch: Dispatch) => {
       // @ts-ignore
       const web3 = new Web3(window.ethereum);
@@ -65,7 +98,7 @@ export const setAccountThunk = () => async (dispatch: Dispatch) => {
             // @ts-ignore
             try {
                   // @ts-ignore
-                  window.ethereum.request({ method: 'eth_requestAccounts' })
+                  await window.ethereum.request({ method: 'eth_requestAccounts' })
                   const accounts: string = await web3.eth.getAccounts().then(account => {
                         const firstAccount = account[0]
                         console.log(firstAccount)
