@@ -15,11 +15,30 @@ export default function Card({ img, title, body, link }: ImgCardProps): JSX.Elem
                               alt="Picture of the author"
                         />
                   </div>
-                  <div className="inline-flex flex-col space-y-10 border-2  w-full h-full ">
+                  <div className="inline-flex flex-col space-y-4 md:space-y-14 lg:space-y-24   w-full h-full ">
                         <div className="  " >
-                              <p className=" subpixel-antialiased text-6xl  text-th-primary-medium text-shadow-md ">
+                              <p className=" subpixel-antialiased text-6xl text-center  text-th-primary-medium text-shadow-md ">
                                     {title}
                               </p>
+                        </div>
+                        <div className=" w-60 self-center justify-self-center"  >
+                              <p className="  text-center subpixel-antialiased text-base text-th-primary-light ">
+                                    {body}
+                              </p>
+                        </div>
+                        <div className=" self-center justify-self-end "  >
+                              <Link href={link}>
+                                    <a className="
+                              subpixel-antialiased rounded-md
+                              text-base text-th-primary-light text-center
+                              border-b-4 border-th-accent-medium
+                              hover:border-transparent text-shadow-lg
+                              transition duration-300 ease-in-out 
+                              hover:text-th-accent-medium transform"
+                                    >
+                                          View {title}
+                                    </a>
+                              </Link>
                         </div>
                   </div>
             </div>

@@ -1,6 +1,5 @@
 import React from 'react'
 import { ModalCardProps } from '../../interfaces/modalcard'
-import { useSelector } from 'react-redux'
 
 export default function ModalCard({ action1, action2, body }: ModalCardProps): JSX.Element {
 
@@ -8,15 +7,17 @@ export default function ModalCard({ action1, action2, body }: ModalCardProps): J
             <div className=" 
             flex flex-col items-center justify-center 
             rounded-lg shadow-lg
-            bg-blue-200
-
+            bg-th-accent-medium bg-opacity-20
+            space-y-2
+            md:space-y-4
+            lg:space-y-8
             ">
-                  <div className="flex-1">
-                        <p className=" text-gray-900 py-10">
+                  <div className="flex-1 py-8 px-6">
+                        <p className=" text-3xl text-th-primary-light text-center text-shadow-md">
                               {body}
                         </p>
                   </div>
-                  <div className=" grid grid-cols-2 lg:grid-cols-2  md:grid-cols-2 sm:grid-cols-1  justify-items-stretch w-full px-4">
+                  <div className=" grid grid-cols-1 lg:grid-cols-2  md:grid-cols-2  justify-items-center w-full px-4">
                         <div className="py-2 mx-6" >
                               {action1}
                         </div>

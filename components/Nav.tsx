@@ -30,8 +30,8 @@ export const Nav = () => {
             },
             {
                   id: 2,
-                  text: 'Ether Projects',
-                  link: 'etherprojects'
+                  text: 'Ether Dapps',
+                  link: 'etherdapps'
             },
             {
                   id: 3,

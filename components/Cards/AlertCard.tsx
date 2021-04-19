@@ -9,7 +9,7 @@ export default function AlertCard({ title, body, color }: AlertCardProps): JSX.E
             className="
             bg-amber-100 text-amber-700
             border-2 md:border-8 border-amber-500
-            px-4 py-3 rounded relative" role="alert"
+            px-4 py-4 rounded relative" role="alert"
             >
                   <h1 className="font-bold text-sm md:text-3xl mb-4">{title}</h1>
                   <span className="block sm:inline">{body}</span>

@@ -1,6 +1,6 @@
 import React from 'react'
 import {CardProps} from '../../interfaces/cards'
-import Card from './ImageCard'
+import Card from './ImageLinkCard'
 
 interface Props {
       items: CardProps[]
@@ -15,9 +15,7 @@ export default function CardGroup({items}: Props): JSX.Element {
             p-2
             bg-th-accent-light
             ">
-               {items.map((item,  index) => 
-                  <Card key={index} title={item.title} body={item.body} img={item.img} />
-               )}
+      
 
             </div>
       )
