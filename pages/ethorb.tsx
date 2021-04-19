@@ -10,12 +10,15 @@ import {
       selectUris,
       setUrisThunk,
       setAccount,
-      ethOrbMoon
 } from '../lib/slices/accountSlice';
 import {
       selectPrice,
       setPriceThunk
 } from '../lib/slices/ethpriceSlice'
+import {
+      ethOrbMoon
+} from '../lib/slices/gameSlice';
+
 import ModalCard from '../components/Cards/ModalCard';
 
 export default function EthOrb() {
