@@ -3,8 +3,9 @@ import Heading from '../../components/Heading';
 import Web3 from 'web3'
 import ImageCard from '../../components/Cards/ImageCard';
 import { abi } from '../../public/GameItem.json'
+/*
+
 export const getStaticProps: GetStaticProps = async (context) => {
-      const res = await fetch("https://contract-abis.herokuapp.com/api/contract/")
       let URIs: string[] = []
       //initial number for forloop. typescript will be happy with this for sure . 
       let i: number = 0
@@ -24,7 +25,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       async function pushURIs(total: number) {
             for (i = 1; i <= total; i++) {
                   URIs.push(`https://contract-abis.herokuapp.com/mp4s/${i}.mp4`)
-                  console.log(res)
             }
       }
 
@@ -41,19 +41,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
             }
       }
 }
-export default function Stygian({URIs}) {
+
+
+      {URIs.map((uri: string) => 
+                              <ImageCard 
+                              img={uri}
+                              title="an Item of Stygian's"
+                              />
+                        )}
+*/
+export default function Stygian() {
 
 
       return (
             <>
                   <div className="flex flex-col items-center justify-center space-y-20 ">
                         <Heading title="Stygian" />
-                        {URIs.map((uri: string) => 
-                              <ImageCard 
-                              img={uri}
-                              title="an Item of Stygian's"
-                              />
-                        )}
+                  
                   </div>
             </>
       );
