@@ -8,7 +8,7 @@ module.exports = {
       sm: '480px',
       md: '768px',
       lg: '976px',
-      'lg2' : '1100px',
+      'lg2': '1100px',
       xl: '1440px',
     },
     fontFamily: {
@@ -23,7 +23,7 @@ module.exports = {
       xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
       '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
 
-     '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
+      '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       none: 'none',
     },
@@ -38,17 +38,17 @@ module.exports = {
       backgroundImage: theme => ({
         'the-willy': "url('/head.png')",
         'footer-texture': "url('/img/footer-texture.png')",
-       }),
-       colors: {
+      }),
+      colors: {
         gray: colors.coolGray,
         lightblue: colors.lightBlue,
         blue: colors.blue,
         red: colors.rose,
         pink: colors.pink,
         green: colors.lime,
-        purple: colors.purple,  
+        purple: colors.purple,
         darkblue: colors.indigo,
-        amber: colors.amber ,
+        amber: colors.amber,
         fuchsia: colors.fuchsia,
         'th-background': 'var(--background)',
         'th-background-secondary': 'var(--background-secondary)',
@@ -59,6 +59,9 @@ module.exports = {
         'th-accent-dark': 'var(--accent-dark)',
         'th-accent-medium': 'var(--accent-medium)',
         'th-accent-light': 'var(--accent-light)',
+        'th-accent-success' : 'var(--accent-success)',
+        'th-accent-failure' : 'var(--accent-failure)'
+
       },
 
     }

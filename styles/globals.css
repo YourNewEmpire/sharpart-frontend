@@ -6,10 +6,12 @@
       --background: theme('colors.blue.50');
       --background-secondary: theme('colors.lightblue.900');
     
-      --accent-dark: theme('colors.fuchsia.900');
-      --accent-medium: theme('colors.fuchsia.700');
-      --accent-light: theme('colors.fuchsia.500');
-      
+      --accent-dark: theme('colors.pink.700');
+      --accent-medium: theme('colors.pink.500');
+      --accent-light: theme('colors.pink.300');
+      --accent-success: theme('colors.green.600');
+      --accent-failure: theme('colors.red.600');
+
       --primary-dark: theme('colors.blue.800');
       --primary-medium: theme('colors.blue.400');
       --primary-light: theme('colors.blue.300');
@@ -19,10 +21,12 @@
       --background: theme('colors.lightblue.900');
       --background-secondary: theme('colors.blue.50');
     
-      --accent-dark: theme('colors.fuchsia.900');
-      --accent-medium: theme('colors.fuchsia.700');
-      --accent-light: theme('colors.fuchsia.500');
-    
+      --accent-dark: theme('colors.pink.700');
+      --accent-medium: theme('colors.pink.500');
+      --accent-light: theme('colors.pink.300');
+      --accent-success: theme('colors.green.600');
+      --accent-failure: theme('colors.red.600');
+      
       --primary-dark: theme('colors.blue.600');
       --primary-medium: theme('colors.blue.400');
       --primary-light: theme('colors.blue.200');
