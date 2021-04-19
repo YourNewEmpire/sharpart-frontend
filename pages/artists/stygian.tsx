@@ -1,8 +1,8 @@
 import { GetStaticProps } from 'next';
 import Heading from '../../components/Heading';
 import Web3 from 'web3'
-import  ImageCard  from '../../components/Cards/ImageCard';
-
+import ImageCard from '../../components/Cards/ImageCard';
+import { abi } from '../../public/GameItem.json'
 export const getStaticProps: GetStaticProps = async (context) => {
       const res = await fetch("https://contract-abis.herokuapp.com/api/contract/")
       let URIs: string[] = []
