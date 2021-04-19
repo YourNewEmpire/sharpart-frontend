@@ -12,7 +12,7 @@ export default function ModalCard({ action1, action2, body }: ModalCardProps): J
             md:space-y-4
             lg:space-y-8
             ">
-                  <div className="flex-1 py-8 px-6">
+                  <div className="inline-flex py-8 px-6">
                         <p className=" text-3xl text-th-primary-light text-center text-shadow-md">
                               {body}
                         </p>

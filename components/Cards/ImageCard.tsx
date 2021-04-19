@@ -1,8 +1,8 @@
 import React from 'react'
-import { ImgCardProps } from '../../interfaces/cards'
+import { CardProps } from '../../interfaces/cards'
 import Link from 'next/link'
 
-export default function Card({ img, title, body, link }: ImgCardProps): JSX.Element {
+export default function Card({ img, title }: CardProps): JSX.Element {
       return (
             <div className=" 
             grid md:grid-cols-2 grid-cols-1 grid-flow-col

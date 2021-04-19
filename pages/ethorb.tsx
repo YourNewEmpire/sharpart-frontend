@@ -33,13 +33,14 @@ export default function EthOrb() {
 
       useEffect(() => {
             dispatch(setUrisThunk(user))
-            console.log('urithunk')
+            console.log('uris fetched')
       }, [user])
 
       useEffect(() => {
             const id = setInterval(async () => {
                   dispatch(setPriceThunk())
-            }, 3000);
+                  console.log('new Price fetched')
+            }, 5000);
             return () => clearInterval(id);
       }, [eth])
 
@@ -79,8 +80,8 @@ export default function EthOrb() {
                                                 className=" 
                                                 p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light
                                                 rounded-lg bg-opacity-0
-                                                hover:bg-opacity-60 hover:bg-th-accent-success
-                                                transition duration-300 ease-in-out"
+                                                hover:bg-th-accent-success
+                                          transition duration-300 ease-in-out"
                                           >
                                                 Mooning
                                            </button>
@@ -89,8 +90,8 @@ export default function EthOrb() {
                                           <button className=" 
                                           p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light
                                           bg-opacity-0 rounded-lg
-                                          hover:bg-opacity-60 hover:bg-th-accent-failure
-                                          transition duration-300 ease-in-out"> dropping</button>
+                                          hover:bg-th-accent-failure
+                                          transition duration-300 ease-in-out">Dropping</button>
                                     }
                               />
                         </div>

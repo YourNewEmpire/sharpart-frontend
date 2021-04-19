@@ -12,7 +12,7 @@ export type ArtistItem = {
 export interface CardProps {
       img: string
       title: string
-      body: string
+      body?: string
 }
 export interface ImgCardProps extends CardProps {
       link: string

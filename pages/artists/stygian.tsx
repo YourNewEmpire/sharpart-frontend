@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import Heading from '../../components/Heading';
 import Web3 from 'web3'
-import  ImageLinkCard  from '../../components/Cards/ImageLinkCard';
+import  ImageCard  from '../../components/Cards/ImageCard';
 
 export const getStaticProps: GetStaticProps = async (context) => {
       const res = await fetch("https://contract-abis.herokuapp.com/api/contract/")
@@ -48,9 +48,10 @@ export default function Stygian({URIs}) {
             <>
                   <div className="flex flex-col items-center justify-center space-y-20 ">
                         <Heading title="Stygian" />
-                        {URIs.map((uri) => 
+                        {URIs.map((uri: string) => 
                               <ImageCard 
-                              
+                              img={uri}
+                              title="an Item of Stygian's"
                               />
                         )}
                   </div>
