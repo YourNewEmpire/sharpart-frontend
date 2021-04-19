@@ -60,35 +60,7 @@ export const {
       setUris
 } = accountSlice.actions
 
-export const ethOrbMoon = (user: string, eth: number) => async (dispatch: Dispatch) =>{
-      //dispatch loading
-      if (!user || user.length == 0) {
-            //dispatch failure
-
-      }
-      else {
-            try{
-
-                  console.log("game thunk")
-                  const res = await axios.post('/api/playgame', {
-                        user: user,
-                        ethPrice:  eth
-                      })
-                      .then( (response) => {
-                        console.log(response);
-                        return ' game done';
-                      })
-                      .catch(function (error) {
-                        console.log(error);
-                      });
-                      console.log(res)
-            }
-            catch (error) {
-                  console.log("start game error:" , error)
-            }
-
-      }
-}
+//thunks
 
 export const setAccountThunk = () => async (dispatch: Dispatch) => {
       // @ts-ignore
