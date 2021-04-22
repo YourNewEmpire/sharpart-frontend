@@ -1,15 +1,20 @@
 import React from 'react'
-interface Props {
-      title: string
+import { Childs } from '../interfaces/childs'
+
+interface Props extends Childs {
+  title: string
 }
 
-export default function Heading({title}: Props): JSX.Element {
+export default function Heading({ title, children }: Props): JSX.Element {
 
   return (
     <>
-        <div className="flex items-center justify-center  h-screen ">
-          <h1 className="text-xl sm:text-2xl lg:text-6xl text-th-primary-medium text-shadow-md subpixel-antialiased ">{title}</h1>
-        </div>
+      <div className="flex flex-col items-center justify-center  h-screen ">
+        <h1 className="text-center text-xl sm:text-2xl lg:text-6xl text-th-primary-medium text-shadow-md subpixel-antialiased  mb-20">
+          {title}
+        </h1>
+        {children}
+      </div>
     </>
   );
 }
