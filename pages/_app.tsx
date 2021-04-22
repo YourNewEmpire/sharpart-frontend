@@ -1,6 +1,7 @@
 import React, { ComponentType } from 'react'
-import { AppInitialProps } from 'next/app'
-import { Provider as ReduxContext} from 'react-redux';
+import type { AppProps } from 'next/app'
+import { Provider as ReduxContext } from 'react-redux';
+import { Provider as AuthProvider } from 'next-auth/client'
 import store from '../src/store'
 import Layout from '../components/Layout';
 import { ToastContainer } from 'react-toastify'
@@ -11,18 +12,21 @@ const MyApp = ({
   Component,
   pageProps,
 }: {
-  Component: ComponentType<AppInitialProps>
-  pageProps: AppInitialProps
+  Component: ComponentType<AppProps>
+  pageProps: AppProps
 }) => {
   return (
-    <ReduxContext store={store}>
-      <ThemeProvider>
-        <Layout>
-          <Component {...pageProps} />
-          <ToastContainer />
-        </Layout>
-      </ThemeProvider>
-    </ReduxContext>
+    //@ts-ignore
+    <AuthProvider session={pageProps.session}>
+      <ReduxContext store={store}>
+        <ThemeProvider>
+          <Layout>
+            <Component {...pageProps} />
+            <ToastContainer />
+          </Layout>
+        </ThemeProvider>
+      </ReduxContext>
+    </AuthProvider>
   )
 }
 

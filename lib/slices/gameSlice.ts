@@ -1,13 +1,12 @@
 import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
 import { abi } from '../../public/GameItem.json'
-import Web3 from 'web3';
 import axios from 'axios';
 import { toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 type gameState = {
-      result: string
+      result: 'defeat' | 'victory' | 'Not Started' 
       loading: boolean
       error: string
 }
@@ -23,7 +22,7 @@ const gameSlice = createSlice({
       initialState,
       reducers: {
             resetResult: (state) => {
-                  state.result = ""
+                  state.result = "Not Started"
             },
             setResult: (state, action) => {
                   return { ...state, result: action.payload }
@@ -37,13 +36,12 @@ const gameSlice = createSlice({
             setError: (state, action) => {
                   return { ...state, error: action.payload }
             },
-
       },
 })
 
-export const selectAccount = (state: CoreState) => state.account.value
-export const selectUris = (state: CoreState) => state.account.uris
-export const selectError = (state: CoreState) => state.account.error
+export const selectResult = (state: CoreState) => state.game.result
+export const selectError = (state: CoreState) => state.game.error
+
 
 export const {
       resetResult,
@@ -54,20 +52,20 @@ export const {
 } = gameSlice.actions
 
 //async thunks
-export const ethOrbMoon = (user: string, eth: number) => async (dispatch: Dispatch) => {
+export const ethOrb = (user: string, eth: number, choice: string) => async (dispatch: Dispatch) => {
       dispatch(setLoading())
       if (!user || user === "" ) {
             //dispatch failure   
             dispatch(setError("Missing user argument for game start"))
+            dispatch(endLoading())
       }
       else if (!eth || eth == 0) {
 
       }
       else {
             try {
-
                   console.log("game thunk")
-                  const res = await axios.post('/api/playgame', {
+                  const res = await axios.post(choice, {
                         user: user,
                         ethPrice: eth
                   })
@@ -83,6 +81,7 @@ export const ethOrbMoon = (user: string, eth: number) => async (dispatch: Dispat
                         })
                         .catch(function (error) {
                               console.log(error);
+                              dispatch(setError('error calling api from redux action'))
                         });
                   console.log(res)
             }

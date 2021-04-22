@@ -6,8 +6,6 @@ import { getSession } from 'next-auth/client';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
       const session = await getSession({ req })
-
-      
       const user: string = req.body.user
       const price: number = req.body.price
 

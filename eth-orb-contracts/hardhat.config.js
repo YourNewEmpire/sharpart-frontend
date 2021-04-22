@@ -1,4 +1,4 @@
-require("@nomiclabs/hardhat-waffle");
+import "@nomiclabs/hardhat-waffle";
 const ethers = require("ethers")
 const fs = require("fs")
 const MNEMONIC = fs.readFileSync(".secret").toString().trim();

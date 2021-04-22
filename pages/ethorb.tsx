@@ -1,7 +1,8 @@
-import { useState, useEffect, SetStateAction } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios';
 import Web3 from 'web3'
+import { signIn, signOut, useSession } from 'next-auth/client';
+import { useRouter } from 'next/router'
 import SimpleCard from '../components/Cards/SimpleCard';
 import AlertCard from '../components/Cards/AlertCard'
 import NftList from '../components/Cards/NftList';
@@ -16,23 +17,33 @@ import {
       setPriceThunk
 } from '../lib/slices/ethpriceSlice'
 import {
-      ethOrbMoon
+      ethOrb, selectError,
+      selectResult, setError
 } from '../lib/slices/gameSlice';
 
 import ModalCard from '../components/Cards/ModalCard';
 
+
 export default function EthOrb() {
       //@ts-ignore
       const user = useSelector(selectAccount)
-      console.log(user)
+      const gameResult = useSelector(selectResult)
+      const gameError = useSelector(selectError)
       const tokens = useSelector(selectUris)
       const eth = useSelector(selectPrice)
-      const dispatch = useDispatch();
-
+      const dispatch = useDispatch()
+      const [session, loading] = useSession()
+      const router = useRouter()
+      // click handlers for game UI. call the  game 
       const goingUp = () => {
             console.log("yess")
-            dispatch(ethOrbMoon(user, eth));
+            dispatch(ethOrb(user, eth, 'api/goingUp'));
       };
+      const goingDown = () => {
+            console.log("yess")
+            dispatch(ethOrb(user, eth, 'api/goingUp'));
+      };
+
 
       useEffect(() => {
             dispatch(setUrisThunk(user))
@@ -61,7 +72,9 @@ export default function EthOrb() {
             listenMMAccount();
       }, []);
 
-
+      if (!session) {
+            router.push('loginout')
+      }
       if (!user) return (
 
             <div className="flex items-center justify-center py-10">
@@ -72,6 +85,7 @@ export default function EthOrb() {
       else return (
             <div className="flex flex-col justify-center items-center">
                   <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-2 md:gap-4 lg:gap-8 py-4">
+
                         <div className="">
                               <SimpleCard title="Welcome" body={user} />
                               <p className="py-20 text-th-primary-light">Price of ETH in USD is ${eth}</p >
@@ -90,13 +104,17 @@ export default function EthOrb() {
                                            </button>
                                     }
                                     action2={
-                                          <button className=" 
+                                          <button
+                                                onClick={goingDown}
+                                                className=" 
                                           p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light
                                           bg-opacity-0 rounded-lg
                                           hover:bg-th-accent-failure
                                           transition duration-300 ease-in-out">Dropping</button>
                                     }
                               />
+                              {gameError && <AlertCard title="Error:" body={gameError} color="red" />}
+                              {gameResult === 'victory' && <AlertCard title=" Victory" body="you will be transferred 1 of our mp4 NFTs and will appear on this front end any moment. " color="green" />}
                         </div>
 
                         <NftList items={tokens} />
