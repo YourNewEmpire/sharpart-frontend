@@ -89,7 +89,7 @@ export default function EthOrb() {
 
       if (loading) return null
 
-      if (!loading && !session) return <p>Access Denied</p>
+      if (!loading && !session) return <p className="text-th-primary-light">Access Denied</p>
 
 
       if (!session) {
