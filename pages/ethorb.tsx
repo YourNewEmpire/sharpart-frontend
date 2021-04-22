@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
+import { GetServerSideProps } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import Web3 from 'web3'
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { signIn, signOut, useSession, getSession } from 'next-auth/client';
 import { useRouter } from 'next/router'
 import SimpleCard from '../components/Cards/SimpleCard';
 import AlertCard from '../components/Cards/AlertCard'
@@ -22,6 +23,20 @@ import {
 } from '../lib/slices/gameSlice';
 
 import ModalCard from '../components/Cards/ModalCard';
+import Link from 'next/link';
+
+//@ts-ignore
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+      const session = await getSession(ctx)
+      if (!session) {
+            ctx.res.writeHead(302, { Location: '/new/url' });
+            ctx.res.end();
+            return {}
+      }
+      return {
+            props: { session }
+      }
+}
 
 
 export default function EthOrb() {
@@ -72,8 +87,25 @@ export default function EthOrb() {
             listenMMAccount();
       }, []);
 
+      if (loading) return null
+
+      if (!loading && !session) return <p>Access Denied</p>
+
+
       if (!session) {
-            router.push('loginout')
+            <div className="flex items-center justify-center py-10">
+                  <Link href="/loginout">
+                        <a
+                              className=' 
+                              p-2 lg:p-4
+                              text-3xl
+                              hover:shadow-lg rounded-lg transition duration-100 ease-in-out transform  hover:scale-110
+                              focus:outline-none '
+                        >
+                              Sign In with Google
+                              </a>
+                  </Link>
+            </div>
       }
       if (!user) return (
 
