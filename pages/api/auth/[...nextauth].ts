@@ -13,7 +13,7 @@ export default NextAuth({
   ],
  
   callbacks: {
-     session(session, user) {
+     session(session, token) {
       return session
     },
   },
