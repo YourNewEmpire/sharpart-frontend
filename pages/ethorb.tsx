@@ -29,7 +29,7 @@ import Link from 'next/link';
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
       const session = await getSession(ctx)
       if (!session) {
-            ctx.res.writeHead(302, { Location: '/new/url' });
+            ctx.res.writeHead(302, { Location: '/' });
             ctx.res.end();
             return {}
       }
