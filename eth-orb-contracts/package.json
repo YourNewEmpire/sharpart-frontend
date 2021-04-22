@@ -1,0 +1,17 @@
+{
+  "name": "eth-orb-contracts",
+  "version": "1.0.0",
+  "description": "smart contracts for dapps",
+  "main": "hardhat.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "hardhat": "^2.2.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.0.0"
+  }
+}
