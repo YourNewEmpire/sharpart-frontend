@@ -1,4 +1,4 @@
-import "@nomiclabs/hardhat-waffle";
+
 const ethers = require("ethers")
 const fs = require("fs")
 const MNEMONIC = fs.readFileSync(".secret").toString().trim();
@@ -20,24 +20,29 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.7.3",
-  networks: {
-    matic: {
-      url: `https://rpc-matic.maticvigil.com/v1/${API_KEY}`,
-      accounts: {
-        provider: function () {
-          return new HDWalletProvider(MNEMONIC, `https://rpc-mumbai.maticvigil.com/v1/${API_KEY}`);
-        },
-      }
-    },
-    mumbai: {
-      url: `https://rpc-mumbai.maticvigil.com/v1/${API_KEY}`,
-      accounts: {
-        provider: function () {
-          return new HDWalletProvider(MNEMONIC, `https://rpc-mumbai.maticvigil.com/v1/${API_KEY}`);
-        },
+  solidity: {
+    version: "0.8.0",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200
       }
     }
+  },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts"
+  },
+  networks: {
+    ropsten: {
+      url: `https://ropsten.infura.io/v3/${API_KEY}`,
+      accounts: {
+        mnemonic: MNEMONIC
+      }
+    }
+
   }
 };
 
