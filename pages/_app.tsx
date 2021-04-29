@@ -1,12 +1,15 @@
 import React, { ComponentType } from 'react'
 import type { AppProps } from 'next/app'
+import { ThemeProvider } from 'next-themes'
 import { Provider as ReduxContext } from 'react-redux';
-import { Provider as AuthProvider } from 'next-auth/client'
+import { MoralisProvider } from "react-moralis";
 import store from '../src/store'
 import Layout from '../components/Layout';
 import { ToastContainer } from 'react-toastify'
-import { ThemeProvider } from 'next-themes'
 import '../styles/globals.css'
+
+const moralisAppID = process.env.NEXT_PUBLIC_MORALIS_APP_ID
+const moralisServerUrl = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
 
 const MyApp = ({
   Component,
@@ -16,8 +19,7 @@ const MyApp = ({
   pageProps: AppProps
 }) => {
   return (
-    //@ts-ignore
-    <AuthProvider session={pageProps.session}>
+    <MoralisProvider appId={moralisAppID} serverUrl={moralisServerUrl} >
       <ReduxContext store={store}>
         <ThemeProvider>
           <Layout>
@@ -26,7 +28,7 @@ const MyApp = ({
           </Layout>
         </ThemeProvider>
       </ReduxContext>
-    </AuthProvider>
+    </MoralisProvider>
   )
 }
 
