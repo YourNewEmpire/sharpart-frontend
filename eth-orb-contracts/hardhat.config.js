@@ -3,6 +3,7 @@ const ethers = require("ethers")
 const fs = require("fs")
 const MNEMONIC = fs.readFileSync(".secret").toString().trim();
 const API_KEY = fs.readFileSync(".apikey").toString().trim()
+const MUMBAI_KEY = fs.readFileSync(".mumbaikey").toString().trim()
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async () => {
@@ -41,8 +42,13 @@ module.exports = {
       accounts: {
         mnemonic: MNEMONIC
       }
+    },
+    mumbai: {
+      url: `https://rpc-mumbai.maticvigil.com/v1/`,
+      accounts: {
+        mnemonic: MNEMONIC
+      }
     }
-
   }
 };
 
