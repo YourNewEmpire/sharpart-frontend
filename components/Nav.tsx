@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes'
 import { useDispatch, useSelector, } from 'react-redux'
-import { setAccountThunk, selectAccount } from '../lib/slices/accountSlice';
-
+import { selectAccount } from '../lib/slices/accountSlice';
+import { useMoralis } from 'react-moralis'
 
 
 
@@ -15,12 +15,6 @@ type listItem = {
 
 
 export const Nav = () => {
-
-      const { theme, setTheme } = useTheme()
-
-      const dispatch = useDispatch()
-      const user = useSelector(selectAccount)
-
       //nav items for map
       const listItems: listItem[] = [
             {
@@ -39,9 +33,11 @@ export const Nav = () => {
                   link: 'contact'
             },
       ]
-      const mMask = () => {
-            dispatch(setAccountThunk());
-      };
+
+      const { theme, setTheme } = useTheme()
+      const { user, authenticate } = useMoralis()
+
+
 
       return (
             <div className="">
@@ -82,20 +78,20 @@ export const Nav = () => {
                                     {listItem.text}
                               </a></Link>
                         )}
-                        <button
+                       {!user && <button
                               className=' xl:ml-auto ml-0  subpixel-antialiased  text-xs md:text-base  lg:text-2xl md:h-auto inline-flex md:w-auto 
                               font-bold items-center justify-center
                               px-2 py-2 md:px-6 md:py-4 lg:mx-4 md:mx-2 sm:mx-0  
                                text-amber-600 dark:text-amber-600
                               hover:shadow-lg rounded-lg transition duration-100 ease-in-out transform  hover:scale-110
                               focus:outline-none '
-                              onClick={mMask}
+                              onClick={() => authenticate}
                         >
                               Metamask
 
-                        </button>
+                        </button>}
                         <button
-                              className='inline-flex items-center lg:h-16 lg:w-16 w-6 h-6
+                              className='  xl:ml-auto ml-0 inline-flex items-center lg:h-16 lg:w-16 w-6 h-6
                               antialiased focus:outline-none text-th-primary-light
                               hover:shadow-lg rounded-lg 
                               transition duration-100 ease-in-out transform  hover:scale-110 '

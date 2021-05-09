@@ -17,11 +17,11 @@ export default function ModalCard({ action1, action2, body }: ModalCardProps): J
                               {body}
                         </p>
                   </div>
-                  <div className=" grid grid-cols-1 lg:grid-cols-2  md:grid-cols-2  justify-items-center w-full px-4">
-                        <div className="py-2 mx-6" >
+                  <div className=" py-2  grid grid-cols-1 lg:grid-cols-2  md:grid-cols-2  justify-items-center w-full px-4">
+                        <div className="" >
                               {action1}
                         </div>
-                        <div className="py-2 mx-6"  >
+                        <div className=""  >
                               {action2}
                         </div>
                   </div>

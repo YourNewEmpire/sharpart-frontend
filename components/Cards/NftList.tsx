@@ -5,7 +5,8 @@ import AlertCard from './AlertCard';
 
 export default function NftList({ items }: NftListProps): JSX.Element {
       const [isPlaying, setIsPlaying] = useState(true);
-      if (items) return (
+      console.log(items)
+      if (items.length > 0) return (
             <div className=" 
             grid grid-flow-row
             auto-rows-max
@@ -30,11 +31,18 @@ export default function NftList({ items }: NftListProps): JSX.Element {
                               </a>
                   </div>
                   {items.map((item, index) =>
-                        <div key={index} className=" h-1/4 w-1/4 md:w-full md:h-full py-2 lg:py-4 border-2">
-                              <ReactPlayer  url={item} playing={isPlaying} loop={true} volume={0} />
+                        <div  className=" h-1/4 w-1/4 md:w-full md:h-full py-2 lg:py-4 border-2">
+                              <ReactPlayer key={index}  url={item} playing={isPlaying} loop={true} volume={0} />
                         </div>
                   )}
             </div>
       )
-      else return <div>  <AlertCard title="No items, keep playing..." body="You gotta start somewhere right" color="amber" /> </div>
+      else return <div>  <AlertCard title="No items, keep playing..." body="You gotta start somewhere right" warning /> </div>
 }
+/* 
+             {items.map((item, index) =>
+                        <div  className=" h-1/4 w-1/4 md:w-full md:h-full py-2 lg:py-4 border-2">
+                              <ReactPlayer key={index}  url={item} playing={isPlaying} loop={true} volume={0} />
+                        </div>
+                  )}
+                  */

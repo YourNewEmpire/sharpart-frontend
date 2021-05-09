@@ -1,155 +1,186 @@
 import { useEffect } from 'react'
 import { GetServerSideProps } from 'next'
+import Moralis from 'moralis'
+import { useMoralis, useMoralisCloudFunction, useMoralisQuery } from 'react-moralis'
 import { useDispatch, useSelector } from 'react-redux'
 import Web3 from 'web3'
-import { signIn, signOut, useSession, getSession } from 'next-auth/client';
+import axios from "axios";
 import { useRouter } from 'next/router'
+import { useInterval } from '../hooks/useInterval'
 import SimpleCard from '../components/Cards/SimpleCard';
 import AlertCard from '../components/Cards/AlertCard'
 import NftList from '../components/Cards/NftList';
 import {
       selectAccount,
       selectUris,
+      resetUris,
       setUrisThunk,
       setAccount,
 } from '../lib/slices/accountSlice';
 import {
+      selectHistoric,
       selectPrice,
       setPriceThunk
 } from '../lib/slices/ethpriceSlice'
 import {
-      ethOrb, selectError,
-      selectResult, setError
+      selectError,
+      selectStatus,
+      setStatus,
+      setError,
+      selectChoice,
+      ethOrb,
+      setChoiceUp,
+      setChoiceDown,
+      selectLoading,
+      setGameSession,
+      selectGameSession,
+      setLoading,
+      endLoading
 } from '../lib/slices/gameSlice';
-
 import ModalCard from '../components/Cards/ModalCard';
-import Link from 'next/link';
+import Line from '../components/Line'
 
-//@ts-ignore
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-      const session = await getSession(ctx)
-      if (!session) {
-            ctx.res.writeHead(302, { Location: '/' });
-            ctx.res.end();
-            return {}
-      }
-      return {
-            props: { session }
-      }
-}
 
 
 export default function EthOrb() {
-      //@ts-ignore
-      const user = useSelector(selectAccount)
-      const gameResult = useSelector(selectResult)
-      const gameError = useSelector(selectError)
+      const dispatch = useDispatch()
       const tokens = useSelector(selectUris)
       const eth = useSelector(selectPrice)
-      const dispatch = useDispatch()
-      const [session, loading] = useSession()
-      const router = useRouter()
-      // click handlers for game UI. call the  game 
-      const goingUp = () => {
-            console.log("yess")
-            dispatch(ethOrb(user, eth, 'api/goingUp'));
-      };
-      const goingDown = () => {
-            console.log("yess")
-            dispatch(ethOrb(user, eth, 'api/goingUp'));
-      };
+      const ethHistoric = useSelector(selectHistoric)
+      const choice = useSelector(selectChoice)
+      const gameResult = useSelector(selectStatus)
+      const gameError = useSelector(selectError)
+      const gameSession = useSelector(selectGameSession)
+      const gameLoading = useSelector(selectLoading)
 
+      //* moralis state/hook
+      const { isAuthenticated, user } = useMoralis()
+      const address = user?.get('ethAddress')
+      const authData = user?.get('authData')
+      const userSign = authData?.moralisEth.signature
+      const gameSesh = Moralis.Object.extend("GameSession");
+      const gameQuery = new Moralis.Query(gameSesh)
+      const gamesession = new gameSesh()
 
-      useEffect(() => {
-            dispatch(setUrisThunk(user))
-            console.log('uris fetched')
-      }, [user])
-
-      useEffect(() => {
-            const id = setInterval(async () => {
-                  dispatch(setPriceThunk())
-                  console.log('new Price fetched')
-            }, 5000);
-            return () => clearInterval(id);
-      }, [eth])
-
-      useEffect(() => {
-            async function listenMMAccount() {
-                  //@ts-ignore
-                  const web3 = new Web3(window.ethereum);
-                  //@ts-ignore
-                  window.ethereum.on("accountsChanged", async function () {
-                        const accounts = await web3.eth.getAccounts();
-                        console.log(accounts, "account changed");
-                        dispatch(setAccount(accounts[0]))
-                  });
-            }
-            listenMMAccount();
-      }, []);
-
-      if (loading) return null
-
-      if (!loading && !session) return <p className="text-th-primary-light">Access Denied</p>
-
-
-      if (!session) {
-            <div className="flex items-center justify-center py-10">
-                  <Link href="/loginout">
-                        <a
-                              className=' 
-                              p-2 lg:p-4
-                              text-3xl
-                              hover:shadow-lg rounded-lg transition duration-100 ease-in-out transform  hover:scale-110
-                              focus:outline-none '
-                        >
-                              Sign In with Google
-                              </a>
-                  </Link>
-            </div>
+      async function queryUserSession() {
+            gameQuery.equalTo("userSign", userSign)
+            await gameQuery.first()
+                  .then(async (results) => {
+                        if (!results) {
+                              gamesession.set('ethAddress', address);
+                              gamesession.set('gameChoice', choice);
+                              gamesession.set('coinPrice', eth);
+                              gamesession.set('userSign', userSign);
+                              await gamesession.save().then(
+                                    dispatch(setGameSession(true))
+                              );
+                              console.log(`no game session was found for ${address}, therefore one has been made`)
+                        }
+                        else {
+                              dispatch(setGameSession(true))
+                        }
+                  })
       }
-      if (!user) return (
+
+      async function playGame() {
+            await queryUserSession()
+            if (!address || eth == 0 || choice === null) {
+                  console.log('no addres or what')
+                  dispatch(setError('no address, eth price, choice was found'))
+            }
+            else if (!isAuthenticated) {
+                  //this shouldnt happen because the markup should be re-rendered. jic
+                  console.log('no auth data foound')
+                  dispatch(setError('User not authenticated'))
+            }
+            else if(!gameSession) {
+                  dispatch(setError('Client has not synced '))
+            }
+            else {
+                  //set a gamesession then post backend
+                  dispatch(setStatus('Started'))
+                  dispatch(setLoading())
+                  try {
+                        const postGame = await axios.post('/api/moralisTest', {
+                              address: address,
+                              ethprice: eth,
+                              gamechoice: choice,
+                              userSign: userSign
+                        }).then((res) => {
+                              // todo: handle response and setStatus accordingly. (win/loss)
+                              console.log(res)
+                              dispatch(endLoading())
+                        }).catch((error) => {
+                              console.log(error)
+                              dispatch(endLoading())
+                        })
+                  }
+                  catch (e) {
+                        console.log(e)
+                        dispatch(setStatus('Not Started'))
+                        dispatch(endLoading())
+                  }
+
+            }
+      }
+
+
+
+      // click handlers for game UI. call the  game 
+
+
+
+      const fetchEth = () => {
+            dispatch(setPriceThunk())
+      }
+
+      useInterval(fetchEth, 5000);
+
+
+      if (!isAuthenticated || !address) return (
 
             <div className="flex items-center justify-center py-10">
-                  <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" color="red" />
+                  <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" failure />
 
             </div>
       )
+
+      //todo: rebuild layout
+      //todo: populate with game redux state neatly
       else return (
             <div className="flex flex-col justify-center items-center">
                   <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-2 md:gap-4 lg:gap-8 py-4">
-
-                        <div className="">
-                              <SimpleCard title="Welcome" body={user} />
+                        <div className="flex flex-col justify-center items-center">
+                              <SimpleCard title="Welcome" body={address} />
                               <p className="py-20 text-th-primary-light">Price of ETH in USD is ${eth}</p >
                               <ModalCard
                                     body="Where will the price (usd) of Eth be in 2 minutes? "
                                     action1={
                                           <button
-                                                onClick={goingUp}
-                                                className=" 
-                                                p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light
-                                                rounded-lg bg-opacity-0
-                                                hover:bg-th-accent-success
-                                          transition duration-300 ease-in-out"
+                                                onClick={() => dispatch(setChoiceUp())}
+                                                className={choice === true ? ' p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
+                                                      : ' p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'}
                                           >
                                                 Mooning
                                            </button>
                                     }
                                     action2={
                                           <button
-                                                onClick={goingDown}
-                                                className=" 
-                                          p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light
-                                          bg-opacity-0 rounded-lg
-                                          hover:bg-th-accent-failure
-                                          transition duration-300 ease-in-out">Dropping</button>
+                                                onClick={() => dispatch(setChoiceDown())}
+                                                className={choice === false ? ' p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-failure  focus:outline-none   transition duration-300 ease-in-out'
+                                                      : ' p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'}
+                                          >
+                                                Dropping
+                                                </button>
                                     }
                               />
-                              {gameError && <AlertCard title="Error:" body={gameError} color="red" />}
-                              {gameResult === 'victory' && <AlertCard title=" Victory" body="you will be transferred 1 of our mp4 NFTs and will appear on this front end any moment. " color="green" />}
+                              {choice !== null && <button onClick={playGame} className='text-th-accent-success' >im here if choice is set</button>}
+                              {gameLoading && <p className="text-th-primary-light" >game is loading </p>}
+                              {gameResult && <AlertCard title={gameResult} body="whatever bud" failure />}
                         </div>
-
+                        {gameError && <p>{gameError}</p>}
                         <NftList items={tokens} />
+                        <Line props={ethHistoric} />
                   </div>
 
 

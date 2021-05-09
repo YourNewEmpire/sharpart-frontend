@@ -1,40 +1,45 @@
 
 import AlertCard from '../components/Cards/AlertCard'
 import Link from 'next/link';
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-      setAccountThunk,
       selectAccount,
+      setAccount,
+      resetAccount,
 } from '../lib/slices/accountSlice';
-
+import { useMoralis } from "react-moralis";
 
 
 
 export default function EtherDapps() {
       //@ts-ignore
-      const user = useSelector(selectAccount)
-      const dispatch = useDispatch()
+      const { authenticate, isAuthenticated, user } = useMoralis();
+      const dispatch = useDispatch();
+      const ethUser = useSelector(selectAccount)
+      const ethAddress = user?.get('ethAddress')
+      useEffect(() => {
+            
+            dispatch(setAccount(ethAddress))
+            return () => {
+                  dispatch(resetAccount)
+            }
+      }, [user])
 
-      const mMask = () => {
-            dispatch(setAccountThunk());
-      };
-      
-      if (!user) {
+
+      if (!isAuthenticated) {
             return (
-
-
-                  <div className="flex flex-col py-16 space-y-4 sm:space-y-10 lg:space-y-12 items-center justify-center ">
-                        <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" color="red" />
+                  <div className="flex flex-col py-16 space-y-4 sm:space-y-10 lg:space-y-16 items-center justify-center ">
+                        <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" failure />
                         <button
                               className=' 
-                               p-2 lg:p-4
-                              text-3xl
-                               text-amber-600 dark:text-amber-600
+                              p-2 lg:p-4
+                              lg:text-3xl md:text-lg text-xs text-th-accent-moralis
                               hover:shadow-lg rounded-lg transition duration-100 ease-in-out transform  hover:scale-110
                               focus:outline-none '
-                              onClick={mMask}
+                              onClick={() => authenticate()}
                         >
-                              Metamask
+                              Metamask/Moralis Authentication
 
                         </button>
                   </div>
@@ -42,10 +47,11 @@ export default function EtherDapps() {
       }
       else return (
             <div className="flex flex-col py-16 space-y-4 sm:space-y-10 lg:space-y-16 items-center justify-center ">
-                  {!user && <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" color="red" />}
-                  {user && <AlertCard title="You're connected" body="Run free, address." color="green" /> &&
-                        <Link href="/ethorb">
-                              <a className=" 
+
+                  <AlertCard info title="You're all set" body={ethAddress}
+                  />
+                  <Link href="/ethorb">
+                        <a className=" 
                                     subpixel-antialiased  rounded-md
                                     text-center text-lg lg:text-4xl
                                     text-th-primary-light
@@ -53,10 +59,10 @@ export default function EtherDapps() {
                                     hover:border-transparent text-shadow-lg
                                     transition duration-300 ease-in-out hover:text-th-accent-medium transform   
                                     ">
-                                    Eth Orb - Guess market movements.
+                              Eth Orb - Guess market movements.
                                     </a>
-                        </Link>
-                  }
+                  </Link>
+
             </div>
       );
 }

@@ -28,7 +28,10 @@ export interface SimpleCardProps {
 export interface AlertCardProps {
       title: string
       body: string
-      color: 'red' | 'blue' | 'amber' | 'green'
+      success?: boolean
+      info?: boolean
+      warning?: boolean
+      failure?: boolean
 }
 export interface NftListProps {
      items: string[]

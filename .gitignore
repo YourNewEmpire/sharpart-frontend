@@ -35,4 +35,8 @@ yarn-error.log*
 .env
 eth-orb-contracts/.apikey
 eth-orb-contracts/.secret
+eth-orb-contracts/.mumbaikey
 pages/api/testql.ts
+
+.vercel
+eth-orb-contracts/contracts/@openzeppelin
