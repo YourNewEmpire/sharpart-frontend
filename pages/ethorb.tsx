@@ -5,6 +5,7 @@ import { useMoralis, useMoralisCloudFunction, useMoralisQuery } from 'react-mora
 import { useDispatch, useSelector } from 'react-redux'
 import Web3 from 'web3'
 import axios from "axios";
+import { XYPlot, LineSeries } from 'react-vis';
 import { useRouter } from 'next/router'
 import { useInterval } from '../hooks/useInterval'
 import SimpleCard from '../components/Cards/SimpleCard';
@@ -83,7 +84,7 @@ export default function EthOrb() {
       }
 
       async function playGame() {
-            await queryUserSession()
+
             if (!address || eth == 0 || choice === null) {
                   console.log('no addres or what')
                   dispatch(setError('no address, eth price, choice was found'))
@@ -93,8 +94,8 @@ export default function EthOrb() {
                   console.log('no auth data foound')
                   dispatch(setError('User not authenticated'))
             }
-            else if(!gameSession) {
-                  dispatch(setError('Client has not synced '))
+            else if (!gameSession) {
+                  dispatch(setError('Client not synced'))
             }
             else {
                   //set a gamesession then post backend
@@ -136,6 +137,9 @@ export default function EthOrb() {
 
       useInterval(fetchEth, 5000);
 
+      useEffect(() =>{
+            dispatch(setUrisThunk(address))
+      }, [user])
 
       if (!isAuthenticated || !address) return (
 
@@ -149,11 +153,11 @@ export default function EthOrb() {
       //todo: populate with game redux state neatly
       else return (
             <div className="flex flex-col justify-center items-center">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-2 md:gap-4 lg:gap-8 py-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-8 md:gap-16 lg:gap-32 py-4">
                         <div className="flex flex-col justify-center items-center">
                               <SimpleCard title="Welcome" body={address} />
-                              <p className="py-20 text-th-primary-light">Price of ETH in USD is ${eth}</p >
-                              <ModalCard
+                              <p className="py-8 text-th-primary-light">Price of ETH in USD is ${eth}</p >
+                              {gameSession && <ModalCard
                                     body="Where will the price (usd) of Eth be in 2 minutes? "
                                     action1={
                                           <button
@@ -173,14 +177,16 @@ export default function EthOrb() {
                                                 Dropping
                                                 </button>
                                     }
-                              />
-                              {choice !== null && <button onClick={playGame} className='text-th-accent-success' >im here if choice is set</button>}
+                              />}
+                              {!gameSession && <button onClick={queryUserSession} className='m-6 text-th-accent-success' >Create Game Session</button>}
+                              {choice !== null && gameSession && <button onClick={playGame} className='m-6 text-th-accent-success' >im here if choice is set</button>}
                               {gameLoading && <p className="text-th-primary-light" >game is loading </p>}
                               {gameResult && <AlertCard title={gameResult} body="whatever bud" failure />}
                         </div>
                         {gameError && <p>{gameError}</p>}
                         <NftList items={tokens} />
-                        <Line props={ethHistoric} />
+
+      
                   </div>
 
 

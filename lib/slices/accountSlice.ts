@@ -1,10 +1,12 @@
 import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
-import { abi } from '../../public/GameItem.json'
+import  { abi }from '../../public/GameItem.json'
 import Web3 from 'web3';
 
 import { toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+
+
 
 type accountState = {
       value: string
@@ -140,7 +142,7 @@ export const setUrisThunk = (user: string) => async (dispatch: Dispatch) => {
       const nftContract = new web3.eth.Contract(
             //@ts-ignore
             abi,
-            "0xf79349d03E0A2BfFD5Ea27B512D51Bd84289E72A",
+            "0xFB6c3bFeb4cF437Eb63aAF60739b69581d74B3d4",
       );
 
       async function pushURIs(total: number) {
@@ -157,7 +159,6 @@ export const setUrisThunk = (user: string) => async (dispatch: Dispatch) => {
                   )
             }
       };
-      //
       await nftContract.methods
             .totalSupply()
             .call().then(res => pushURIs(res))
