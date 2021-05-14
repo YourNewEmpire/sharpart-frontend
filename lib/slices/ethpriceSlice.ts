@@ -40,8 +40,7 @@ export const {
 
 
 export const setPriceThunk = () => async (dispatch: Dispatch) => {
-  //* url below is for historical 6 day data from coingecko
-  //
+
   const coinData = await  axios.get('https://api.coingecko.com/api/v3/coins/ethereum?market_data=true');
   const historicData = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
   //@ts-ignore

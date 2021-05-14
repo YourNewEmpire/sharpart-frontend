@@ -1,12 +1,11 @@
 import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
-import  { abi }from '../../public/GameItem.json'
+import {abi}from '../../public/GameItem.json'
 import Web3 from 'web3';
-
 import { toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-
+const maticUrl = process.env.NEXT_PUBLIC_MATIC_API_KEY
 
 type accountState = {
       value: string
@@ -134,7 +133,7 @@ export const setUrisThunk = (user: string) => async (dispatch: Dispatch) => {
       let i: number = 0
       //instantiate a new web3 http provider - passing in my matic/mumbai network node rpc-url.
       const provider = new Web3.providers.HttpProvider(
-            '  https://rpc-mumbai.maticvigil.com/v1/f7178baf2319f5704d765be9c095e1b9c94ceb1f'
+           `https://rpc-mumbai.maticvigil.com/v1/${maticUrl}`
       );
       //new Web3 instance - passing in the http provider
       const web3 = new Web3(provider)
@@ -142,7 +141,7 @@ export const setUrisThunk = (user: string) => async (dispatch: Dispatch) => {
       const nftContract = new web3.eth.Contract(
             //@ts-ignore
             abi,
-            "0xFB6c3bFeb4cF437Eb63aAF60739b69581d74B3d4",
+            "0x9b1D4A12E2374e3F989F0e3098650eA3C775d79F",
       );
 
       async function pushURIs(total: number) {

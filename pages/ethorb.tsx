@@ -111,6 +111,7 @@ export default function EthOrb() {
                               // todo: handle response and setStatus accordingly. (win/loss)
                               console.log(res)
                               dispatch(endLoading())
+                              // if (res.data.status.startsWith('err'))dispatch(setStatus())
                         }).catch((error) => {
                               console.log(error)
                               dispatch(endLoading())
@@ -183,8 +184,11 @@ export default function EthOrb() {
                               {gameLoading && <p className="text-th-primary-light" >game is loading </p>}
                               {gameResult && <AlertCard title={gameResult} body="whatever bud" failure />}
                         </div>
+                        <div className="flex flex-col justify-center items-center">
                         {gameError && <p>{gameError}</p>}
                         <NftList items={tokens} />
+                        </div>
+               
 
       
                   </div>

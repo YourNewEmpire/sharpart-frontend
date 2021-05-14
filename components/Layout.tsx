@@ -1,10 +1,13 @@
-import React, { ReactChild, ReactChildren } from 'react'
+import React, { ReactChild, ReactChildren, useEffect } from 'react'
 import "tailwindcss/tailwind.css";
+import Moralis from 'moralis'
+import { useMoralis } from 'react-moralis'
 import Nav from './Nav'
 import Head from 'next/head'
-import {Childs} from '../interfaces/childs'
+import { Childs } from '../interfaces/childs'
 
 export default function Layout({ children }: Childs): JSX.Element {
+
 
       return (
             <div className=" bg-th-background min-h-full">

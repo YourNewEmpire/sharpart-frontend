@@ -21,13 +21,13 @@ const MyApp = ({
   pageProps: AppProps
 }) => {
   useEffect(() => {
-    Moralis.Web3.onAccountsChanged( async (accounts) => {
-      const confirmed = confirm("Link this address to your account?");
-      if (confirmed) {
-        await Moralis.Web3.link(accounts[0]);
-      }
+    Moralis.Web3.onAccountsChanged(async (accounts) => {
+          const confirmed = confirm("Link this address to your account?");
+          if (confirmed) {
+                await Moralis.Web3.link(accounts[0]);
+          }
     });
-  }, [])
+}, [])
   return (
     <MoralisProvider appId={moralisAppID} serverUrl={moralisServerUrl} >
       <ReduxContext store={store}>
