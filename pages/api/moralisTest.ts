@@ -26,8 +26,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const user: string = req.body.address
       const price: number = req.body.ethprice
       const gameChoice: boolean = req.body.gamechoice
-      const userSign: string = req.body.userSign
-      console.log('request arrived', gameChoice, price, user, userSign)
+      const userSign = req.body.userSign
+      console.log('request arrived', gameChoice, price, user, userSign.moralisEth.signature)
 
       //* array of token uri's for a user.
       let tokenIds: number[] = []
@@ -35,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       //* var 's for game results
       const itMooned = 'Mooned'
       const itDropped = 'Dropped'
-      const stale = 'Stale'
+      const stale = 'Held'
 
       //*Moralis Server config.
       const APP_ID = process.env.NEXT_PUBLIC_MORALIS_APP_ID;
@@ -43,6 +43,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       Moralis.initialize(APP_ID);
       Moralis.serverURL = SERVER_ID;
 
+
+      res.json({gameWin: 'yes' , gameResult: itDropped})
 
       /* Matic contract instance
       const provider = new HDWalletProvider(
@@ -85,14 +87,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 
       //* extend GameSession table for querying if the user has created one (only available on my frontend)
-      //* extend GameResults table for setting a game result
+      /* extend GameResults table for setting a game result
+
       const gameSesh = Moralis.Object.extend("GameSession");
       const gameResultObj = Moralis.Object.extend("GameResults");
       const queryGame = new Moralis.Query(gameSesh);
       const gameResult = new gameResultObj()
       queryGame.equalTo("userSign", userSign);
+*/
 
       //*game logic will run if the user has created a session
+
+      /*
       await queryGame.first()
             .then((results) => {
                   if (!results) {
@@ -119,7 +125,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
                                     await gameResult.save().then((gameResult => {
-                                          res.json({ gameResult: itMooned, gameWin: true })
+                                          res.json({ gameResult: itMooned, gameWin: 'yes' })
                                     }))
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
                               }
@@ -132,7 +138,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
                                     await gameResult.save().then((gameResult => {
-                                          res.json({ gameResult: itDropped, gameWin: true })
+                                          res.json({ gameResult: itDropped, gameWin: 'yes' })
                                     }))
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
                               }
@@ -145,7 +151,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
                                     await gameResult.save().then((gameResult => {
-                                          res.json({ gameResult: stale, gameWin: false })
+                                          res.json({ gameResult: stale, gameWin: 'no' })
                                     }))
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
 
@@ -159,7 +165,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
                                     await gameResult.save().then((gameResult => {
-                                          res.json({ gameResult: itMooned, gameWin: false })
+                                          res.json({ gameResult: itMooned, gameWin: 'no' })
                                     }))
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
                               }
@@ -171,7 +177,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
                                     await gameResult.save().then((gameResult => {
-                                          res.json({ gameResult: itDropped, gameWin: false })
+                                          res.json({ gameResult: itDropped, gameWin: 'no' })
                                     }))
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
                               }
@@ -181,6 +187,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             .catch(error =>
                   res.json({ status: 'error with auth session query', message: error })
             );
+            */
 
 
 

@@ -11,7 +11,8 @@ import { selectPrice } from './ethpriceSlice';
 
 
 type gameState = {
-      status: 'Defeat' | 'Victory' | 'Not Started' | 'Started'
+      gameWin: boolean
+      gameResult: 'Mooned' | 'Dropped' | 'Held' | ''
       loading: boolean
       error: string
       choice: boolean
@@ -19,9 +20,10 @@ type gameState = {
 }
 
 const initialState: gameState = {
-      status: "Not Started",
+      gameWin: null,
       loading: false,
-      error: "",
+      gameResult: '',
+      error: '',
       choice: null,
       gameSession: null,
 }
@@ -30,11 +32,14 @@ const gameSlice = createSlice({
       name: 'game',
       initialState,
       reducers: {
-            resetResult: (state) => {
-                  state.status = "Not Started"
+            resetGameWin: (state) => {
+                  state.gameWin = null
             },
-            setStatus: (state, action) => {
-                  return { ...state, status: action.payload }
+            setGameWin: (state, action) => {
+                  return { ...state, gameWin: action.payload }
+            },
+            setGameResult: (state, action) => {
+                  return { ...state, gameResult: action.payload }
             },
             setLoading: (state) => {
                   return { ...state, loading: true }
@@ -43,6 +48,16 @@ const gameSlice = createSlice({
                   return { ...state, loading: false }
             },
             setError: (state, action) => {
+                  toast.error(action.payload, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        transition: Slide,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                  })
                   return { ...state, error: action.payload }
             },
             setChoiceUp: (state) => {
@@ -51,27 +66,29 @@ const gameSlice = createSlice({
             setChoiceDown: (state) => {
                   return { ...state, choice: false }
             },
-            setGameSession : (state, action) =>{
-                  return {...state, gameSession: action.payload}
+            setGameSession: (state, action) => {
+                  return { ...state, gameSession: action.payload }
             }
       },
 })
 
 //selectors
-
-export const selectStatus = (state: CoreState) => state.game.status
+export const selectGameResult = (state: CoreState) => state.game.gameResult
+export const selectGameWin = (state: CoreState) => state.game.gameWin
 export const selectGameSession = (state: CoreState) => state.game.gameSession
 export const selectError = (state: CoreState) => state.game.error
 export const selectChoice = (state: CoreState) => state.game.choice
 export const selectLoading = (state: CoreState) => state.game.loading
+
 //export actions
 export const {
-      resetResult,
+      resetGameWin,
       setError,
       setLoading,
       endLoading,
-      setStatus,
+      setGameWin,
       setChoiceUp,
+      setGameResult,
       setChoiceDown,
       setGameSession
 } = gameSlice.actions
@@ -79,103 +96,91 @@ export const {
 
 
 export const ethOrb = (user: string, eth: number, choice: boolean, authData: string) => async (dispatch: Dispatch) => {
-      const APP_ID = process.env.MORALIS_APP_ID;
-      const SERVER_ID = process.env.MORALIS_SERVER_URL
-      Moralis.initialize(APP_ID);
-      Moralis.serverURL = SERVER_ID;
-      
-      const userAuth = Moralis.Object.extend("User");
-      const gameSesh = Moralis.Object.extend("GameSession");
-      const queryAuth = new Moralis.Query(userAuth);
 
-      const queryGame = new Moralis.Query(gameSesh);
-      queryAuth.equalTo("ethAddress", user)
-      queryGame.equalTo("ethAddress", user);
-      queryGame.equalTo("activeGame", true);
-      const results = await queryAuth.first().then(results => console.log(results))
-      .catch(error => console.log(error))
-      
-      
-      /*
-      dispatch(setLoading())
-      if (!user || user === "") {
-            //dispatch failure   
-            dispatch(setError("Missing user argument for game start"))
-            dispatch(endLoading())
+      if (!user || eth == 0 || choice === null) {
+            console.log('no addres or what')
+            dispatch(setError('no address, eth price, choice was found'))
       }
-      else if (!eth || eth == 0) {
-            dispatch(setError("Eth price not found in clientside"))
-            dispatch(endLoading())
+      else if (!authData) {
+            dispatch(setError('no user signature was passed into the fetch before posting'))
       }
+
       else {
+            //set a gamesession then post backend
+            dispatch(setLoading())
+            try {
+                  const postGame = await axios.post('/api/moralisTest', {
+                        address: user,
+                        ethprice: eth,
+                        gamechoice: choice,
+                        userSign: authData
+                  }).then((res) => {
+                        //* First, catch a potential error.
+                        if (res.data.status && res.data.status.startsWith('error')) {
+                              dispatch(setError(res.data.status))
+                              dispatch(endLoading())
+                              console.log(res.data.status, 'error returned')
+                              toast.error(res.data.status, {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    transition: Slide,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: false,
+                                    draggable: true,
+                                    progress: undefined,
+                              })
+                        }
+                        //* WIN handle
+                        else if (res.data.gameWin.startsWith('yes')) {
+                              console.log(res.data.gameWin)
+                              dispatch(setGameWin(true))
+                              dispatch(endLoading())
+                              dispatch(setGameResult(res.data.gameResult))
+                              toast.success(`you won, it ${res.data.gameResult} `, {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    transition: Slide,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: false,
+                                    draggable: true,
+                                    progress: undefined,
+                              })
 
-            setTimeout(async () => {
-                  
-                  const coinData = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum?market_data=true')
-                  const newPrice = coinData.data.market_data.current_price.usd;
-                  console.log(newPrice, " newPrice log")
-                  if (eth < newPrice && choice === true) {
-                        console.log(newPrice, 'new price logged when they win')
-                        dispatch(setStatus("Victory"))
-                        //call  mintItem func
-                  }
-                  else if(eth > newPrice && choice === false) {
-                        console.log(newPrice, 'new price logged when they win')
-                        dispatch(setStatus("Victory"))
-                  }
-                  else {
-                        dispatch(setStatus("Defeat"))
-            
-                  }
-            }, 45000)
+                        }
+                        //* LOSS Handling
+                        else if (res.data.gameWin.startsWith('no')) {
+                              console.log(res.data.gameWin)
+                              dispatch(setGameWin(false))
+                              dispatch(endLoading())
+                              dispatch(setGameResult(res.data.gameResult))
+                              toast.error(res.data.gameResult, {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    transition: Slide,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: false,
+                                    draggable: true,
+                                    progress: undefined,
+                              })
+                        }
+                        dispatch(endLoading())
+                  }).catch((error) => {
+                        console.log(error)
+                        dispatch(endLoading())
+                  })
+            }
 
-
+            catch (e) {
+                  console.log(e)
+                  dispatch(endLoading())
+            }
 
       }
-      */
+
 }
 
-//now i just need to call from frontend.
-/*moralis cloud function
-
-Moralis.Cloud.define("playGame", async (request) =>{
-      const {ethAddress, coinPrice, gameChoice} = request.params;
-      const gameSession = Moralis.Object.extend("GameSession") ;
-      const gameResult = Moralis.Object.extend("gameResults");
-      const query = new Moralis.Query(gameResult);
-      const session = new gameSession();
-      const results = new gameResult();
-
-      async function endGame() {
-            const newFetch = await  fetch('https://api.coingecko.com/api/v3/coins/ethereum?market_data=true')
-            //@ts-ignore
-            const newPrice = newFetch.data.market_data.current_price.usd;
-            if(coinPrice > newPrice && gameChoice === false){
-                  results.set("ethAddress", ethAddress);
-                  results.set("gameWin", true);
-                  query.equalTo("ethAddress", ethAddress);
-                  const queryRes = await query.find();
-                  const returnState = queryRes.get('gameWin');
-                  return returnState
-
-            }
-            else if (coinPrice < newPrice && gameChoice === true){
-                  results.set("ethAddress", ethAddress);
-                  results.set("gameWin", true);
-              	query.equalTo("ethAddress", ethAddress);
-                  const queryRes = await query.find();
-                  const returnState = queryRes.get('gameWin');
-                  return returnState;
-            }
-      }
-  
-      session.set("ethAddress", ethAddress);
-      session.set("coinPrice", coinPrice);
-      session.set("gameChoice" , gameChoice);
-      await session.save();
-      
-      setTimeout(() => endGame(), 60000);
-});
-*/
 
 export default gameSlice.reducer
