@@ -65,12 +65,15 @@ export default function EthOrb() {
       const gamesession = new gameSesh()
 
       async function queryUserSession() {
+            console.log("authData:" , authData)
+            console.log(userSign)
+
+
             gameQuery.equalTo("userSign", userSign)
             await gameQuery.first()
                   .then(async (results) => {
                         if (!results) {
                               gamesession.set('ethAddress', address);
-                              gamesession.set('coinPrice', eth);
                               gamesession.set('userSign', userSign);
                               await gamesession.save().then(
                                     dispatch(setGameSession(true))
@@ -81,6 +84,7 @@ export default function EthOrb() {
                               dispatch(setGameSession(true))
                         }
                   })
+     
       }
 
       async function playGame() {
@@ -99,7 +103,7 @@ export default function EthOrb() {
             }
             else {
                   //set a gamesession then post backend
-                  dispatch(ethOrb(address, eth, choice, authData))
+                  dispatch(ethOrb(address, eth, choice, userSign))
             }
       }
 
@@ -115,10 +119,11 @@ export default function EthOrb() {
 
       useInterval(fetchEth, 5000);
 
+      /*
       useEffect(() =>{
             dispatch(setUrisThunk(address))
       }, [user])
-
+*/
       if (!isAuthenticated || !address) return (
 
             <div className="flex items-center justify-center py-10">
@@ -162,7 +167,7 @@ export default function EthOrb() {
                               />}
 
 
-                              {!gameSession && <button onClick={queryUserSession} className='m-6 text-th-accent-success' >Create Game Session</button>}
+                               <button onClick={queryUserSession} className='m-6 text-th-accent-success' >Create Game Session</button>
                               {choice !== null && gameSession && <button onClick={playGame} className='m-6 text-th-accent-success' >Play Game</button>}
                               {gameLoading && <p className="text-th-primary-light" ><svg className="animate-spin h-5 w-5"> </svg> game is loading </p>}
                               {gameResult && <AlertCard title={gameResult} body="whatever bud" success={gameWin ? true : false} failure={!gameResult ? false : true} />}

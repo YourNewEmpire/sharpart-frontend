@@ -95,13 +95,13 @@ export const {
 
 
 
-export const ethOrb = (user: string, eth: number, choice: boolean, authData: string) => async (dispatch: Dispatch) => {
+export const ethOrb = (user: string, eth: number, choice: boolean, userSign: string) => async (dispatch: Dispatch) => {
 
       if (!user || eth == 0 || choice === null) {
             console.log('no addres or what')
             dispatch(setError('no address, eth price, choice was found'))
       }
-      else if (!authData) {
+      else if (!userSign) {
             dispatch(setError('no user signature was passed into the fetch before posting'))
       }
 
@@ -113,7 +113,7 @@ export const ethOrb = (user: string, eth: number, choice: boolean, authData: str
                         address: user,
                         ethprice: eth,
                         gamechoice: choice,
-                        userSign: authData
+                        userSign: userSign
                   }).then((res) => {
                         //* First, catch a potential error.
                         if (res.data.status && res.data.status.startsWith('error')) {

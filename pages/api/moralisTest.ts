@@ -5,11 +5,11 @@ import fs from 'fs'
 import HDWalletProvider from '@truffle/hdwallet-provider';
 import Web3 from 'web3'
 
-const maticUrl = process.env.MATIC_API_KEY;
+const maticUrl = process.env.NEXT_PUBLIC_MATIC_API_KEY;
 const MNEMONIC = process.env.MNEMONIC;
 const OWNER_ADDRESS = "0xdd079a5B0CDa6707960197a6B195a436E3CE7836";
 const SECOND_OWNER = "0x2e9A82c1e0165b6F9f18c8aB2F98a7f44174d345"
-const NFT_CONTRACT_ADDRESS = '0xFB6c3bFeb4cF437Eb63aAF60739b69581d74B3d4'
+const NFT_CONTRACT_ADDRESS = '0xD7bE337082fa3CceD5461879752b9197652fC1c0'
 const USERS_ADDRESS = '0x296477206a6cAa99f032D798E327bfF41D05f00B';
 
 let rawdata = fs.readFileSync("./public/GameItem.json");
@@ -18,16 +18,18 @@ let contractAbi = JSON.parse(rawdata);
 const NFT_ABI = contractAbi.abi;
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+
       //* Deny any other reqs
       if (req.method !== 'POST') {
             res.status(404).json({ error: 'wrong http method' })
       }
-      //*Req body:
+
+      //* Req body
       const user: string = req.body.address
       const price: number = req.body.ethprice
       const gameChoice: boolean = req.body.gamechoice
       const userSign = req.body.userSign
-      console.log('request arrived', gameChoice, price, user, userSign.moralisEth.signature)
+      console.log('request arrived', gameChoice, price, user, userSign)
 
       //* array of token uri's for a user.
       let tokenIds: number[] = []
@@ -44,61 +46,59 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       Moralis.serverURL = SERVER_ID;
 
 
-      res.json({gameWin: 'yes' , gameResult: itDropped})
 
-      /* Matic contract instance
+      //* Matic contract instance
       const provider = new HDWalletProvider(
             MNEMONIC,
-            `https://rpc-mainnet.maticvigil.com/v1/${maticUrl}`
-          );
-          const web3Instance = new Web3(provider);
-      
-      
-          const nftContract = new web3Instance.eth.Contract(
+            `https://rpc-mumbai.maticvigil.com/v1/${maticUrl}`
+      );
+
+      const web3Instance = new Web3(provider);
+
+      const nftContract = new web3Instance.eth.Contract(
             NFT_ABI,
             NFT_CONTRACT_ADDRESS,
-          );
-      */
-      /* FIND OWNERS,
-      
-            async function pushURIs(total: number) {
-                  let i: number = 0
-                  for (i = 1; i <= total; i++) {
-                        await nftContract.methods.ownerOf(i).call().then(res => {
-                              if (res === SECOND_OWNER) {
-                                    tokenIds.push(i)
-                                    console.log(tokenIds)
-                              }
-                              else {
-                                    console.log("user is empty")
-                              }
-                        })
-                  }
-            };
-      
-                        await nftContract.methods
-                              .totalSupply()
-                              .call().then(res => pushURIs(res))
-                              .catch(error => console.log(error));
-           */
+      );
+
+      //* Find Owners equal to the contract owner to award items from.
+      async function pushURIs(total: number) {
+            let i: number = 0
+            for (i = 1; i <= total; i++) {
+                  await nftContract.methods.ownerOf(i).call().then(res => {
+                        if (res === OWNER_ADDRESS) {
+                              tokenIds.push(i)
+                              console.log(tokenIds)
+                        }
+                        else {
+                              console.log("user is empty")
+                        }
+                  })
+            }
+      };
+
+      await nftContract.methods
+            .totalSupply()
+            .call().then(res => pushURIs(res))
+            .catch(error => console.log(error));
+
 
 
 
 
 
       //* extend GameSession table for querying if the user has created one (only available on my frontend)
-      /* extend GameResults table for setting a game result
+
 
       const gameSesh = Moralis.Object.extend("GameSession");
       const gameResultObj = Moralis.Object.extend("GameResults");
       const queryGame = new Moralis.Query(gameSesh);
       const gameResult = new gameResultObj()
       queryGame.equalTo("userSign", userSign);
-*/
+
 
       //*game logic will run if the user has created a session
 
-      /*
+
       await queryGame.first()
             .then((results) => {
                   if (!results) {
@@ -113,18 +113,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                               const newPrice = coinData.data.market_data.current_price.usd;
                               console.log(newPrice, " newPrice log, now starting game logic")
 
-                              //*game logic
+                              //* GAME LOGIC
 
                               //*  game victory handling
                               if (price < newPrice && gameChoice === true) {
                                     //console.log("Mooning choice success")
                                     gameResult.set('ethAddress', user);
-                                    gameResult.set('gameChoice' , gameChoice)
+                                    gameResult.set('gameChoice', gameChoice)
                                     gameResult.set('gameResult', itMooned);
                                     gameResult.set('gameWin', true);
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
-                                    await gameResult.save().then((gameResult => {
+                                    await gameResult.save().then((()=> {
                                           res.json({ gameResult: itMooned, gameWin: 'yes' })
                                     }))
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
@@ -132,53 +132,53 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                               else if (price > newPrice && gameChoice === false) {
                                     //console.log("Dropping choice success")
                                     gameResult.set('ethAddress', user);
-                                    gameResult.set('gameChoice' , gameChoice)
+                                    gameResult.set('gameChoice', gameChoice)
                                     gameResult.set('gameResult', itDropped);
                                     gameResult.set('gameWin', true);
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
-                                    await gameResult.save().then((gameResult => {
+                                    await gameResult.save().then(() => {
                                           res.json({ gameResult: itDropped, gameWin: 'yes' })
-                                    }))
+                                    })
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
                               }
                               //* draw
                               else if (price === newPrice) {
                                     gameResult.set('ethAddress', user);
                                     gameResult.set('gameResult', stale);
-                                    gameResult.set('gameChoice' , gameChoice)
+                                    gameResult.set('gameChoice', gameChoice)
                                     gameResult.set('gameWin', false);
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
-                                    await gameResult.save().then((gameResult => {
+                                    await gameResult.save().then(() => {
                                           res.json({ gameResult: stale, gameWin: 'no' })
-                                    }))
+                                    })
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
 
                               }
                               //* game loss handling
                               else if (price > newPrice && gameChoice === true) {
                                     gameResult.set('ethAddress', user);
-                                    gameResult.set('gameChoice' , gameChoice)
+                                    gameResult.set('gameChoice', gameChoice)
                                     gameResult.set('gameResult', itDropped);
                                     gameResult.set('gameWin', false);
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
-                                    await gameResult.save().then((gameResult => {
+                                    await gameResult.save().then(() => {
                                           res.json({ gameResult: itMooned, gameWin: 'no' })
-                                    }))
+                                    })
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
                               }
                               else if (price < newPrice && gameChoice === false) {
                                     gameResult.set('ethAddress', user);
-                                    gameResult.set('gameChoice' , gameChoice)
+                                    gameResult.set('gameChoice', gameChoice)
                                     gameResult.set('gameResult', itMooned);
                                     gameResult.set('gameWin', false);
                                     gameResult.set('oldEthPrice', price);
                                     gameResult.set('newEthPrice', newPrice);
-                                    await gameResult.save().then((gameResult => {
+                                    await gameResult.save().then(() => {
                                           res.json({ gameResult: itDropped, gameWin: 'no' })
-                                    }))
+                                    })
                                           .catch(err => res.json({ status: 'error setting game result', error: err }))
                               }
                         }, 45000)
@@ -187,8 +187,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             .catch(error =>
                   res.json({ status: 'error with auth session query', message: error })
             );
-            */
-
-
-
 }
