@@ -13,7 +13,7 @@ contract EthOrb is ERC721URIStorage, Ownable {
 
     //override.
     function _baseURI() internal view virtual override returns (string memory) {
-        return "https://contract-abis.herokuapp.com/api/token/";
+        return "https://ipfs.io/ipfs/";
     }
 
     function totalSupply() public view returns (uint256) {
@@ -22,7 +22,7 @@ contract EthOrb is ERC721URIStorage, Ownable {
 
     //for opensea
     function baseTokenURI() public pure returns (string memory) {
-        return "https://contract-abis.herokuapp.com/api/token/";
+        return " https://ipfs.io/ipfs/QmbTnJu8yiqDwR3jyVoo8gkfvirv5ysm8AVELwy4oa55gX/";
     }
 
     //for opensea

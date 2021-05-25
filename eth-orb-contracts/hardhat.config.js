@@ -1,9 +1,10 @@
 
-const ethers = require("ethers")
-const fs = require("fs")
-const MNEMONIC = fs.readFileSync(".secret").toString().trim();
-const API_KEY = fs.readFileSync(".apikey").toString().trim()
-const MUMBAI_KEY = fs.readFileSync(".mumbaikey").toString().trim()
+
+require('dotenv').config()
+
+const privateKey = process.env.MNEMONIC;
+const maticUrl = process.env.MATIC_API_KEY;
+require("@nomiclabs/hardhat-waffle");
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async () => {
@@ -37,17 +38,12 @@ module.exports = {
     artifacts: "./artifacts"
   },
   networks: {
-    ropsten: {
-      url: `https://ropsten.infura.io/v3/${API_KEY}`,
-      accounts: {
-        mnemonic: MNEMONIC
-      }
-    },
     mumbai: {
-      url: `https://rpc-mumbai.maticvigil.com/v1/`,
-      accounts: {
-        mnemonic: MNEMONIC
-      }
+      gas: 'auto',
+      gasPrice: 'auto',
+      chainId: 80001,
+      url: `https://rpc-mumbai.maticvigil.com/v1/${maticUrl}`,
+      accounts: {mnemonic: privateKey}
     }
   }
 };
