@@ -11,11 +11,13 @@ const OWNER_ADDRESS = "0xdd079a5B0CDa6707960197a6B195a436E3CE7836";
 const SECOND_OWNER = "0x2e9A82c1e0165b6F9f18c8aB2F98a7f44174d345"
 const NFT_CONTRACT_ADDRESS = '0xD7bE337082fa3CceD5461879752b9197652fC1c0'
 const USERS_ADDRESS = '0x296477206a6cAa99f032D798E327bfF41D05f00B';
-
+/*
 let rawdata = fs.readFileSync("./public/GameItem.json");
 //@ts-ignore
 let contractAbi = JSON.parse(rawdata);
 const NFT_ABI = contractAbi.abi;
+*/
+
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -45,7 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       Moralis.initialize(APP_ID);
       Moralis.serverURL = SERVER_ID;
 
-
+/*
 
       //* Matic contract instance
       const provider = new HDWalletProvider(
@@ -54,6 +56,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
       const web3Instance = new Web3(provider);
+
 
       const nftContract = new web3Instance.eth.Contract(
             NFT_ABI,
@@ -81,7 +84,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             .call().then(res => pushURIs(res))
             .catch(error => console.log(error));
 
-
+*/
 
 
 
