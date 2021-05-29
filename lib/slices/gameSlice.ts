@@ -109,7 +109,7 @@ export const ethOrb = (user: string, eth: number, choice: boolean, userSign: str
             //set a gamesession then post backend
             dispatch(setLoading())
             try {
-                  const postGame = await axios.post('/api/moralisTest', {
+                  const postGame = await axios.post('https://europe-west3-test-cf-97bfc.cloudfunctions.net/function-1', {
                         address: user,
                         ethprice: eth,
                         gamechoice: choice,
