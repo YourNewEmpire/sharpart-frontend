@@ -61,14 +61,13 @@ export default function EthOrb() {
       const authData = user?.get('authData')
       const userSign = authData?.moralisEth.signature
       const gameSesh = Moralis.Object.extend("GameSession");
+      const gameRes = Moralis.Object.extend("GameResults")
+      const gameResQuery = new Moralis.Query(gameRes)
       const gameQuery = new Moralis.Query(gameSesh)
       const gamesession = new gameSesh()
 
       async function queryUserSession() {
-            console.log("authData:" , authData)
             console.log(userSign)
-
-
             gameQuery.equalTo("userSign", userSign)
             await gameQuery.first()
                   .then(async (results) => {
@@ -84,7 +83,7 @@ export default function EthOrb() {
                               dispatch(setGameSession(true))
                         }
                   })
-     
+
       }
 
       async function playGame() {
@@ -106,7 +105,21 @@ export default function EthOrb() {
                   dispatch(ethOrb(address, eth, choice, userSign))
             }
       }
+      async function testGarbage() {
 
+            gameResQuery.equalTo("ethAddress", address)
+            await gameResQuery.first()
+                  .then(async (results) => {
+                        if (!results) {
+                              console.log(`no game session was found for ${address}, therefore one has been made`)
+                        }
+                        else {
+                              const date = results.createdAt
+                              const minutes = date.getHours()
+                              console.log(minutes)
+                        }
+                  })
+      }
 
 
       // click handlers for game UI. call the  game 
@@ -167,17 +180,18 @@ export default function EthOrb() {
                               />}
 
 
-                               <button onClick={queryUserSession} className='m-6 text-th-accent-success' >Create Game Session</button>
+                              <button onClick={queryUserSession} className='m-6 text-th-accent-success' >Create Game Session</button>
+                              <button onClick={testGarbage} className='m-6 text-th-accent-success' >testing date</button>
                               {choice !== null && gameSession && <button onClick={playGame} className='m-6 text-th-accent-success' >Play Game</button>}
                               {gameLoading && <p className="text-th-primary-light" ><svg className="animate-spin h-5 w-5"> </svg> game is loading </p>}
                               {gameResult && <AlertCard title={gameResult} body="whatever bud" success={gameWin ? true : false} failure={!gameResult ? false : true} />}
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                        <NftList items={tokens} />
+                              <NftList items={tokens} />
                         </div>
-               
 
-      
+
+
                   </div>
 
 
