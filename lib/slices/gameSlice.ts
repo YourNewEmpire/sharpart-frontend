@@ -132,12 +132,10 @@ export const ethOrb = (user: string, eth: number, choice: boolean, userSign: str
                               })
                         }
                         //* WIN handle
-                        else if (res.data.gameWin.startsWith('yes')) {
-                              console.log(res.data.gameWin)
-                              dispatch(setGameWin(true))
+                        else if (res.data.status.startsWith('success')) {
+
                               dispatch(endLoading())
-                              dispatch(setGameResult(res.data.gameResult))
-                              toast.success(`you won, it ${res.data.gameResult} `, {
+                              toast.success('successfully started a game', {
                                     position: "top-right",
                                     autoClose: 5000,
                                     transition: Slide,
@@ -147,39 +145,19 @@ export const ethOrb = (user: string, eth: number, choice: boolean, userSign: str
                                     draggable: true,
                                     progress: undefined,
                               })
-
                         }
                         //* LOSS Handling
-                        else if (res.data.gameWin.startsWith('no')) {
-                              console.log(res.data.gameWin)
-                              dispatch(setGameWin(false))
-                              dispatch(endLoading())
-                              dispatch(setGameResult(res.data.gameResult))
-                              toast.error(res.data.gameResult, {
-                                    position: "top-right",
-                                    autoClose: 5000,
-                                    transition: Slide,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: false,
-                                    draggable: true,
-                                    progress: undefined,
-                              })
-                        }
                         dispatch(endLoading())
                   }).catch((error) => {
                         console.log(error)
                         dispatch(endLoading())
                   })
             }
-
             catch (e) {
                   console.log(e)
                   dispatch(endLoading())
             }
-
       }
-
 }
 
 
