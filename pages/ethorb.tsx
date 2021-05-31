@@ -63,28 +63,6 @@ export default function EthOrb() {
       const gameSesh = Moralis.Object.extend("GameSession");
       const gameRes = Moralis.Object.extend("GameResults")
       const gameResQuery = new Moralis.Query(gameRes)
-      const gameQuery = new Moralis.Query(gameSesh)
-      const gamesession = new gameSesh()
-
-      async function queryUserSession() {
-            console.log(userSign)
-            gameQuery.equalTo("userSign", userSign)
-            await gameQuery.first()
-                  .then(async (results) => {
-                        if (!results) {
-                              gamesession.set('ethAddress', address);
-                              gamesession.set('userSign', userSign);
-                              await gamesession.save().then(
-                                    dispatch(setGameSession(true))
-                              );
-                              console.log(`no game session was found for ${address}, therefore one has been made`)
-                        }
-                        else {
-                              dispatch(setGameSession(true))
-                        }
-                  })
-
-      }
 
       async function playGame() {
 
@@ -96,9 +74,6 @@ export default function EthOrb() {
                   //this shouldnt happen because the markup should be re-rendered. jic
                   console.log('no auth data foound')
                   dispatch(setError('User not authenticated'))
-            }
-            else if (!gameSession) {
-                  dispatch(setError('Client not synced'))
             }
             else {
                   //set a gamesession then post backend
@@ -157,7 +132,7 @@ export default function EthOrb() {
                               <p className="py-8 text-th-primary-light">Price of ETH in USD is ${eth}</p >
 
 
-                              {gameSession && <ModalCard
+                              <ModalCard
                                     body="Where will the price (usd) of Eth be in 2 minutes? "
                                     action1={
                                           <button
@@ -177,14 +152,13 @@ export default function EthOrb() {
                                                 Dropping
                                           </button>
                                     }
-                              />}
+                              />
 
 
-                              <button onClick={queryUserSession} className='m-6 text-th-accent-success' >Create Game Session</button>
-                              <button onClick={testGarbage} className='m-6 text-th-accent-success' >testing date</button>
-                              {choice !== null && gameSession && <button onClick={playGame} className='m-6 text-th-accent-success' >Play Game</button>}
+                           
+                              {choice !== null && <button onClick={playGame} className='m-6 text-th-accent-success' >Play Game</button>}
                               {gameLoading && <p className="text-th-primary-light" ><svg className="animate-spin h-5 w-5"> </svg> game is loading </p>}
-                              {gameResult && <AlertCard title={gameResult} body="whatever bud" success={gameWin ? true : false} failure={!gameResult ? false : true} />}
+                              {gameResult && <AlertCard title={gameResult} body={gameWin? 'Well Done Bro. You`re making a name for yourself now! :> ': 'Unlucky chad...' } success={gameWin ? true : false} failure={!gameResult ? false : true} />}
                         </div>
                         <div className="flex flex-col justify-center items-center">
                               <NftList items={tokens} />
