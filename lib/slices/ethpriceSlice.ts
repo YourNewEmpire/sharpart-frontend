@@ -46,8 +46,7 @@ export const setPriceThunk = () => async (dispatch: Dispatch) => {
   //@ts-ignore
   const price = coinData.data.market_data.current_price.usd;
   //@ts-ignore
-  const arrayOfDays = historicData.prices
-  dispatch(setHistoric(arrayOfDays))
+  //const arrayOfDays = historicData.prices
   dispatch(setPrice(price))
   console.log('price of eth set')
 }
