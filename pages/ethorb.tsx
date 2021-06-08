@@ -36,7 +36,9 @@ import {
       selectGameSession,
       setLoading,
       endLoading,
-      selectGameResult
+      selectGameResult,
+      selectScores,
+      fetchUserScores
 } from '../lib/slices/gameSlice';
 import ModalCard from '../components/Cards/ModalCard';
 
@@ -50,6 +52,7 @@ export default function EthOrb() {
       const choice = useSelector(selectChoice)
       const gameWin = useSelector(selectGameWin)
       const gameResult = useSelector(selectGameResult)
+      const scores = useSelector(selectScores)
       const gameError = useSelector(selectError)
 
       const gameSession = useSelector(selectGameSession)
@@ -100,7 +103,9 @@ export default function EthOrb() {
       // click handlers for game UI. call the  game 
 
 
-
+      const fetchScores = () =>{
+            dispatch(fetchUserScores(address))
+      }
       const fetchEth = () => {
             dispatch(setPriceThunk())
       }
@@ -159,10 +164,13 @@ export default function EthOrb() {
                               {choice !== null && <button onClick={playGame} className='m-6 text-th-accent-success' >Play Game</button>}
                               {gameLoading && <p className="text-th-primary-light" ><svg className="animate-spin h-5 w-5"> </svg> game is loading </p>}
                               {gameResult && <AlertCard title={gameResult} body={gameWin? 'Well Done Bro. You`re making a name for yourself now! :> ': 'Unlucky chad...' } success={gameWin ? true : false} failure={!gameResult ? false : true} />}
+                              <button onClick={() => dispatch(fetchUserScores(address))}>Refresh your scores, WIP</button>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                               <NftList items={tokens} />
+                     
                         </div>
+
 
 
 
