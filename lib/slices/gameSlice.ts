@@ -13,6 +13,7 @@ import { selectPrice } from './ethpriceSlice';
 type gameState = {
       gameWin: boolean
       gameResult: 'Mooned' | 'Dropped' | 'Held' | ''
+      userScores: object[]
       loading: boolean
       error: string
       choice: boolean
@@ -21,6 +22,7 @@ type gameState = {
 
 const initialState: gameState = {
       gameWin: null,
+      userScores: [],
       loading: false,
       gameResult: '',
       error: '',
@@ -41,6 +43,9 @@ const gameSlice = createSlice({
             setGameResult: (state, action) => {
                   return { ...state, gameResult: action.payload }
             },
+            setUserScores: (state, action) => {
+                  return { ...state, userScores: action.payload }
+            },
             setLoading: (state) => {
                   return { ...state, loading: true }
             },
@@ -51,7 +56,7 @@ const gameSlice = createSlice({
                   toast.error(action.payload, {
                         position: "top-right",
                         autoClose: 5000,
-                        transition: Slide,
+                        transition: Zoom,
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: false,
@@ -79,6 +84,7 @@ export const selectGameSession = (state: CoreState) => state.game.gameSession
 export const selectError = (state: CoreState) => state.game.error
 export const selectChoice = (state: CoreState) => state.game.choice
 export const selectLoading = (state: CoreState) => state.game.loading
+export const selectScores = (state: CoreState) => state.game.userScores
 
 //export actions
 export const {
@@ -90,9 +96,30 @@ export const {
       setChoiceUp,
       setGameResult,
       setChoiceDown,
+      setUserScores,
       setGameSession
 } = gameSlice.actions
 
+
+export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
+      const APP_ID = process.env.NEXT_PUBLIC_MORALIS_APP_ID;
+      const SERVER_ID = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
+      Moralis.initialize(APP_ID);
+      Moralis.serverURL = SERVER_ID;
+      //Array of URIs to be returned at end.
+      const gameResultObj = Moralis.Object.extend("GameResults");
+      const query = new Moralis.Query(gameResultObj);
+
+
+
+      //fixed in next commit
+      query.equalTo("ethAddress", user)
+      query.select("gameWin", "gameResult")
+      query.find()
+            .then(function (results) {
+                  console.log(results)
+            });
+}
 
 
 export const ethOrb = (user: string, price: number, gameChoice: boolean, userSign: string) => async (dispatch: Dispatch) => {
