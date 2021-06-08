@@ -5,12 +5,12 @@ import Heading from '../../components/Heading';
 import { ArtistItem } from '../../interfaces/cards';
 
 
-export default function Artists({ data }) {
+export default function Artists() {
 
   const cardItems: ArtistItem[] = [
     {
       anchorLink: '#stygian',
-      img: 'https://ipfs.io/ipfs/QmQckkYAkUTS4MeLrVeiRrhsPC8ngQLka6rVt9Uu8PChFp?filename=1.gif',
+      img: 'https://ipfs.io/ipfs/QmZhz6DPF8bPLK6UmowYqq1tvga41oZp8pt7Gzwqoc862t?filename=1.mp4',
       title: 'Stygian',
       body: 'Stygian designs animated and non-animated visual artwork   ',
       pageLink: "/artists/stygian"
@@ -18,12 +18,14 @@ export default function Artists({ data }) {
     },
     {
       anchorLink: '#enso',
-      img: 'https://ipfs.io/ipfs/QmQckkYAkUTS4MeLrVeiRrhsPC8ngQLka6rVt9Uu8PChFp?filename=1.gif',
+      img: 'https://ipfs.io/ipfs/QmZhz6DPF8bPLK6UmowYqq1tvga41oZp8pt7Gzwqoc862t?filename=1.mp4',
       title: 'Enso',
       body: 'Enso writes musical art',
       pageLink: "/artists/enso"
     },
   ]
+
+
   return (
     <>
       <div className="flex flex-col items-center justify-center space-y-20 ">
@@ -40,22 +42,7 @@ export default function Artists({ data }) {
           </div>
         )}
         <div className="h-screen border-2 " ></div>
-        <div id="stygian" className="flex  flex-wrap items-center justify-center h-screen">
-          <ImageLinkCard
-            img='https://ipfs.io/ipfs/QmQckkYAkUTS4MeLrVeiRrhsPC8ngQLka6rVt9Uu8PChFp?filename=1.gif'
-            title='Stygian'
-            body='Stygian designs animated and non-animated visual artwork   '
-            link="/artists/stygian"
-          />
-        </div>
-        <div id="enso" className="flex  flex-wrap   items-center justify-center  h-screen">
-          <ImageLinkCard
-            img='https://ipfs.io/ipfs/QmQckkYAkUTS4MeLrVeiRrhsPC8ngQLka6rVt9Uu8PChFp?filename=1.gif'
-            title='Enso'
-            body='Enso writes musical art '
-            link="/artists/enso"
-          />
-        </div>
+      
       </div>
     </>
   );
