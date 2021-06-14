@@ -3,8 +3,6 @@ import { SimpleCardProps } from '../../interfaces/cards'
 
 export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Element {
 
-
-
       if (title && body) return (
             <div className=" 
             flex
@@ -21,20 +19,21 @@ export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Elemen
             sm:py-2
             rounded-lg
             shadow-lg
-            bg-th-accent-medium
+            bg-th-background-secondary
             bg-opacity-10
             ">
                   <div className=" " >
-                        <p className=" text-center text-sm md:text-base lg:text-3xl text-th-primary-light text-shadow-md">
+                        <p className=" text-center text-sm md:text-base lg:text-3xl text-th-primary-dark text-shadow-md">
                               {title}
                         </p>
                   </div>
                   <div className=""  >
-                        <p className="  text-center text-xs md:text-sm lg:text-xl   text-th-primary-light break-all">
+                        <p className="  text-center text-xs md:text-sm lg:text-xl   text-th-primary-dark break-all">
                               {body}
                         </p>
                   </div>
             </div>
       )
+      
       else return <div className="display-none"></div>
 }
