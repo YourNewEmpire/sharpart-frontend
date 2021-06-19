@@ -19,16 +19,17 @@ export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Elemen
             sm:py-2
             rounded-lg
             shadow-lg
-            bg-th-background-secondary
-            bg-opacity-10
+            bg-th-accent-medium
+            bg-opacity-25
+            
             ">
                   <div className=" " >
-                        <p className=" text-center text-sm md:text-base lg:text-3xl text-th-primary-dark text-shadow-md">
+                        <p className=" text-center text-sm md:text-base lg:text-3xl text-th-primary-light text-shadow-md">
                               {title}
                         </p>
                   </div>
                   <div className=""  >
-                        <p className="  text-center text-xs md:text-sm lg:text-xl   text-th-primary-dark break-all">
+                        <p className="  text-center text-xs md:text-sm lg:text-xl   text-th-primary-light break-all">
                               {body}
                         </p>
                   </div>
