@@ -57,7 +57,8 @@ export const Nav = () => {
                               xl:inline-flex  xl:invisible visible  xl:w-0  w-auto p-2  xl:p-0  
                               xl:mr-0  items-center justify-center 
                               antialiased focus:outline-none text-th-primary-light
-                              hover:shadow-lg rounded-lg transition-shadow duration-200 ease-in-out '
+                              hover:shadow-lg rounded-lg 
+                              transition duration-100 ease-in-out transform  hover:scale-110  '
                               >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -78,18 +79,7 @@ export const Nav = () => {
                                     {listItem.text}
                               </a></Link>
                         )}
-                       {!user && <button
-                              className=' xl:ml-auto ml-0  subpixel-antialiased  text-xs md:text-base  lg:text-2xl md:h-auto inline-flex md:w-auto 
-                              font-bold items-center justify-center
-                              px-2 py-2 md:px-6 md:py-4 lg:mx-4 md:mx-2 sm:mx-0  
-                               text-amber-600 dark:text-amber-600
-                              hover:shadow-lg rounded-lg transition duration-100 ease-in-out transform  hover:scale-110
-                              focus:outline-none '
-                              onClick={() => authenticate}
-                        >
-                              Metamask
-
-                        </button>}
+                      
                         <button
                               className='  xl:ml-auto ml-0 inline-flex items-center lg:h-16 lg:w-16 w-6 h-6
                               antialiased focus:outline-none text-th-primary-light
