@@ -29,10 +29,10 @@ export default function Home({ data }: HomeProps) {
     <>
       {data &&
         <div className="grid grid-cols-4  gap-4 md:gap-8 lg:gap-12">
-          <SimpleCard title="Safe Low gas price" body={data.safeLow.toString()} />
-          <SimpleCard title="Standard gas price" body={data.standard.toString()} />
-          <SimpleCard title="Fast gas price" body={data.fast.toString()} />
-          <SimpleCard title="Fastest gas price" body={data.fastest.toString()} />
+          <SimpleCard title="Safe Low gas price" body={data.safeLow.toString() + ' ' + 'Gwei'} />
+          <SimpleCard title="Standard gas price" body={data.standard.toString()+ ' ' + 'Gwei'} />
+          <SimpleCard title="Fast gas price" body={data.fast.toString() + ' ' + 'Gwei'} />
+          <SimpleCard title="Fastest gas price" body={data.fastest.toString() + ' ' + 'Gwei'} />
         </div>
       }
       {!data &&
