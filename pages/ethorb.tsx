@@ -37,8 +37,9 @@ import {
       setLoading,
       endLoading,
       selectGameResult,
-      selectScores,
-      fetchUserScores
+      selectResults,
+      fetchUserScores,
+      selectGameDates
 } from '../lib/slices/gameSlice';
 import ModalCard from '../components/Cards/ModalCard';
 
@@ -52,9 +53,9 @@ export default function EthOrb() {
       const choice = useSelector(selectChoice)
       const gameWin = useSelector(selectGameWin)
       const gameResult = useSelector(selectGameResult)
-      const scores = useSelector(selectScores)
+      const scores = useSelector(selectResults)
+      const gameDates = useSelector(selectGameDates)
       const gameError = useSelector(selectError)
-
       const gameSession = useSelector(selectGameSession)
       const gameLoading = useSelector(selectLoading)
 
@@ -103,7 +104,7 @@ export default function EthOrb() {
       // click handlers for game UI. call the  game 
 
 
-      const fetchScores = () =>{
+      const fetchScores = () => {
             dispatch(fetchUserScores(address))
       }
       const fetchEth = () => {
@@ -129,7 +130,7 @@ export default function EthOrb() {
       //todo: populate with game redux state neatly
       else return (
             <div className="flex flex-col justify-center items-center">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-8 md:gap-16 lg:gap-32 py-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-8 md:gap-16 lg:gap-32 ">
                         <div className="flex flex-col justify-center items-center">
 
                               <SimpleCard title="Welcome" body={address} />
@@ -160,15 +161,30 @@ export default function EthOrb() {
                               />
 
 
-                           
                               {choice !== null && <button onClick={playGame} className='m-6 text-th-accent-success' >Play Game</button>}
                               {gameLoading && <p className="text-th-primary-light" ><svg className="animate-spin h-5 w-5"> </svg> game is loading </p>}
-                              {gameResult && <AlertCard title={gameResult} body={gameWin? 'Well Done Bro. You`re making a name for yourself now! :> ': 'Unlucky chad...' } success={gameWin ? true : false} failure={!gameResult ? false : true} />}
+                              {gameResult && <AlertCard title={gameResult} body={gameWin ? 'Well Done Bro. You`re making a name for yourself now! :> ' : 'Unlucky chad...'} success={gameWin ? true : false} failure={!gameResult ? false : true} />}
                               <button onClick={() => dispatch(fetchUserScores(address))}>Refresh your scores, WIP</button>
+
+
                         </div>
-                        <div className="flex flex-col justify-center items-center">
-                              <NftList items={tokens} />
-                     
+                        <div className="grid grid-flow-col grid-cols-2 justify-center items-center">
+
+                              <div className="grid grid-flow-row gap-6 ">
+                                    {scores.map((score, index) =>
+                                          <div key={index} className="text-center text-gray-300">
+                                                {score}
+                                          </div>
+                                    )}
+                              </div>
+                              <div className="grid grid-flow-row gap-6 ">
+                                    {gameDates.map((date, index) =>
+                                          <div key={index} className="text-center text-gray-300">
+                                                {date}
+                                          </div>
+                                    )}
+                              </div>
+
                         </div>
 
 
