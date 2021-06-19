@@ -1,19 +1,18 @@
 import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
-import { abi } from '../../public/GameItem.json'
 import Moralis from 'moralis'
 
 import axios from 'axios';
 import { toast, Slide, Zoom } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { selectPrice } from './ethpriceSlice';
-
 
 
 type gameState = {
       gameWin: boolean
       gameResult: 'Mooned' | 'Dropped' | 'Held' | ''
-      userScores: object[]
+      userResults: string[]
+      userWins: boolean[]
+      userDates: string[]
       loading: boolean
       error: string
       choice: boolean
@@ -22,7 +21,9 @@ type gameState = {
 
 const initialState: gameState = {
       gameWin: null,
-      userScores: [],
+      userResults: [],
+      userWins: [],
+      userDates: [],
       loading: false,
       gameResult: '',
       error: '',
@@ -43,8 +44,14 @@ const gameSlice = createSlice({
             setGameResult: (state, action) => {
                   return { ...state, gameResult: action.payload }
             },
-            setUserScores: (state, action) => {
-                  return { ...state, userScores: action.payload }
+            setUserResults: (state, action) => {
+                  return { ...state, userResults: action.payload }
+            },
+            setUserDates: (state, action) => {
+                  return { ...state, userDates: action.payload }
+            },
+            setUserWins: (state, action) => {
+                  return { ...state, userWins: action.payload }
             },
             setLoading: (state) => {
                   return { ...state, loading: true }
@@ -84,8 +91,8 @@ export const selectGameSession = (state: CoreState) => state.game.gameSession
 export const selectError = (state: CoreState) => state.game.error
 export const selectChoice = (state: CoreState) => state.game.choice
 export const selectLoading = (state: CoreState) => state.game.loading
-export const selectScores = (state: CoreState) => state.game.userScores
-
+export const selectResults = (state: CoreState) => state.game.userResults
+export const selectGameDates = (state: CoreState) => state.game.userDates
 //export actions
 export const {
       resetGameWin,
@@ -96,12 +103,15 @@ export const {
       setChoiceUp,
       setGameResult,
       setChoiceDown,
-      setUserScores,
+      setUserResults,
+      setUserDates,
+      setUserWins,
       setGameSession
 } = gameSlice.actions
 
-
+//* userScores please
 export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
+      //! must tidy up these vars
       const APP_ID = process.env.NEXT_PUBLIC_MORALIS_APP_ID;
       const SERVER_ID = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
       Moralis.initialize(APP_ID);
@@ -111,17 +121,34 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
       const query = new Moralis.Query(gameResultObj);
 
 
+      // Do something with the returned Moralis.Object values
 
+      console.log('before query')
       //fixed in next commit
       query.equalTo("ethAddress", user)
-      query.select("gameWin", "gameResult")
-      query.find()
-            .then(function (results) {
-                  console.log(results)
-            });
+      const results = await query.find()
+      let gameResults = []
+      let gameDates = []
+      let gameChoices = []
+
+      for (let i = 0; i < results.length; i++) {
+            const object = results[i];
+            const result = object.get('gameResult');
+            const date = object.get('createdAt').toDateString()
+            gameResults.push(result)
+            gameDates.push(date)
+
+      }
+
+      dispatch(setUserResults(gameResults))
+      dispatch(setUserDates(gameDates))
+
 }
 
 
+
+
+//? Game Action
 export const ethOrb = (user: string, price: number, gameChoice: boolean, userSign: string) => async (dispatch: Dispatch) => {
       const APP_ID = process.env.NEXT_PUBLIC_MORALIS_APP_ID;
       const SERVER_ID = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
