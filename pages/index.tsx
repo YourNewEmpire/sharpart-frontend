@@ -1,4 +1,4 @@
-import Heading from '../components/Heading';
+import ScreenHeading from '../components/Typography/ScreenHeading';
 import { GetServerSideProps } from 'next'
 import { GasData } from '../interfaces/homepage/gasData';
 import SimpleCard from '../components/Cards/SimpleCard';
@@ -41,11 +41,11 @@ export default function Home({ data }: HomeProps) {
         </div>
       }
       <div id="div1" className="flex flex-col items-center justify-center ">
-        <Heading title="This is SharpArt" >
+        <ScreenHeading title="This is SharpArt" >
           <p className="text-center text-base sm:text-xl lg:text-2xl text-th-primary-light text-shadow-md subpixel-antialiased ">
             The bridge between talented artists, and the secret of digital asset demand.
           </p>
-        </Heading>
+        </ScreenHeading>
       </div>
 
     </>

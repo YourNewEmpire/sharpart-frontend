@@ -1,11 +1,10 @@
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import ScreenHeading from '../../components/Typography/ScreenHeading';
 import Web3 from 'web3'
 import ImageCard from '../../components/Cards/ImageCard';
 import { abi } from '../../public/GameItem.json'
-/*
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
       let URIs: string[] = []
       //initial number for forloop. typescript will be happy with this for sure . 
       let i: number = 0
@@ -19,12 +18,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
       const nftContract = new web3.eth.Contract(
             //@ts-ignore
             abi,
-            "0xf79349d03E0A2BfFD5Ea27B512D51Bd84289E72A",
+            "0x5B6fe4efb9FD96f402aC9027e6493331Dc3F2e7a",
       );
 
       async function pushURIs(total: number) {
             for (i = 1; i <= total; i++) {
-                  URIs.push(`https://contract-abis.herokuapp.com/mp4s/${i}.mp4`)
+                  URIs.push(`https://ipfs.io/ipfs/QmZhz6DPF8bPLK6UmowYqq1tvga41oZp8pt7Gzwqoc862t?filename=${i}.mp4`)
             }
       }
 
@@ -43,21 +42,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 
-      {URIs.map((uri: string) => 
-                              <ImageCard 
-                              img={uri}
-                              title="an Item of Stygian's"
-                              />
-                        )}
-*/
-export default function Stygian() {
+export default function artist({ URIs }) {
 
 
       return (
             <>
                   <div className="flex flex-col items-center justify-center space-y-20 ">
                         <ScreenHeading title="Stygian" />
-                  
+                        {URIs.map((uri, index) => 
+                              <div key={index}>
+                                    <h1>
+                                          {uri}
+                                    </h1>
+                              </div>
+                        )}
                   </div>
             </>
       );

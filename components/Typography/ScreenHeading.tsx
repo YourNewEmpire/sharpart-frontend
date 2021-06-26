@@ -1,11 +1,11 @@
 import React from 'react'
-import { Childs } from '../interfaces/childs'
+import { Childs } from '../../interfaces/childs'
 
 interface Props extends Childs {
   title: string
 }
 
-export default function Heading({ title, children }: Props): JSX.Element {
+export default function ScreenHeading({ title, children }: Props): JSX.Element {
 
   return (
     <>

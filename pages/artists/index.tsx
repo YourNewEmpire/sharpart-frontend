@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import ImageLinkCard from '../../components/Cards/ImageLinkCard';
 import ListCard from '../../components/Cards/ListCard';
-import Heading from '../../components/Heading';
+import ScreenHeading from '../../components/Typography/ScreenHeading';
 import { ArtistItem } from '../../interfaces/cards';
 
 
@@ -29,7 +29,7 @@ export default function Artists() {
   return (
     <>
       <div className="flex flex-col items-center justify-center space-y-20 ">
-        <Heading title="Current Artists" />
+        <ScreenHeading title="Current Artists" />
         < ListCard title="Artists" body={cardItems} />
         {cardItems.map((item, index) =>
           <div key={index} id={item.anchorLink} className="flex  flex-wrap items-center justify-center h-screen">
