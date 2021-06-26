@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import "tailwindcss/tailwind.css";
-import Nav from './Nav'
+import Nav from '../Nav'
 import Head from 'next/head'
-import { Childs } from '../interfaces/childs';
+import { Childs } from '../../interfaces/childs';
 
 
 
