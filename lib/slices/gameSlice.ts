@@ -1,18 +1,16 @@
 import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
 import Moralis from 'moralis'
-
 import axios from 'axios';
 import { toast, Slide, Zoom } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { GameObject } from '../../interfaces/game';
 
 
 type gameState = {
       gameWin: boolean
       gameResult: 'Mooned' | 'Dropped' | 'Held' | ''
-      userResults: string[]
-      userWins: boolean[]
-      userDates: string[]
+      userResults: GameObject[]
       loading: boolean
       error: string
       choice: boolean
@@ -22,8 +20,6 @@ type gameState = {
 const initialState: gameState = {
       gameWin: null,
       userResults: [],
-      userWins: [],
-      userDates: [],
       loading: false,
       gameResult: '',
       error: '',
@@ -45,13 +41,17 @@ const gameSlice = createSlice({
                   return { ...state, gameResult: action.payload }
             },
             setUserResults: (state, action) => {
+                  toast.info('Scores fetched', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        transition: Zoom,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                  })
                   return { ...state, userResults: action.payload }
-            },
-            setUserDates: (state, action) => {
-                  return { ...state, userDates: action.payload }
-            },
-            setUserWins: (state, action) => {
-                  return { ...state, userWins: action.payload }
             },
             setLoading: (state) => {
                   return { ...state, loading: true }
@@ -92,7 +92,7 @@ export const selectError = (state: CoreState) => state.game.error
 export const selectChoice = (state: CoreState) => state.game.choice
 export const selectLoading = (state: CoreState) => state.game.loading
 export const selectResults = (state: CoreState) => state.game.userResults
-export const selectGameDates = (state: CoreState) => state.game.userDates
+
 //export actions
 export const {
       resetGameWin,
@@ -104,8 +104,7 @@ export const {
       setGameResult,
       setChoiceDown,
       setUserResults,
-      setUserDates,
-      setUserWins,
+
       setGameSession
 } = gameSlice.actions
 
@@ -116,12 +115,8 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
       const SERVER_ID = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
       Moralis.initialize(APP_ID);
       Moralis.serverURL = SERVER_ID;
-      //Array of URIs to be returned at end.
       const gameResultObj = Moralis.Object.extend("GameResults");
       const query = new Moralis.Query(gameResultObj);
-
-
-      // Do something with the returned Moralis.Object values
 
       console.log('before query')
       //fixed in next commit
@@ -130,18 +125,45 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
       let gameResults = []
       let gameDates = []
       let gameChoices = []
+      let games: GameObject[] = []
+
+      if (!results) {
+            toast.info('No historic game results found', {
+                  position: "top-right",
+                  autoClose: 3000,
+                  transition: Zoom,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+            })
+      }
 
       for (let i = 0; i < results.length; i++) {
             const object = results[i];
+            const choice = object.get('gameChoice');
             const result = object.get('gameResult');
+            const winOrLose = object.get('gameWin');
+            const oldPrice = object.get('oldEthPrice');
+            const newPrice = object.get('newEthPrice');
             const date = object.get('createdAt').toDateString()
-            gameResults.push(result)
-            gameDates.push(date)
 
+            let newGameObj: GameObject = {
+                  gameChoice: choice? 'Mooning' : 'Dropping',
+                  gameResult: result,
+                  gameWin: winOrLose? ' Victory' : 'Defeat ',
+                  oldPrice: oldPrice,
+                  newPrice: newPrice,
+                  gameDate: date
+            }
+            console.log(newGameObj)
+            games.push(newGameObj)
       }
 
-      dispatch(setUserResults(gameResults))
-      dispatch(setUserDates(gameDates))
+      console.log(games)
+      dispatch(setUserResults(games))
+
 
 }
 
@@ -155,13 +177,9 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
       Moralis.initialize(APP_ID);
       Moralis.serverURL = SERVER_ID;
 
-
-
-      const gameSesh = Moralis.Object.extend("GameSession");
       const gameResultObj = Moralis.Object.extend("GameResults");
-      const queryGame = new Moralis.Query(gameSesh);
       const gameResult = new gameResultObj()
-      queryGame.equalTo("userSign", userSign);
+
 
       const itMooned = 'Mooned'
       const itDropped = 'Dropped'
@@ -199,10 +217,11 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
                   await gameResult.save().then((() => {
                         dispatch(setGameResult('Mooned'))
                         dispatch(endLoading())
+                        dispatch(setGameWin(true))
                         toast.success('Eth Mooned', {
                               position: "top-right",
                               autoClose: 3000,
-                              transition: Slide,
+                              transition: Zoom,
                               hideProgressBar: false,
                               closeOnClick: true,
                               pauseOnHover: false,
@@ -216,7 +235,7 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
                               toast.error(err, {
                                     position: "top-right",
                                     autoClose: 3000,
-                                    transition: Slide,
+                                    transition: Zoom,
                                     hideProgressBar: false,
                                     closeOnClick: true,
                                     pauseOnHover: false,
@@ -238,10 +257,11 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
                   await gameResult.save().then(() => {
                         dispatch(setGameResult('Dropped'))
                         dispatch(endLoading())
+                        dispatch(setGameWin(true))
                         toast.success('Eth Dropped', {
                               position: "top-right",
                               autoClose: 3000,
-                              transition: Slide,
+                              transition: Zoom,
                               hideProgressBar: false,
                               closeOnClick: true,
                               pauseOnHover: false,
@@ -255,7 +275,7 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
                               toast.error(err, {
                                     position: "top-right",
                                     autoClose: 3000,
-                                    transition: Slide,
+                                    transition: Zoom,
                                     hideProgressBar: false,
                                     closeOnClick: true,
                                     pauseOnHover: false,
@@ -275,10 +295,11 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
                   await gameResult.save().then(() => {
                         dispatch(setGameResult('Held'))
                         dispatch(endLoading())
+                        dispatch(setGameWin(false))
                         toast.warning('Eth Held', {
                               position: "top-right",
                               autoClose: 3000,
-                              transition: Slide,
+                              transition: Zoom,
                               hideProgressBar: false,
                               closeOnClick: true,
                               pauseOnHover: false,
@@ -315,6 +336,7 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
                   await gameResult.save().then(() => {
                         dispatch(setGameResult('Dropped'))
                         dispatch(endLoading())
+                        dispatch(setGameWin(false))
                         toast.error('Eth Dropped', {
                               position: "top-right",
                               autoClose: 3000,
@@ -352,6 +374,7 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
                   await gameResult.save().then(() => {
                         dispatch(setGameResult('Mooned'))
                         dispatch(endLoading())
+                        dispatch(setGameWin(false))
                         toast.error('Eth Mooned', {
                               position: "top-right",
                               autoClose: 3000,
