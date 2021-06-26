@@ -19,7 +19,7 @@ export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Elemen
             sm:py-2
             rounded-lg
             shadow-lg
-            bg-th-accent-medium
+            bg-th-primary-dark
             bg-opacity-25
             
             ">
