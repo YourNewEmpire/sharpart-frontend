@@ -7,7 +7,7 @@ export default function ModalCard({ action1, action2, body }: ModalCardProps): J
             <div className=" 
             flex flex-col items-center justify-center 
             rounded-lg shadow-lg
-            bg-th-accent-medium bg-opacity-20
+            bg-th-primary-dark 
             space-y-2
             md:space-y-4
             lg:space-y-8
