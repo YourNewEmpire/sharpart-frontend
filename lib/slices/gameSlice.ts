@@ -115,16 +115,12 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
       const SERVER_ID = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
       Moralis.initialize(APP_ID);
       Moralis.serverURL = SERVER_ID;
+
       const gameResultObj = Moralis.Object.extend("GameResults");
       const query = new Moralis.Query(gameResultObj);
-
-      console.log('before query')
-      //fixed in next commit
       query.equalTo("ethAddress", user)
       const results = await query.find()
-      let gameResults = []
-      let gameDates = []
-      let gameChoices = []
+
       let games: GameObject[] = []
 
       if (!results) {
@@ -157,14 +153,9 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
                   newPrice: newPrice,
                   gameDate: date
             }
-            console.log(newGameObj)
             games.push(newGameObj)
       }
-
-      console.log(games)
       dispatch(setUserResults(games))
-
-
 }
 
 

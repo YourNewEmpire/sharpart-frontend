@@ -2,14 +2,14 @@ import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
 import axios from 'axios';
 
+
 type EtherPriceState = {
-  value: number
-  historic: number[]
+  value: number[]
+
 }
 
 const initialState: EtherPriceState = {
-  value: 0,
-  historic: []
+  value: [],
 }
 
 const ethpriceSlice = createSlice({
@@ -17,38 +17,40 @@ const ethpriceSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.value = 0
+      state.value = []
     },
     setPrice: (state, action) => {
-      return {...state, value: action.payload}
+      const newPrices = state.value.concat(action.payload)
+      return { ...state, value: newPrices }
     },
-    setHistoric: (state, action) => {
-      return {...state, historic: action.payload}
-    },
+
   },
 })
 
-
 export const selectPrice = (state: CoreState) => state.ethprice.value
-export const selectHistoric = (state: CoreState) => state.ethprice.historic
 
 export const {
   reset,
   setPrice,
-  setHistoric
 } = ethpriceSlice.actions
 
 
 export const setPriceThunk = () => async (dispatch: Dispatch) => {
 
-  const coinData = await  axios.get('https://api.coingecko.com/api/v3/coins/ethereum?market_data=true');
-  const historicData = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
+  const coinData = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum?market_data=true');
   //@ts-ignore
   const price = coinData.data.market_data.current_price.usd;
   //@ts-ignore
   //const arrayOfDays = historicData.prices
   dispatch(setPrice(price))
+  
+  //dispatch(setHistoric(historicData.data))
   console.log('price of eth set')
 }
-
+/*
+export const setHistoricThunk = () => async (dispatch: Dispatch) => {
+  const historicData = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
+  dispatch(setHistoric(historicData))
+}
+*/
 export default ethpriceSlice.reducer
