@@ -1,8 +1,7 @@
 import ScreenHeading from '../components/Typography/ScreenHeading';
 import { GetServerSideProps } from 'next'
-import { GasData } from '../interfaces/homepage/gasData';
 import SimpleCard from '../components/Cards/SimpleCard';
-import { HomeProps } from '../interfaces/homepage';
+import { HomeProps } from '../interfaces/pages';
 
 
 
