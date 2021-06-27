@@ -5,7 +5,7 @@ import axios from 'axios';
 
 type EtherPriceState = {
   value: number[]
-
+  
 }
 
 const initialState: EtherPriceState = {
@@ -47,10 +47,5 @@ export const setPriceThunk = () => async (dispatch: Dispatch) => {
   //dispatch(setHistoric(historicData.data))
   console.log('price of eth set')
 }
-/*
-export const setHistoricThunk = () => async (dispatch: Dispatch) => {
-  const historicData = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
-  dispatch(setHistoric(historicData))
-}
-*/
+
 export default ethpriceSlice.reducer
