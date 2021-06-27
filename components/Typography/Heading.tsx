@@ -7,7 +7,7 @@ interface Props {
       title: string
 }
 
-export default function ScreenHeading({ title}: Props): JSX.Element {
+export default function Heading({ title}: Props): JSX.Element {
 
       return (
             <>
