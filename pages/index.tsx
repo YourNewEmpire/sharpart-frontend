@@ -19,7 +19,7 @@ const gasData = useSelector(selectGas)
   useEffect(() => {
     fetchGas()
   },[])
-  useInterval(fetchGas, 20000)
+  useInterval(fetchGas, 10000)
   return (
     <>
       {gasData &&

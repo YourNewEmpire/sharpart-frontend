@@ -37,12 +37,7 @@ export const {
 export const setGasThunk = () => async (dispatch: Dispatch) => {
 
     const coinData = await axios.get('https://gasstation-mainnet.matic.network');
-    
-    //const arrayOfDays = historicData.prices
     dispatch(setPolygon(coinData.data))
-
-    //dispatch(setHistoric(historicData.data))
-    console.log('price of eth set')
 }
 
 export default gaspriceSlice.reducer
