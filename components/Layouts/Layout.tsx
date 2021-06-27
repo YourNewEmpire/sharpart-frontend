@@ -17,7 +17,7 @@ export default function Layout({ children }: Childs): JSX.Element {
                         <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
                   </Head>
                   <Nav />
-                  <div className="z-50 lg:mx-20 sm:mx-6 mx-4  justify-center items-center border-2 border-gray-100" >
+                  <div className="z-50 lg:mx-20 sm:mx-6 mx-4  justify-center items-center" >
                         {children}
                   </div>
             </div>
