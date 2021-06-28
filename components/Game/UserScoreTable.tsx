@@ -1,21 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {   selectResults, fetchUserScores } from '../../lib/slices/gameSlice';
-import  Heading  from "../Typography/Heading";
+import { selectResults, fetchUserScores } from '../../lib/slices/gameSlice';
+import Heading from "../Typography/Heading";
 
-interface Props { 
+interface Props {
       address: string;
 }
 
-export default function UserScoreTable({address}: Props): JSX.Element {
+export default function UserScoreTable({ address }: Props): JSX.Element {
       const scores = useSelector(selectResults)
       const dispatch = useDispatch()
 
       const fetchScores = () => {
-             dispatch(fetchUserScores(address))
-       }
+            dispatch(fetchUserScores(address))
+      }
       return (
             <div className=" bg-th-background min-h-full">
-                   <div className="
+                  <div className="
                   grid grid-flow-col gap-4 md:gap-12 lg:gap-20 
                   items-center justify-center  
                    ">

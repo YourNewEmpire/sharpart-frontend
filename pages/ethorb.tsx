@@ -124,12 +124,12 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   dispatch(setError('no address, eth price, choice was found'))
             }
             else if (!isAuthenticated) {
-                  //this shouldnt happen because the markup should be re-rendered. jic
+                  //this shouldnt happen because the markup should be re-rendered.
                   console.log('no auth data foound')
                   dispatch(setError('User not authenticated'))
             }
             else {
-                  //set a gamesession then post backend
+                  //todo I should check this eth param works.
                   dispatch(ethOrb(address, eth[eth.length - 1], choice, userSign))
             }
       }
