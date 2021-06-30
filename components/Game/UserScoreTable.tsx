@@ -6,6 +6,10 @@ interface Props {
       address: string;
 }
 
+
+//TODO This totally needs optimising for more reusability.
+//? Just being introduced.
+
 export default function UserScoreTable({ address }: Props): JSX.Element {
       const scores = useSelector(selectResults)
       const dispatch = useDispatch()
@@ -20,7 +24,7 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
                   items-center justify-center  
                    ">
                         <div className="bg-th-primary-dark rounded-lg p-2 md:p-4 lg:p-8">
-                              <Heading title="Your Current Scores" />
+                              <Heading title="Your Current Scores" hScreen={false} />
                               <div className="flex items-center justify-center">
                                     <button
                                           className='   items-center lg:h-16 lg:w-16 w-6 h-6
