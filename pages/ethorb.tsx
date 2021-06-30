@@ -22,7 +22,6 @@ import SimpleCard from '../components/Cards/SimpleCard';
 import AlertCard from '../components/Cards/AlertCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
 import PageLayout from "../components/Layouts/PageLayout";
-import ScreenHeading from '../components/Typography/ScreenHeading'
 import Heading from '../components/Typography/Heading'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -193,9 +192,9 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                         />
                   </div>
                   <PageLayout>
-                        <Heading title="Ethereum Market Price in USD" />
+                        <Heading title="Ethereum Market Price in USD" hScreen={false} />
                         <Line type="line" data={ethPrices} />
-                        <Heading title="Ethereum This Week" />
+                        <Heading title="Ethereum This Week" hScreen={false} />
                         <p className="text-center text-base sm:text-xl lg:text-2xl text-th-primary-light text-shadow-md subpixel-antialiased ">
                               This data is here to help you chad. Read.
                         </p>

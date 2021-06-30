@@ -1,4 +1,4 @@
-import ScreenHeading from '../components/Typography/ScreenHeading';
+import Heading from '../components/Typography/Heading';
 import { GetServerSideProps } from 'next'
 import SimpleCard from '../components/Cards/SimpleCard';
 import { useEffect } from "react";
@@ -36,11 +36,11 @@ const gasData = useSelector(selectGas)
         </div>
       }
       <div id="div1" className="flex flex-col items-center justify-center ">
-        <ScreenHeading title="This is SharpArt" >
+        <Heading title="This is SharpArt" hScreen={true}>
           <p className="text-center text-base sm:text-xl lg:text-2xl text-th-primary-light text-shadow-md subpixel-antialiased ">
             The bridge between talented artists, and the secret of digital asset demand.
           </p>
-        </ScreenHeading>
+        </Heading>
       </div>
 
     </>

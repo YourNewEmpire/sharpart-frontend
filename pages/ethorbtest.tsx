@@ -9,7 +9,6 @@ import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlic
 import { EthOrbProps } from '../interfaces/pages'
 
 import PageLayout from "../components/Layouts/PageLayout";
-import ScreenHeading from '../components/Typography/ScreenHeading'
 import Heading from '../components/Typography/Heading'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -103,7 +102,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       return (
             <PageLayout>
-
+                  <Heading title='Test page.' hScreen={false}/>
             </PageLayout>
       );
 
