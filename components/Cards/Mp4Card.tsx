@@ -1,19 +1,17 @@
 import React from 'react'
 import { ImgCardProps } from '../../interfaces/cards'
 import Link from 'next/link'
+import ReactPlayer from 'react-player'
 
 export default function Card({ img, title, body, link }: ImgCardProps): JSX.Element {
+      const isPlaying = true;
       return (
             <div className=" 
             grid md:grid-cols-2 grid-cols-1 grid-flow-col
             p-2 my-0 gap-2 md:gap-8 lg:gap-12
             ">
-                  <div className=" shadow-lg">
-                        <img
-                              className="rounded-lg object-fill  "
-                              src={img}
-                              alt="Picture of the author"
-                        />
+                  <div className=" flex items-center justify-center mx-0 border-2  shadow-lg">
+                        <ReactPlayer  style={ { padding: '0px',margin: '0px'}} url={img} playing={isPlaying} loop={true} volume={0} />
                   </div>
                   <div className="inline-flex flex-col space-y-4 md:space-y-14 lg:space-y-24   w-full h-full ">
                         <div className="  " >

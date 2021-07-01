@@ -1,9 +1,10 @@
 import { GetStaticProps } from 'next';
-import ImageLinkCard from '../../components/Cards/ImageLinkCard';
+import Mp4Card from '../../components/Cards/Mp4Card';
 import ListCard from '../../components/Cards/ListCard';
-import ScreenHeading from '../../components/Typography/ScreenHeading';
+import Heading from '../../components/Typography/Heading';
 import { ArtistItem } from '../../interfaces/cards';
-
+import ReactPlayer from 'react-player'
+import PageLayout from "../../components/Layouts/PageLayout";
 
 export default function Artists() {
 
@@ -27,24 +28,26 @@ export default function Artists() {
 
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center space-y-20 ">
-        <ScreenHeading title="Current Artists" />
-        < ListCard title="Artists" body={cardItems} />
+    <PageLayout>
+      <Heading title="Current Artists" hScreen={false} />
+      <ListCard title="Artists" body={cardItems} />
+      <div>
         {cardItems.map((item, index) =>
           <div key={index} id={item.anchorLink} className="flex  flex-wrap items-center justify-center h-screen">
-            <ImageLinkCard
+            <Mp4Card
               img={item.img}
               title={item.title}
               body={item.body}
               link={item.pageLink}
             />
+
           </div>
         )}
-        <div className="h-screen border-2 " ></div>
-      
       </div>
-    </>
+
+      <div className="h-screen border-2 " ></div>
+
+    </PageLayout>
   );
 }
 
