@@ -6,8 +6,10 @@ import { EthOrbProps } from '../interfaces/pages'
 import PageLayout from "../components/Layouts/PageLayout";
 import Heading from '../components/Typography/Heading'
 import LineChart from '../components/Charts/LineChart'
+import { priceLabels, historicLabels } from '../lib/charts/labels'
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+//? Typical Server-Side-Render. P
+export const getServerSideProps: GetServerSideProps = async () => {
       const res = await fetch('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
       const ethHistoric = await res.json()
 
@@ -24,9 +26,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const dispatch = useDispatch()
       const eth = useSelector(selectPrice)
-      const priceLabels = ['30 seconds ago', '25 seconds ago', '20 seconds ago', '15 seconds ago', '10 seconds ago', '5 seconds ago', 'Now'];
-      const historicLabels = ['5 days ago', '4 days ago', '3 days ago', '2 days ago', 'yesterday', 'today'];
-
 
       const fetchEth = () => {
             dispatch(setPriceThunk())
@@ -36,8 +35,10 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       return (
             <PageLayout>
                   <Heading title='Test page.' hScreen={false} />
-                  <LineChart data={ethHistoric.prices} labels={historicLabels} /> 
 
+                  <LineChart data={eth} labels={priceLabels}/>
+                  <LineChart data={ethHistoric.prices} labels={historicLabels} /> 
+                  <LineChart data={ethHistoric.total_volumes} labels={historicLabels} />
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-8 md:gap-16 lg:gap-32">
                         <div>
