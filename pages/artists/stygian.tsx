@@ -1,8 +1,5 @@
-import { GetStaticProps } from 'next';
-import ScreenHeading from '../../components/Typography/ScreenHeading';
-import Web3 from 'web3'
-import ImageCard from '../../components/Cards/ImageCard';
-import { abi } from '../../public/GameItem.json'
+import Heading from '../../components/Typography/Heading';
+
 /*
 
 export const getStaticProps: GetStaticProps = async (context) => {
@@ -56,7 +53,7 @@ export default function Stygian() {
       return (
             <>
                   <div className="flex flex-col items-center justify-center space-y-20 ">
-                        <ScreenHeading title="Stygian" />
+                        <Heading title="Stygian"  hScreen={false}/>
                   
                   </div>
             </>
