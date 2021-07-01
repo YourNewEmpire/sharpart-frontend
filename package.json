@@ -12,6 +12,7 @@
     "@truffle/hdwallet-provider": "^1.4.0",
     "axios": "^0.21.1",
     "chart.js": "^3.3.2",
+    "framer-motion": "^4.1.17",
     "graphql": "14.6.0",
     "moralis": "0.0.25",
     "next": "^11.0.0",
