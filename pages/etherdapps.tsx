@@ -19,7 +19,7 @@ export default function EtherDapps() {
       const ethUser = useSelector(selectAccount)
       const ethAddress = user?.get('ethAddress')
       useEffect(() => {
-            
+
             dispatch(setAccount(ethAddress))
             return () => {
                   dispatch(resetAccount)
@@ -42,6 +42,19 @@ export default function EtherDapps() {
                               Metamask/Moralis Authentication
 
                         </button>
+
+                        <Link href="/ethorbtest">
+                              <a className=" 
+                                    subpixel-antialiased  rounded-md
+                                    text-center text-lg lg:text-4xl
+                                    text-th-primary-light
+                                    border-b-4 border-th-accent-medium
+                                    hover:border-transparent text-shadow-lg
+                                    transition duration-300 ease-in-out hover:text-th-accent-medium transform   
+                                    ">
+                                    Eth Orb Test - Play without MetaMask.
+                              </a>
+                        </Link>
                   </div>
             )
       }
@@ -60,7 +73,7 @@ export default function EtherDapps() {
                                     transition duration-300 ease-in-out hover:text-th-accent-medium transform   
                                     ">
                               Eth Orb - Guess market movements.
-                                    </a>
+                        </a>
                   </Link>
 
             </div>
