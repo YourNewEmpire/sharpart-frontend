@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Moralis from 'moralis'
 import { useMoralis, } from 'react-moralis'
 import { useInterval } from '../hooks/useInterval'
+import {gameTips} from "../lib/game/gameLib";
 import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
 import { priceLabels, historicLabels } from '../lib/charts/labels'
 import {
@@ -20,6 +21,7 @@ import PageLayout from "../components/Layouts/PageLayout";
 import Heading from '../components/Typography/Heading'
 import LineChart from '../components/Charts/LineChart'
 import SimpleCard from '../components/Cards/SimpleCard'
+import NodeCard from '../components/Cards/NodeCard'
 
 
 
@@ -53,6 +55,9 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const userSign = authData?.moralisEth.signature
 
 
+
+     
+
       const fetchEth = () => {
             dispatch(setPriceThunk())
       }
@@ -60,36 +65,56 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       return (
             <PageLayout>
-                  <Heading title='Test page.' hScreen={false} />
+                  <div className="grid grid-cols-3 gap-4 md:gap-8 lg:gap-12 m-4 md:m-10 lg:m-16">
+                        <NodeCard > 
+                             <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
+                             <ol className='list-roman break-words p-8 
+                             text-center text-th-primary-light space-y-4
+                             lg:text-lg
+                             text:sm
+                             '>
+                                   {gameTips.map((tip, index) => 
+                                         <li key={index}>
+                                               {tip}
+                                         </li>
+                                   )}
+                                 
+                             </ol>
+                        </NodeCard>
+                        <Heading title='Test page.' hScreen={false} />
+                        <NodeCard>
+                              <Heading title={`welcome 0xCH4D69...error`} fontSize='text-xs md:text-lg lg:text-3xl' hScreen={false}/>
+                        </NodeCard>
+                  </div>
 
                   <LineChart data={eth} labels={priceLabels} />
-                              
 
-                        
-                              <div className='grid grid-flow-col grid-cols-2 w-full'>
-                                    <div className='flex border-2 items-center justify-center'>
-                                          <button
-                                                onClick={() => dispatch(setChoiceUp())}
-                                                className={choice === true ? 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
-                                                      : 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
-                                                }
-                                          >
-                                                Mooning
+
+
+                  <div className='grid grid-flow-col grid-cols-2 w-full'>
+                        <div className='flex border-2 items-center justify-center'>
+                              <button
+                                    onClick={() => dispatch(setChoiceUp())}
+                                    className={choice === true ? 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
+                                          : 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
+                                    }
+                              >
+                                    Mooning
                                           </button>
-                                    </div>
-                                    <div className='flex border-2  items-center justify-center'>
-                                          <button
-                                                onClick={() => dispatch(setChoiceDown())}
-                                                className={choice === false ?
-                                                      'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-failure focus:outline-none transition duration-300 ease-in-out'
-                                                      : 'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
-                                                }
-                                          >
-                                                Dropping
+                        </div>
+                        <div className='flex border-2  items-center justify-center'>
+                              <button
+                                    onClick={() => dispatch(setChoiceDown())}
+                                    className={choice === false ?
+                                          'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-failure focus:outline-none transition duration-300 ease-in-out'
+                                          : 'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
+                                    }
+                              >
+                                    Dropping
                                           </button>
-                                    </div>
-                              </div>
-             
+                        </div>
+                  </div>
+
             </PageLayout>
       );
 

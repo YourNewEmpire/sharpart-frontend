@@ -1,3 +1,5 @@
+import { Childs } from "../childs"
+
 export type ListItem = { 
       link: string,
       name: string,
@@ -21,10 +23,11 @@ export interface ListCardProps {
       title: string
       body: ArtistItem[]
 }
-export interface SimpleCardProps {
+export interface SimpleCardProps  {
       title: string
       body: string
 }
+
 export interface AlertCardProps {
       title: string
       body: string

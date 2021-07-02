@@ -27,6 +27,15 @@ module.exports = {
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       none: 'none',
     },
+    listStyleType: {
+      none: 'none',
+
+     disc: 'disc',
+
+     decimal: 'decimal',
+
+     roman: 'upper-roman'
+    },
     extend: {
       spacing: {
         '128': '32rem',
