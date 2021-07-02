@@ -24,12 +24,12 @@ export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Elemen
             
             ">
                   <div className=" " >
-                        <p className=" text-center text-sm md:text-base lg:text-3xl text-th-primary-light text-shadow-md">
+                        <p className=" text-center text-sm sm:text-xl lg:text-3xl   text-th-primary-light text-shadow-md">
                               {title}
                         </p>
                   </div>
                   <div className=""  >
-                        <p className="  text-center text-xs md:text-sm lg:text-xl   text-th-primary-light break-all">
+                        <p className="  text-center text-xs sm:text-sm lg:text-xl font-thin  text-th-primary-light break-all">
                               {body}
                         </p>
                   </div>

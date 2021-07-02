@@ -4,13 +4,14 @@ import router from "next/app"
 import { useRouter } from 'next/dist/client/router'
 import { ThemeProvider } from 'next-themes'
 import { Provider as ReduxContext } from 'react-redux';
+import { ToastContainer } from 'react-toastify'
+import { motion } from 'framer-motion';
 import Moralis from 'moralis'
 import { MoralisProvider } from "react-moralis";
 import store from '../src/store'
 import Layout from '../components/Layouts/Layout';
-import { ToastContainer } from 'react-toastify'
+
 import '../styles/globals.css'
-import { motion } from 'framer-motion';
 
 const moralisAppID = process.env.NEXT_PUBLIC_MORALIS_APP_ID
 const moralisServerUrl = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
