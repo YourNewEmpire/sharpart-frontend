@@ -2,7 +2,7 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  mode: 'jit', 
+  mode: 'jit',
   theme: {
     screens: {
       sm: '480px',
@@ -30,13 +30,18 @@ module.exports = {
     listStyleType: {
       none: 'none',
 
-     disc: 'disc',
+      disc: 'disc',
 
-     decimal: 'decimal',
+      decimal: 'decimal',
 
-     roman: 'upper-roman'
+      roman: 'upper-roman'
     },
     extend: {
+      ringWidth: {
+        'DEFAULT': '2px',
+        '6': '6px',
+        '10': '10px',
+      },
       spacing: {
         '128': '32rem',
         '144': '36rem',
@@ -71,28 +76,28 @@ module.exports = {
         'th-accent-medium': 'var(--accent-medium)',
         'th-accent-light': 'var(--accent-light)',
 
-        'th-accent-success' : 'var(--accent-success)',
-        'th-accent-success-light' : 'var(--accent-success-light)',
-        'th-accent-success-medium' : 'var(--accent-success-medium)',
-        'th-accent-success-dark' : 'var(--accent-success-dark)',
+        'th-accent-success': 'var(--accent-success)',
+        'th-accent-success-light': 'var(--accent-success-light)',
+        'th-accent-success-medium': 'var(--accent-success-medium)',
+        'th-accent-success-dark': 'var(--accent-success-dark)',
 
-        'th-accent-failure' : 'var(--accent-failure)',
-        'th-accent-failure-light' : 'var(--accent-failure-light)',
-        'th-accent-failure-medium' : 'var(--accent-failure-medium)',
-        'th-accent-failure-dark' : 'var(--accent-failure-dark)',
+        'th-accent-failure': 'var(--accent-failure)',
+        'th-accent-failure-light': 'var(--accent-failure-light)',
+        'th-accent-failure-medium': 'var(--accent-failure-medium)',
+        'th-accent-failure-dark': 'var(--accent-failure-dark)',
 
-        'th-accent-info' : 'var(--accent-info)',
-        'th-accent-info-light' : 'var(--accent-info-light)',
-        'th-accent-info-medium' : 'var(--accent-info-medium)',
-        'th-accent-info-dark' : 'var(--accent-info-dark)',
+        'th-accent-info': 'var(--accent-info)',
+        'th-accent-info-light': 'var(--accent-info-light)',
+        'th-accent-info-medium': 'var(--accent-info-medium)',
+        'th-accent-info-dark': 'var(--accent-info-dark)',
 
-        'th-accent-warning' : 'var(--accent-warning)',
-        'th-accent-warning-light' : 'var(--accent-warning-light)',
-        'th-accent-warning-medium' : 'var(--accent-warning-medium)',
-        'th-accent-warning-dark' : 'var(--accent-warning-dark)',
+        'th-accent-warning': 'var(--accent-warning)',
+        'th-accent-warning-light': 'var(--accent-warning-light)',
+        'th-accent-warning-medium': 'var(--accent-warning-medium)',
+        'th-accent-warning-dark': 'var(--accent-warning-dark)',
 
-        'th-accent-moralis' : 'var(--accent-moralis)',
- 
+        'th-accent-moralis': 'var(--accent-moralis)',
+
       },
 
     }
