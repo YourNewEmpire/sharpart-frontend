@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Moralis from 'moralis'
 import { useMoralis, } from 'react-moralis'
 import { useInterval } from '../hooks/useInterval'
-import {gameTips} from "../lib/game/gameLib";
+import { gameTips } from "../lib/game/gameLib";
 import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
 import { priceLabels, historicLabels } from '../lib/charts/labels'
 import {
@@ -22,6 +22,7 @@ import Heading from '../components/Typography/Heading'
 import LineChart from '../components/Charts/LineChart'
 import SimpleCard from '../components/Cards/SimpleCard'
 import NodeCard from '../components/Cards/NodeCard'
+import UserScoreTable from "../components/Game/UserScoreTable";
 
 
 
@@ -56,7 +57,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
 
 
-     
+
 
       const fetchEth = () => {
             dispatch(setPriceThunk())
@@ -66,30 +67,64 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       return (
             <PageLayout>
                   <div className="grid grid-cols-3 gap-4 md:gap-8 lg:gap-12 m-4 md:m-10 lg:m-16">
-                        <NodeCard > 
-                             <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
-                             <ol className='list-roman break-words p-8 
-                             text-center text-th-primary-light space-y-4
+                        <NodeCard >
+                              <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
+                              <ol className='list-roman break-words p-8 
+                             text-center text-th-primary-light 
                              lg:text-lg
                              text:sm
                              '>
-                                   {gameTips.map((tip, index) => 
-                                         <li key={index}>
-                                               {tip}
-                                         </li>
-                                   )}
-                                 
-                             </ol>
+                                    {gameTips.map((tip, index) =>
+                                          <li key={index}>
+                                                {tip}
+                                          </li>
+                                    )}
+
+                              </ol>
                         </NodeCard>
                         <Heading title='Test page.' hScreen={false} />
                         <NodeCard>
-                              <Heading title={`welcome 0xCH4D69...error`} fontSize='text-xs md:text-lg lg:text-3xl' hScreen={false}/>
+                              <Heading title={`welcome 0xCH4D69...error`} fontSize='text-xs md:text-lg lg:text-3xl' hScreen={false} />
                         </NodeCard>
                   </div>
 
                   <LineChart data={eth} labels={priceLabels} />
+                  {choice === null &&
+                        <div className='flex items-center justify-center'>
 
+                              <button
+                                    className={`
+      p-4 lg:px-14 lg:py-6 text-center text-4xl 
+      text-th-primary-dark 
+      bg-gradient-to-r from-th-primary-dark via-th-primary-medium to-th-primary-light
+      antialiased focus:outline-none
+      opacity-20
+      `}
+                                   
+                              >
+                                    Submit Order
+</button>
 
+                        </div>
+                  }
+                  {choice !== null && <div className='flex items-center justify-center'>
+
+                        <button
+                              className={`
+                              p-4 lg:px-14 lg:py-6 text-center text-4xl 
+                              text-th-primary-dark 
+                              bg-gradient-to-r from-th-primary-dark via-th-primary-medium to-th-primary-light
+                              hover:ring-8 ring-offset-th-primary-medium
+                             transform  hover:scale-110
+                              transition duration-300 ease-in-out
+                              antialiased focus:outline-none
+                              `}
+                              onClick={() => ethOrb(address, eth[eth.length - 1], choice, userSign)}
+                        >
+                              Submit Order
+                        </button>
+
+                  </div>}
 
                   <div className='grid grid-flow-col grid-cols-2 w-full'>
                         <div className='flex border-2 items-center justify-center'>
@@ -115,6 +150,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                         </div>
                   </div>
 
+                  <UserScoreTable address={address} />
             </PageLayout>
       );
 
