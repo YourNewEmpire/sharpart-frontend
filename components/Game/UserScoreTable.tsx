@@ -19,14 +19,24 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
       }
       return (
             <div className=" bg-th-background min-h-full">
-                  <div className="
-                  grid grid-flow-col gap-4 md:gap-12 lg:gap-20 
-                  items-center justify-center  
-                   ">
-                        <div className="bg-th-primary-dark rounded-lg p-2 md:p-4 lg:p-8">
-                              <Heading title="Your Current Scores" hScreen={false} />
-                              <div className="flex items-center justify-center">
-                                    <button
+              
+                        <div className="
+                        grid grid-flow-row gap-4 md:gap-12 lg:gap-20 
+                        items-center justify-center
+                        bg-th-primary-dark rounded-lg p-2 md:p-4 lg:p-8">
+                              <Heading title="Trade Order History" hScreen={false} />
+                              <table className="table-auto ">
+                                    <thead className=" text-th-primary-light border-b-2 border-th-primary-light ">
+                                          <tr className="">
+                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">games played</th>
+                                                <th className="text-center p-5  border-l-2 border-r-2 border-th-primary-light">choice</th>
+                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">result</th>
+                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">win?</th>
+                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">old eth</th>
+                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">new eth</th>
+                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">date</th>
+                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">
+                                                <button
                                           className='   items-center lg:h-16 lg:w-16 w-6 h-6
                                           antialiased focus:outline-none text-th-primary-light
                                           hover:shadow-lg rounded-lg 
@@ -38,18 +48,9 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
                                           </svg>
 
                                     </button>
-                              </div>
 
-                              <table className="table-auto m-2 md:m-8 lg:m-14">
-                                    <thead className=" text-th-primary-light border-b-2 border-th-primary-light ">
-                                          <tr className="">
-                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">games played</th>
-                                                <th className="text-center p-5  border-l-2 border-r-2 border-th-primary-light">choice</th>
-                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">result</th>
-                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">win?</th>
-                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">old eth</th>
-                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">new eth</th>
-                                                <th className="text-center p-5 border-l-2 border-r-2 border-th-primary-light">date</th>
+                                                </th>
+
                                           </tr>
                                     </thead>
                                     <tbody className="text-th-primary-light ">
@@ -66,7 +67,6 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
                                           )}
                                     </tbody>
                               </table>
-                        </div>
                   </div>
             </div>
       )
