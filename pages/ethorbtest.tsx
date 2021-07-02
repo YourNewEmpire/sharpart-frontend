@@ -71,7 +71,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
                              </div>
                         </div>
-                        <div className=' flex mx-auto max-w-xs'>
+                        <div className=' max-h-md max-w-md m-auto'>
                         <LineChart data={eth} labels={priceLabels} />
 
                         </div>
