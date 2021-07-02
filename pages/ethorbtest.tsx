@@ -62,43 +62,34 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
             <PageLayout>
                   <Heading title='Test page.' hScreen={false} />
 
-                  <div className='w-full h-full border-2 border-th-primary-light'>
-                        <div className='grid grid-flow-col grid-cols-2 '>
-                             <div>
+                  <LineChart data={eth} labels={priceLabels} />
+                              
 
-                             </div>
-                             <div>
-
-                             </div>
-                        </div>
-                        <div className=' max-h-md max-w-md m-auto'>
-                        <LineChart data={eth} labels={priceLabels} />
-
-                        </div>
-                        <div className='grid grid-flow-col grid-cols-2 '>
-                              <div className='flex border-2 items-center justify-center'>
-                                    <button
-                                          onClick={() => dispatch(setChoiceUp())}
-                                          className={choice === true ? 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
-                                                : 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
-                                          }
-                                    >
-                                          Mooning
-                                    </button>
+                        
+                              <div className='grid grid-flow-col grid-cols-2 w-full'>
+                                    <div className='flex border-2 items-center justify-center'>
+                                          <button
+                                                onClick={() => dispatch(setChoiceUp())}
+                                                className={choice === true ? 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
+                                                      : 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
+                                                }
+                                          >
+                                                Mooning
+                                          </button>
+                                    </div>
+                                    <div className='flex border-2  items-center justify-center'>
+                                          <button
+                                                onClick={() => dispatch(setChoiceDown())}
+                                                className={choice === false ?
+                                                      'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-failure focus:outline-none transition duration-300 ease-in-out'
+                                                      : 'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
+                                                }
+                                          >
+                                                Dropping
+                                          </button>
+                                    </div>
                               </div>
-                              <div className='flex border-2  items-center justify-center'>
-                                    <button
-                                          onClick={() => dispatch(setChoiceDown())}
-                                          className={choice === false ?
-                                                'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-failure focus:outline-none transition duration-300 ease-in-out'
-                                                : 'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
-                                          }
-                                    >
-                                          Dropping
-                                    </button>
-                              </div>
-                        </div>
-                  </div>
+             
             </PageLayout>
       );
 

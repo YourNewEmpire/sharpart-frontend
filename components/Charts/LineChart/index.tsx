@@ -23,9 +23,9 @@ export default function LineChart({ data, labels }) {
       };
 
       return (
-            <div>
+            <>
                   <Line type='line' data={chartConfig} />
-            </div>
+            </>
       );
 
 }
