@@ -9,7 +9,8 @@ export type ArtistItem = {
       img: string,
       title: string,
       body: string,
-      pageLink: string
+      pageLink: string,
+      isImage?: boolean
 }
 export interface CardProps {
       img: string
