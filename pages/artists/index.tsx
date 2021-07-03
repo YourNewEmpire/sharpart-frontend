@@ -15,7 +15,7 @@ export default function Artists() {
       title: 'Stygian',
       body: 'Stygian designs animated and non-animated visual artwork   ',
       pageLink: "/artists/stygian",
-isImage: false
+      isImage: false
     },
     {
       anchorLink: '#enso',
@@ -53,12 +53,12 @@ isImage: false
               />
             }
             {item.isImage === true &&
-             <ImageLinkCard
-              title={item.title}
-              img={item.img}
-              body={item.body}
-              link={item.pageLink}
-             />
+              <ImageLinkCard
+                title={item.title}
+                img={item.img}
+                body={item.body}
+                link={item.pageLink}
+              />
             }
           </div>
         )}
