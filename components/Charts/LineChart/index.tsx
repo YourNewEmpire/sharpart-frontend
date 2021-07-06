@@ -1,10 +1,10 @@
 import { Line } from "react-chartjs-2";
-
+import React from 'react'
 
 //? just data and labels for now.
 //? More options/props can be added down the pipeline
 
-export default function LineChart({ data, labels }) {
+function LineChart({ data, labels }) {
 
       const chartConfig = {
             labels: labels,
@@ -29,3 +29,4 @@ export default function LineChart({ data, labels }) {
       );
 
 }
+export default React.memo(LineChart)
