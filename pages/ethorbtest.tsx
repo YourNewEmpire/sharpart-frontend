@@ -25,7 +25,7 @@ import NodeCard from '../components/Cards/NodeCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
 import Example from '../components/menu'
 import axios, { AxiosResponse } from 'axios'
-import Submit from '../components/Game/Buttons/Submit'
+import GameButtons from '../components/Game/Buttons/GameButtons'
 
 
 
@@ -106,6 +106,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       return (
             <PageLayout>
+
                   <div className="grid grid-cols-3 gap-4 md:gap-8 lg:gap-12 m-4 md:m-10 lg:m-16">
                         <NodeCard >
                               <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
@@ -129,35 +130,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   </div>
 
                   <LineChart data={eth} labels={priceLabels} />
-
-                  <Submit clickHandler={playGame} />
-
-
-                  <div className='grid grid-flow-col grid-cols-2 w-full'>
-                        <div className='flex items-center justify-center'>
-                              <button
-                                    onClick={() => dispatch(setChoiceUp())}
-                                    className={choice === true ?
-                                          'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
-                                          : 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
-                                    }
-                              >
-                                    Mooning
-                              </button>
-                        </div>
-                        <div className='flex items-center justify-center'>
-                              <button
-                                    onClick={() => dispatch(setChoiceDown())}
-                                    className={choice === false ?
-                                          'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-failure focus:outline-none transition duration-300 ease-in-out'
-                                          : 'w-full  p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
-                                    }
-                              >
-                                    Dropping
-                              </button>
-                        </div>
-                  </div>
-
+                  <GameButtons clickHandler={testGame}/>
                   <UserScoreTable address={address} />
             </PageLayout>
       );
