@@ -8,7 +8,6 @@ module.exports = {
       sm: '480px',
       md: '768px',
       lg: '976px',
-      'lg2': '1100px',
       xl: '1440px',
     },
     fontFamily: {
@@ -37,15 +36,13 @@ module.exports = {
       roman: 'upper-roman'
     },
     extend: {
+
       ringWidth: {
         'DEFAULT': '2px',
         '6': '6px',
         '10': '10px',
       },
-      spacing: {
-        '128': '32rem',
-        '144': '36rem',
-      },
+
       borderRadius: {
         '4xl': '2rem',
       },
