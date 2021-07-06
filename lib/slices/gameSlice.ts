@@ -193,6 +193,12 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
             const newPrice = coinData.data.market_data.current_price.usd;
             console.log(newPrice, " newPrice log, now starting game logic")
 
+
+            //? New idea
+            //? Post api with oldPrice, gameChoice, user
+            //?
+
+
             //* GAME LOGIC
 
             //*  game victory handling

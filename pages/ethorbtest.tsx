@@ -23,7 +23,9 @@ import LineChart from '../components/Charts/LineChart'
 import SimpleCard from '../components/Cards/SimpleCard'
 import NodeCard from '../components/Cards/NodeCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
-
+import Example from '../components/menu'
+import axios, { AxiosResponse } from 'axios'
+import Submit from '../components/Game/Buttons/Submit'
 
 
 
@@ -56,7 +58,23 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const userSign = authData?.moralisEth.signature
 
 
+      async function playGame() {
 
+            //todo - Post api route instead with same params
+
+            if (!address || eth[eth.length - 1] == 0 || choice === null) {
+                  console.log('no addres or what')
+                  dispatch(setError('no address, eth price, choice was found'))
+            }
+            else {
+                  await axios.post('/api/playGame', {
+                        user: address,
+                        gameChoice: choice
+                  }).then(res => {
+                        console.log(res)
+                  })
+            }
+      }
 
 
       const fetchEth = () => {
@@ -89,55 +107,23 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   </div>
 
                   <LineChart data={eth} labels={priceLabels} />
-                  {choice === null &&
-                        <div className='flex items-center justify-center'>
 
-                              <button
-                                    className={`
-      p-4 lg:px-14 lg:py-6 text-center text-4xl 
-      text-th-primary-dark 
-      bg-gradient-to-r from-th-primary-dark via-th-primary-medium to-th-primary-light
-      antialiased focus:outline-none
-      opacity-20
-      `}
-                                   
-                              >
-                                    Submit Order
-</button>
+                  <Submit clickHandler={playGame} />
 
-                        </div>
-                  }
-                  {choice !== null && <div className='flex items-center justify-center'>
-
-                        <button
-                              className={`
-                              p-4 lg:px-14 lg:py-6 text-center text-4xl 
-                              text-th-primary-dark 
-                              bg-gradient-to-r from-th-primary-dark via-th-primary-medium to-th-primary-light
-                              hover:ring-8 ring-offset-th-primary-medium
-                             transform  hover:scale-110
-                              transition duration-300 ease-in-out
-                              antialiased focus:outline-none
-                              `}
-                              onClick={() => ethOrb(address, eth[eth.length - 1], choice, userSign)}
-                        >
-                              Submit Order
-                        </button>
-
-                  </div>}
 
                   <div className='grid grid-flow-col grid-cols-2 w-full'>
-                        <div className='flex border-2 items-center justify-center'>
+                        <div className='flex items-center justify-center'>
                               <button
                                     onClick={() => dispatch(setChoiceUp())}
-                                    className={choice === true ? 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
+                                    className={choice === true ?
+                                          'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
                                           : 'w-full p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'
                                     }
                               >
                                     Mooning
-                                          </button>
+                              </button>
                         </div>
-                        <div className='flex border-2  items-center justify-center'>
+                        <div className='flex items-center justify-center'>
                               <button
                                     onClick={() => dispatch(setChoiceDown())}
                                     className={choice === false ?
@@ -146,7 +132,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                                     }
                               >
                                     Dropping
-                                          </button>
+                              </button>
                         </div>
                   </div>
 
