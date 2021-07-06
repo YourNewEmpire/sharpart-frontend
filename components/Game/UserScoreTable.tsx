@@ -14,9 +14,13 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
       const scores = useSelector(selectResults)
       const dispatch = useDispatch()
 
+      //todo - useEffect and fetch scores when the address changes/ after it renders.
+
       const fetchScores = () => {
             dispatch(fetchUserScores(address))
       }
+
+      
       return (
             <div className=" bg-th-background min-h-full">
               
