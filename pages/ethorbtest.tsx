@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import Moralis from 'moralis'
-import { useMoralis, } from 'react-moralis'
+import { useMoralis } from 'react-moralis'
 import { useInterval } from '../hooks/useInterval'
 import { gameTips } from "../lib/game/gameLib";
 import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
@@ -60,8 +60,6 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       async function playGame() {
 
-            //todo - Post api route instead with same params
-
             if (!address || eth[eth.length - 1] == 0 || choice === null) {
                   console.log('no addres or what')
                   dispatch(setError('no address, eth price, choice was found'))
@@ -74,6 +72,30 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                         console.log(res)
                   })
             }
+      }
+
+      async function testGame() {
+
+            /*
+            if (!address || eth[eth.length - 1] == 0 || choice === null) {
+                  console.log('no addres or what')
+                  dispatch(setError('no address, eth price, choice was found'))
+            }
+            else {
+                  await axios.post('/api/playGame', {
+                        user: address,
+                        gameChoice: choice
+                  }).then(res => {
+                        console.log(res)
+                  })
+            }
+            */
+            await axios.post('/api/playGame', {
+                  user: address,
+                  gameChoice: choice
+            }).then(res => {
+                  console.log(res)
+            })
       }
 
 
