@@ -1,9 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes'
-import { useDispatch, useSelector, } from 'react-redux'
-import { selectAccount } from '../lib/slices/accountSlice';
-import { useMoralis } from 'react-moralis'
+
+import { SunIcon } from '@heroicons/react/solid';
 
 
 
@@ -35,7 +34,7 @@ export const Nav = () => {
       ]
 
       const { theme, setTheme } = useTheme()
-      const { user, authenticate } = useMoralis()
+
 
 
 
@@ -79,7 +78,7 @@ export const Nav = () => {
                                     {listItem.text}
                               </a></Link>
                         )}
-                      
+
                         <button
                               className='  xl:ml-auto ml-0 inline-flex items-center lg:h-16 lg:w-16 w-6 h-6
                               antialiased focus:outline-none text-th-primary-light
@@ -87,9 +86,7 @@ export const Nav = () => {
                               transition duration-100 ease-in-out transform  hover:scale-110 '
                               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                         >
-                              <svg viewBox='0 0 24 24' xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                              </svg>
+                              <SunIcon />
 
                         </button>
 
