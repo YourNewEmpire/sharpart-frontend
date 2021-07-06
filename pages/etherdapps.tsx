@@ -18,13 +18,6 @@ export default function EtherDapps() {
       const dispatch = useDispatch();
       const ethUser = useSelector(selectAccount)
       const ethAddress = user?.get('ethAddress')
-      useEffect(() => {
-
-            dispatch(setAccount(ethAddress))
-            return () => {
-                  dispatch(resetAccount)
-            }
-      }, [user])
 
 
       if (!isAuthenticated) {
@@ -48,11 +41,12 @@ export default function EtherDapps() {
                                     subpixel-antialiased  rounded-md
                                     text-center text-lg lg:text-4xl
                                     text-th-primary-light
-                                    border-b-4 border-th-accent-medium
+                                    border-b-4 border-th-primary-medium
                                     hover:border-transparent text-shadow-lg
-                                    transition duration-300 ease-in-out hover:text-th-accent-medium transform   
+                                    transition duration-300 ease-in-out hover:text-th-primary-medium
+                                    transform hover:scale-110 
                                     ">
-                                    Eth Orb Test - Play without MetaMask.
+                                    Eth Orb Test - Play without MetaMask in a construction site.
                               </a>
                         </Link>
                   </div>
@@ -68,25 +62,28 @@ export default function EtherDapps() {
                                     subpixel-antialiased  rounded-md
                                     text-center text-lg lg:text-4xl
                                     text-th-primary-light
-                                    border-b-4 border-th-accent-medium
+                                    border-b-4 border-th-primary-medium
                                     hover:border-transparent text-shadow-lg
-                                    transition duration-300 ease-in-out hover:text-th-accent-medium transform   
+                                    transition duration-300 ease-in-out hover:text-th-primary-medium 
+                                    transform scale hover:scale-110
                                     ">
                               Eth Orb - Guess market movements.
                         </a>
                   </Link>
                   <Link href="/ethorbtest">
-                              <a className=" 
+                        <a className=" 
                                     subpixel-antialiased  rounded-md
                                     text-center text-lg lg:text-4xl
                                     text-th-primary-light
-                                    border-b-4 border-th-accent-medium
+                                    border-b-4 border-th-primary-medium
                                     hover:border-transparent text-shadow-lg
-                                    transition duration-300 ease-in-out hover:text-th-accent-medium transform   
+                                    transition duration-300 ease-in-out hover:text-th-primary-medium 
+                                    transform  scale hover:scale-110
+                                    
                                     ">
-                                    Eth Orb Test - Play without MetaMask.
-                              </a>
-                        </Link>
+                              Eth Orb Test - Play without MetaMask.
+                        </a>
+                  </Link>
             </div>
       );
 }
