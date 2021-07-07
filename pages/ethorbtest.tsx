@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
-import Moralis from 'moralis'
 import { useMoralis } from 'react-moralis'
+import axios, { AxiosResponse } from 'axios'
 import { useInterval } from '../hooks/useInterval'
 import { gameTips } from "../lib/game/gameLib";
 import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
@@ -20,17 +20,12 @@ import { EthOrbProps } from '../interfaces/pages'
 import PageLayout from "../components/Layouts/PageLayout";
 import Heading from '../components/Typography/Heading'
 import LineChart from '../components/Charts/LineChart'
-import SimpleCard from '../components/Cards/SimpleCard'
 import NodeCard from '../components/Cards/NodeCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
 import Example from '../components/menu'
-import axios, { AxiosResponse } from 'axios'
 import GameButtons from '../components/Game/Buttons/GameButtons'
+import Columns from '../components/Columns'
 
-
-
-
-//? Typical Server-Side-Render. P
 export const getServerSideProps: GetServerSideProps = async () => {
       const res = await fetch('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
       const ethHistoric = await res.json()
@@ -90,6 +85,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   })
             }
             */
+            // todo - Play around with moralis session object. 
             await axios.post('/api/playGame', {
                   user: address,
                   gameChoice: choice
@@ -106,14 +102,11 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       return (
             <PageLayout>
-
-                  <div className="grid grid-cols-3 gap-4 md:gap-8 lg:gap-12 m-4 md:m-10 lg:m-16">
+                  <Columns cols='3'>
                         <NodeCard >
                               <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
                               <ol className='list-roman break-words p-8 
-                             text-center text-th-primary-light 
-                             lg:text-lg
-                             text:sm
+                             text-left text-th-primary-light text:sm lg:text-lg 
                              '>
                                     {gameTips.map((tip, index) =>
                                           <li key={index}>
@@ -123,14 +116,24 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
                               </ol>
                         </NodeCard>
-                        <Heading title='Test page.' hScreen={false} />
+
+                        <Heading
+                              title='Test page.'
+                              hScreen={false}
+                              fontSize='text-xs md:text-lg lg:text-4xl'
+                        />
+
                         <NodeCard>
-                              <Heading title={`welcome 0xCH4D69...error`} fontSize='text-xs md:text-lg lg:text-3xl' hScreen={false} />
+                              <Heading
+                                    title={`welcome 0xCH4D69...error`}
+                                    fontSize='text-xs md:text-lg lg:text-3xl'
+                                    hScreen={false}
+                              />
                         </NodeCard>
-                  </div>
+                  </Columns>
 
                   <LineChart data={eth} labels={priceLabels} />
-                  <GameButtons clickHandler={testGame}/>
+                  <GameButtons clickHandler={testGame} />
                   <UserScoreTable address={address} />
             </PageLayout>
       );
