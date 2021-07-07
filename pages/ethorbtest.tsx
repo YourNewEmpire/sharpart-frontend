@@ -132,7 +132,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                         </NodeCard>
                   </Columns>
 
-                  <LineChart data={eth} labels={priceLabels} />
+                  <LineChart data={eth} labels={priceLabels}  />
                   <GameButtons clickHandler={testGame} />
                   <UserScoreTable address={address} />
             </PageLayout>

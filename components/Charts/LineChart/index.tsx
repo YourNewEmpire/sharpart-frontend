@@ -4,7 +4,7 @@ import React from 'react'
 //? just data and labels for now.
 //? More options/props can be added down the pipeline
 
-function LineChart({ data, labels }) {
+function LineChart({ data, labels,}) {
 
       const chartConfig = {
             labels: labels,
