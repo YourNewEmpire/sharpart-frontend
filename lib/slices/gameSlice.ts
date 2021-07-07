@@ -78,6 +78,9 @@ const gameSlice = createSlice({
             setChoiceDown: (state) => {
                   return { ...state, choice: false }
             },
+            resetChoice: (state) => {
+                  return {...state, choice: null }
+            },
             setGameSession: (state, action) => {
                   return { ...state, gameSession: action.payload }
             }
@@ -101,10 +104,10 @@ export const {
       endLoading,
       setGameWin,
       setChoiceUp,
-      setGameResult,
       setChoiceDown,
+      resetChoice,
       setUserResults,
-
+      setGameResult,
       setGameSession
 } = gameSlice.actions
 
