@@ -1,5 +1,4 @@
 import React from 'react'
-import { SimpleCardProps } from '../../interfaces/cards'
 import { Childs } from '../../interfaces/childs'
 
 export default function NodeCard({ children }: Childs): JSX.Element {
@@ -18,7 +17,6 @@ export default function NodeCard({ children }: Childs): JSX.Element {
             rounded-lg
             shadow-lg
             bg-th-primary-dark
-            bg-opacity-25
             
             ">
                 {children}
