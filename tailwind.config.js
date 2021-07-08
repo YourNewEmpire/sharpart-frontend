@@ -42,6 +42,7 @@ module.exports = {
         DEFAULT: '0.25rem',
         DEFAULT: '4px',
         'md': '0.375rem',
+        '4xl': '2rem',
         'lg': '0.5rem',
         'full': '9999px',
         'large': '12px',
@@ -52,12 +53,11 @@ module.exports = {
         '10': '10px',
       },
 
-      borderRadius: {
-        '4xl': '2rem',
-      },
+    
       backgroundImage: theme => ({
         'the-willy': "url('/head.png')",
         'footer-texture': "url('/img/footer-texture.png')",
+        'bill': " url('https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg')"
       }),
       colors: {
         gray: colors.coolGray,

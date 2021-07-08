@@ -8,20 +8,22 @@ import { cardItems } from '../../lib/artists/artistLib'
 
 export default function Artists() {
 
-
   return (
     <PageLayout>
-
       <div>
-
         <Heading title="Current Artists" hScreen={false} />
         <div>
-          here are the avatars
-        </div>
-        <button className=' lg:h-32 lg:w-32 rounded-full focus:outline-none'>
-        <img className='w-8 h-8 lg:h-32 lg:w-32  object-cover rounded-full ' src="https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg" alt="" />
+          <img className='object-cover rounded-full ' src="https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg" alt="" />
 
-        </button>
+        </div>
+        <div>
+          <button className='w-8 h-8 lg:h-32 lg:w-32 rounded-full 
+          bg-bill bg-contain  
+          transition duration-300 ease-in-out
+          transform hover:scale-110
+          focus:outline-none'>
+          </button>
+        </div>
       </div>
 
 

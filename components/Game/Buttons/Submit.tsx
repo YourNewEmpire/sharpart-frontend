@@ -19,11 +19,9 @@ export default function Submit({ clickHandler }): JSX.Element {
 
                               <button
                                     className={`
-                              p-4 lg:px-24 lg:py-12 text-center text-4xl 
-                              text-th-primary-dark 
+                              p-4 lg:px-24 lg:py-12 text-center text-4xl text-th-primary-dark 
                               bg-gradient-to-r from-th-primary-dark via-th-primary-medium to-th-primary-light
-                              antialiased focus:outline-none
-                              opacity-20
+                              antialiased focus:outline-none opacity-20
                               `}
 
                               >
