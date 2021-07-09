@@ -17,6 +17,13 @@ export interface CardProps {
       title: string
       body?: string
 }
+export interface ArtistCardProps {
+      img:string
+      title: string
+      body:string
+      link:string
+      isImage?: boolean
+}
 export interface ImgCardProps extends CardProps {
       link: string
 }

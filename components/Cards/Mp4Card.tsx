@@ -1,21 +1,38 @@
 import React from 'react'
-import { ImgCardProps } from '../../interfaces/cards'
+import { ArtistCardProps } from '../../interfaces/cards'
 import Link from 'next/link'
 import ReactPlayer from 'react-player'
 
-export default function Card({ img, title, body, link }: ImgCardProps): JSX.Element {
+export default function Mp4Card({ img, title, body, isImage, link }: ArtistCardProps): JSX.Element {
       const isPlaying = true;
       return (
-            <div className=" 
-            grid md:grid-cols-2 grid-cols-1 grid-flow-col
-            p-2 my-0 gap-2 md:gap-8 lg:gap-12
+            <Link href={link} >
+                  <div className=" 
+            grid grid-flow-row justify-center items-center
+            
+            p-2 my-0 gap-2 md:gap-8 lg:gap-12 
+            transition duration-300 ease-in-out 
+      
+            antialiased rounded-3xl
+            ring-offset-th-primary-medium 
+            hover:scale-110 transform
+            hover:ring-8 
+            hover:shadow-xl 
+            hover:cursor-pointer
             ">
-                  <div className=" flex items-center justify-center mx-0 border-2  shadow-lg">
-                        <ReactPlayer  style={ { padding: '0px',margin: '0px'}} url={img} playing={isPlaying} loop={true} volume={0} />
-                  </div>
-                  <div className="inline-flex flex-col space-y-4 md:space-y-14 lg:space-y-24   w-full h-full ">
+                        {isImage === false &&
+                              <div className="  flex justify-center items-center">
+                                    <ReactPlayer height='250px' width='250px' style={{ padding: '0px', margin: '0px', }} url={img} playing={isPlaying} loop={true} volume={0} />
+                              </div>
+                        }
+                        {isImage === true && 
+                              <div className=" place-self-center justify-self-center w-36 h-36">
+                                    <img src={img} alt=""/>
+                              </div>
+                        }
+
                         <div className="  " >
-                              <p className=" subpixel-antialiased text-6xl text-center  text-th-primary-medium text-shadow-md ">
+                              <p className=" subpixel-antialiased text-4xl text-center break-words text-th-primary-medium text-shadow-md ">
                                     {title}
                               </p>
                         </div>
@@ -24,22 +41,11 @@ export default function Card({ img, title, body, link }: ImgCardProps): JSX.Elem
                                     {body}
                               </p>
                         </div>
-                        <div className=" self-center justify-self-end "  >
-                              <Link href={link}>
-                                    <a className="
-                              subpixel-antialiased rounded-md
-                              text-base text-th-primary-light text-center
-                              border-b-4 border-th-accent-medium
-                              hover:border-transparent text-shadow-lg
-                              transition duration-300 ease-in-out 
-                              hover:text-th-accent-medium transform"
-                                    >
-                                          View {title}
-                                    </a>
-                              </Link>
-                        </div>
+
+
                   </div>
-            </div>
+            </Link >
+
       )
 }
 

@@ -42,6 +42,7 @@ module.exports = {
         DEFAULT: '0.25rem',
         DEFAULT: '4px',
         'md': '0.375rem',
+        '3xl' : '1rem' ,
         '4xl': '2rem',
         'lg': '0.5rem',
         'full': '9999px',
@@ -54,11 +55,13 @@ module.exports = {
       },
 
     
-      backgroundImage: theme => ({
+      backgroundImage: {
         'the-willy': "url('/head.png')",
-        'footer-texture': "url('/img/footer-texture.png')",
-        'bill': " url('https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg')"
-      }),
+        'bill': " url('https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg')",
+        'stygian' : "url('https://gateway.pinata.cloud/ipfs/QmTDuHtcVfT6HKjDuwJT89VbWizGTPPZnhA8pnuedPapGe/1.png')",
+        'enso': "url('https://static.dezeen.com/uploads/2021/06/elon-musk-architect_dezeen_1704_col_0.jpg')",
+        'emerald-citizen' : "url('https://ipfs.io/ipfs/QmdpLLWDfgXJWvJyqydRwP6Dw8pFwrgn2ziZPAHosjWfCR')"
+      } ,
       colors: {
         gray: colors.coolGray,
         lightblue: colors.lightBlue,
