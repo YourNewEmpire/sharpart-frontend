@@ -3,16 +3,14 @@ import { ArtistCardProps } from '../../interfaces/cards'
 import Link from 'next/link'
 import ReactPlayer from 'react-player'
 
-export default function Mp4Card({ img, title, body, isImage, link }: ArtistCardProps): JSX.Element {
+export default function Mp4Card({ img, title, body, link }: ArtistCardProps): JSX.Element {
       const isPlaying = true;
       return (
             <Link href={link} >
                   <div className=" 
             grid grid-flow-row justify-center items-center
-            
-            p-2 my-0 gap-2 md:gap-8 lg:gap-12 
+            p-2 my-0 gap-2 md:gap-8 lg:gap-6
             transition duration-300 ease-in-out 
-      
             antialiased rounded-3xl
             ring-offset-th-primary-medium 
             hover:scale-110 transform
@@ -20,16 +18,12 @@ export default function Mp4Card({ img, title, body, isImage, link }: ArtistCardP
             hover:shadow-xl 
             hover:cursor-pointer
             ">
-                        {isImage === false &&
-                              <div className="  flex justify-center items-center">
-                                    <ReactPlayer height='250px' width='250px' style={{ padding: '0px', margin: '0px', }} url={img} playing={isPlaying} loop={true} volume={0} />
-                              </div>
-                        }
-                        {isImage === true && 
-                              <div className=" place-self-center justify-self-center w-36 h-36">
-                                    <img src={img} alt=""/>
-                              </div>
-                        }
+
+                        <div className="  flex justify-center items-center">
+                              <ReactPlayer height='250px' width='250px' style={{ padding: '0px', margin: '0px', }} url={img} playing={isPlaying} loop={true} volume={0} />
+                        </div>
+
+
 
                         <div className="  " >
                               <p className=" subpixel-antialiased text-4xl text-center break-words text-th-primary-medium text-shadow-md ">
