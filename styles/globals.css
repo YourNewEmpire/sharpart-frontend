@@ -5,7 +5,8 @@
 :root {
       --background: theme('colors.blue.50');
       --background-secondary: theme('colors.lightblue.900');
-    
+      --foreground: theme('colors.lightblue.100');
+
       --accent-dark: theme('colors.pink.700');
       --accent-medium: theme('colors.pink.500');
       --accent-light: theme('colors.pink.300');
@@ -44,7 +45,8 @@
     [data-theme='dark'] {
       --background: theme('colors.lightblue.900');
       --background-secondary: theme('colors.blue.50');
-    
+      --foreground: theme('colors.gray.700');
+
       --accent-dark: theme('colors.pink.700');
       --accent-medium: theme('colors.pink.500');
       --accent-light: theme('colors.pink.300');

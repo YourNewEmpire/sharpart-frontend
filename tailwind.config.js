@@ -23,7 +23,6 @@ module.exports = {
         lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-  
         '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
         inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
         none: 'none',
@@ -54,12 +53,10 @@ module.exports = {
         '6': '6px',
         '10': '10px',
       },
-
-    
       backgroundImage: {
         'the-willy': "url('/head.png')",
         'bill': " url('https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg')",
-        'stygian' : "url('https://gateway.pinata.cloud/ipfs/QmTDuHtcVfT6HKjDuwJT89VbWizGTPPZnhA8pnuedPapGe/1.png')",
+        'stygian' : "url('/stygian.png')",
         'enso': "url('https://static.dezeen.com/uploads/2021/06/elon-musk-architect_dezeen_1704_col_0.jpg')",
         'emerald-citizen' : "url('https://ipfs.io/ipfs/QmdpLLWDfgXJWvJyqydRwP6Dw8pFwrgn2ziZPAHosjWfCR')"
       } ,
@@ -70,7 +67,7 @@ module.exports = {
         red: colors.rose,
         pink: colors.pink,
         green: colors.lime,
-        purple: colors.purple,
+        purple: colors.violet,
         darkblue: colors.indigo,
         amber: colors.amber,
         fuchsia: colors.fuchsia,
