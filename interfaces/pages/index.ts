@@ -20,3 +20,10 @@ export interface HomeProps {
 export interface EthOrbProps {
       ethHistoric: EthHistoric | null
 }
+
+export interface IArtist {
+      artistSlug: string;
+      artistName: string;
+      artistDesc: string;
+      createdAt: string;
+}
