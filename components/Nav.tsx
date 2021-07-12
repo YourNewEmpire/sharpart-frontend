@@ -1,18 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes'
-
 import { SunIcon } from '@heroicons/react/solid';
-
-
 
 type listItem = {
       id: number,
       text: string,
       link: string
 }
-
-
 export const Nav = () => {
       //nav items for map
       const listItems: listItem[] = [

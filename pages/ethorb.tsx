@@ -118,6 +118,8 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       async function playGame() {
 
+            //todo - Post api route instead with same params
+
             if (!address || eth[eth.length - 1] == 0 || choice === null) {
                   console.log('no addres or what')
                   dispatch(setError('no address, eth price, choice was found'))
