@@ -16,7 +16,8 @@ export default function Heading({ title, hScreen, children, fontSize }: Props): 
   if (!children)
     return (
       <div className={`flex flex-col items-center justify-center ${hScreen ? 'h-screen' : 'h-auto'}  `}>
-        <h1 className={`text-center ${fontSize? fontSize : 'text-xl sm:text-2xl lg:text-6xl '}
+        <h1 className={`
+        text-center ${fontSize? fontSize : 'text-xl sm:text-2xl lg:text-6xl '}
         text-th-primary-medium text-shadow-md subpixel-antialiased 
         `}>
           {title}
@@ -27,9 +28,9 @@ export default function Heading({ title, hScreen, children, fontSize }: Props): 
   else return (
     <>
       <div className={`flex flex-col items-center justify-center ${hScreen ? 'h-screen' : 'h-auto'}  `}>
-        <h1 className="text-center text-xl sm:text-2xl lg:text-6xl 
+        <h1 className={`text-center ${fontSize? fontSize : 'text-xl sm:text-2xl lg:text-6xl '}
         text-th-primary-medium text-shadow-md subpixel-antialiased mb-8 md:mb-14 lg:mb-20
-        ">
+        `}>
           {title}
         </h1>
         {children}
