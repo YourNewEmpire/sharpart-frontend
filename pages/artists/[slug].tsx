@@ -1,39 +1,60 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { GraphQLClient, gql } from "graphql-request";
+import { CalendarIcon } from '@heroicons/react/outline'
 import { IArtist } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
 
+
+
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
-      return (
-            <PageLayout>
 
-                  <div className="grid grid-flow-col
-                  grid-cols-6
-                   justify-center items-center 
-                   ">
-                        <div className=" rounded-full  col-span-2 ">
-                              <div className="flex justify-center items-center ">
-                                    <img src={'/' + artist.artistName.toLowerCase() + '.png'} alt="" />
+      const updatedAt = new Date(artist.updatedAt)
+
+      return (
+            <>
+                  <PageLayout>
+                        <div className="grid grid-flow-col
+                              grid-cols-6
+                              justify-center items-center 
+                        ">
+                              <div className="rounded-full col-span-2 ">
+                                    <div className="flex justify-center items-center ">
+                                          <img src={'/' + artist.artistName.toLowerCase() + '.png'} alt="" />
+                                    </div>
+                              </div>
+
+                              <div className='col-span-4'>
+                                    <Heading title={artist.artistName} hScreen={false} fontSize='text-2xl sm:text-3xl lg:text-6xl'>
+
+                                          <p className="text-center text-base sm:text-lg lg:text-2xl 
+                                          text-th-primary-light  subpixel-antialiased                 
+                                          max-w-xs md:max-w-xl lg:max-w-2xl break-words
+                                    ">
+                                                {artist.artistDesc}
+                                          </p>
+                                    </Heading>
                               </div>
                         </div>
 
-                        <div className='  col-span-4  '>
-                              <Heading title={artist.artistName} hScreen={false} fontSize='text-2xl sm:text-3xl lg:text-6xl'>
 
-                                    <p className="text-center text-base sm:text-lg lg:text-2xl 
-                                          text-th-primary-light text-shadow-sm subpixel-antialiased                 
-                                          max-w-xs md:max-w-xl lg:max-w-2xl break-words
-                                    ">
-                                          {artist.artistDesc}
-                                    </p>
-                              </Heading>
+
+                  </PageLayout>
+                  <div className='flex justify-center items-center
+                  text-th-primary-light text-xs md:text-sm lg:text-lg
+                  '>
+                        <CalendarIcon className='w-5 h-5' />
+                        <div className=' ml-2 lg:ml-4'>
+                              <p>
+                                    Updated At 
+                                    <span className='text-th-primary-medium'> {updatedAt.toDateString()}</span>
+                              </p>
                         </div>
-
                   </div>
-            </PageLayout >
+            </>
+
       )
 }
 
@@ -47,6 +68,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             artistName
             artistSlug
             createdAt
+            updatedAt
             artistDesc
           }
         }

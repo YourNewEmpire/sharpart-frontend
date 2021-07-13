@@ -25,5 +25,6 @@ export interface IArtist {
       artistSlug: string;
       artistName: string;
       artistDesc: string;
-      createdAt: string;
+      createdAt?: string;
+      updatedAt?: string;
 }
