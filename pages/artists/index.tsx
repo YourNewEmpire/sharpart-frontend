@@ -9,9 +9,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
       const query = gql`
       query MyQuery { 
             artists(orderBy: createdAt_ASC) {
-            artistName
-            artistSlug
-            artistDesc
+                  artistName
+                  artistSlug
+                  artistDesc
             }
       }
       `;
@@ -23,7 +23,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 export default function Artists({ artists }) {
-      console.log(artists)
+
+
       return (
             <PageLayout>
                   <div className=" 
@@ -37,11 +38,12 @@ export default function Artists({ artists }) {
                                           img={'/' + artist.artistName.toLowerCase() + '.png'}
                                           title={artist.artistName}
                                           body={artist.artistDesc}
-                                          link={'/artists/' +artist.artistSlug}
+                                          link={'/artists/' + artist.artistSlug}
                                     />
                               </div>
                         )}
                   </div>
+                 
             </PageLayout >
       );
 }
