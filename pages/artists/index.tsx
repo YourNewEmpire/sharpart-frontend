@@ -22,6 +22,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
       };
 };
 
+//*map the artists from graph cms
+// todo - Use Columns comp?
 export default function Artists({ artists }) {
       console.log(artists)
       return (
