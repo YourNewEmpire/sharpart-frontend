@@ -1,4 +1,4 @@
-import { Childs } from "../childs"
+import React from "react";
 
 export type ListItem = { 
       link: string,
@@ -27,6 +27,14 @@ export interface ArtistCardProps {
 export interface ImgCardProps extends CardProps {
       link: string
 }
+
+
+export interface ModalCardProps {
+      action1: React.ReactNode,
+      action2:  React.ReactNode,
+      body: string
+}
+
 export interface ListCardProps {
       title: string
       body: ArtistItem[]

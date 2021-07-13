@@ -17,13 +17,20 @@ export interface EthHistoric {
 export interface HomeProps {
       data: GasData | null
 }
+
 export interface EthOrbProps {
       ethHistoric: EthHistoric | null
 }
 
+export type artistImg = {
+      url: string;
+
+}
 export interface IArtist {
       artistSlug: string;
       artistName: string;
       artistDesc: string;
-      createdAt: string;
+      createdAt?: string;
+      updatedAt?: string;
+      artistImage: artistImg;
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ModalCardProps } from '../../interfaces/modalcard'
+import { ModalCardProps } from '../../interfaces/cards'
 
 export default function ModalCard({ action1, action2, body }: ModalCardProps): JSX.Element {
 

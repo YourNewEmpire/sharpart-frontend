@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import ImageLinkCard from '../../components/Cards/ImageLinkCard';
 import PageLayout from "../../components/Layouts/PageLayout";
 import { GraphQLClient, gql } from "graphql-request";
+import { IArtist } from '../../interfaces/pages';
 
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -9,9 +10,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
       const query = gql`
       query MyQuery { 
             artists(orderBy: createdAt_ASC) {
-            artistName
-            artistSlug
-            artistDesc
+                  artistName
+                  artistSlug
+                  artistDesc
+                  artistImage{
+                        url
+                  }
             }
       }
       `;
@@ -22,10 +26,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
       };
 };
 
-//*map the artists from graph cms
-// todo - Use Columns comp?
-export default function Artists({ artists }) {
-      console.log(artists)
+export default function Artists({ artists }: {artists: IArtist[]}) {
+
       return (
             <PageLayout>
                   <div className=" 
@@ -36,15 +38,15 @@ export default function Artists({ artists }) {
                         {artists.map((artist) =>
                               <div key={artist.artistSlug}>
                                     <ImageLinkCard
-                                          img={'/' + artist.artistName.toLowerCase() + '.png'}
+                                          img={artist.artistImage.url}
                                           title={artist.artistName}
                                           body={artist.artistDesc}
-                                          link={'/artists/' +artist.artistSlug}
+                                          link={'/artists/' + artist.artistSlug}
                                     />
                               </div>
                         )}
                   </div>
+                 
             </PageLayout >
       );
 }
-
