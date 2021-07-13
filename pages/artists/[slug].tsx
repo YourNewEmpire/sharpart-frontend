@@ -11,8 +11,9 @@ const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
 
-      const updatedAt = new Date(artist.updatedAt)
 
+      const updatedAt = new Date(artist.updatedAt)
+      const createdAt = new Date(artist.createdAt)
       return (
             <>
                   <PageLayout>
@@ -22,7 +23,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         ">
                               <div className="rounded-full col-span-2 ">
                                     <div className="flex justify-center items-center ">
-                                          <img src={'/' + artist.artistName.toLowerCase() + '.png'} alt="" />
+                                          <img src={artist.artistImage.url} alt="" />
                                     </div>
                               </div>
 
@@ -53,6 +54,18 @@ export default function Artist({ artist }: { artist: IArtist }) {
                               </p>
                         </div>
                   </div>
+
+                  <div className='flex justify-center items-center
+                  text-th-primary-light text-xs md:text-sm lg:text-lg
+                  '>
+                        <CalendarIcon className='w-5 h-5' />
+                        <div className=' ml-2 lg:ml-4'>
+                              <p>
+                                    Created At
+                                    <span className='text-th-primary-medium'> {createdAt.toDateString()}</span>
+                              </p>
+                        </div>
+                  </div>
             </>
 
       )
@@ -70,6 +83,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             createdAt
             updatedAt
             artistDesc
+            artistImage {
+                  url
+            }
           }
         }
       `;
