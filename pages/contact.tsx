@@ -9,7 +9,7 @@ import Columns from '../components/Columns';
 todo - Add links for mail and discord. 
 todo - The mail button copies the mail address.
 todo - The discord button can open discord (classic).
-
+testing123
 */
 export default function Contact() {
   return (
