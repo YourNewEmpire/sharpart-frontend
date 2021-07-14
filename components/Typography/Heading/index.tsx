@@ -1,5 +1,5 @@
 import React from 'react'
-import { Childs } from '../../interfaces/childs'
+import { Childs } from '../../../interfaces/childs'
 
 interface Props extends Childs {
   title: string

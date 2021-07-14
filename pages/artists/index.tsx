@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       };
 };
 
-export default function Artists({ artists }: {artists: IArtist[]}) {
+export default function Artists({ artists }: { artists: IArtist[] }) {
 
       return (
             <PageLayout>
@@ -46,7 +46,6 @@ export default function Artists({ artists }: {artists: IArtist[]}) {
                               </div>
                         )}
                   </div>
-                 
             </PageLayout >
       );
 }
