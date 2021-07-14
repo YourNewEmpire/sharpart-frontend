@@ -1,15 +1,3 @@
-<<<<<<< Updated upstream
-import {FaDiscord} from 'react-icons/fa' ;
-
-// todo - Add discord and email links.
-export default function Contact() {
-  return (
-    <>
-      <div id="div1" className="flex items-center justify-center py-64 px-24">
-        <h1 className="text-6xl text-darkblue-100">Get in contact</h1>
-        <FaDiscord/>
-      </div>
-=======
 import Head from 'next/head'
 import { FaDiscord } from 'react-icons/fa';
 import { FiMail } from 'react-icons/fi'
@@ -34,7 +22,7 @@ export default function Contact() {
           </Columns>
         </Heading>
       </PageLayout>
->>>>>>> Stashed changes
+
     </>
   );
 }
