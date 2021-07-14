@@ -35,6 +35,7 @@ const MyApp = ({
   }, [])
 
  const router = useRouter()
+
   return (
     <MoralisProvider appId={moralisAppID} serverUrl={moralisServerUrl} >
       <ReduxContext store={store}>

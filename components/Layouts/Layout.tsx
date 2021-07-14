@@ -3,10 +3,19 @@ import "tailwindcss/tailwind.css";
 import Nav from '../Nav'
 import Head from 'next/head'
 import { Childs } from '../../interfaces/childs';
-
-
+import { useRouter } from 'next/dist/client/router';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css'
 
 export default function Layout({ children }: Childs): JSX.Element {
+
+      const router = useRouter()
+
+      useEffect(() => {
+            router.events.on('routeChangeStart' , () => NProgress.start() )
+            router.events.on('routeChangeComplete' , () => NProgress.done())
+            router.events.on('routeChangeError' , () => NProgress.done())
+      } ,[router.route])
 
       return (
             <div className=" bg-th-background min-h-full">
