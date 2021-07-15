@@ -12,8 +12,8 @@ const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 export default function Artist({ artist }: { artist: IArtist }) {
 
 
-      const updatedAt = new Date(artist.updatedAt)
-      const createdAt = new Date(artist.createdAt)
+      const updatedAt = new Date(artist.updatedAt).toDateString()
+      const createdAt = new Date(artist.createdAt).toDateString()
       return (
             <>
                   <PageLayout>
@@ -50,7 +50,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         <div className=' ml-2 lg:ml-4'>
                               <p>
                                     Updated At 
-                                    <span className='text-th-primary-medium'> {updatedAt.toDateString()}</span>
+                                    <span className='text-th-primary-medium'> {updatedAt}</span>
                               </p>
                         </div>
                   </div>
@@ -62,7 +62,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         <div className=' ml-2 lg:ml-4'>
                               <p>
                                     Created At
-                                    <span className='text-th-primary-medium'> {createdAt.toDateString()}</span>
+                                    <span className='text-th-primary-medium'> {createdAt}</span>
                               </p>
                         </div>
                   </div>
