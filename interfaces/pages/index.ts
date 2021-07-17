@@ -22,15 +22,17 @@ export interface EthOrbProps {
       ethHistoric: EthHistoric | null
 }
 
-export type artistImg = {
+export type asset = {
       url: string;
 
 }
+
 export interface IArtist {
       artistSlug: string;
       artistName: string;
       artistDesc: string;
       createdAt?: string;
       updatedAt?: string;
-      artistImage: artistImg;
+      artistImage: asset;
+      nft: asset[]
 }
