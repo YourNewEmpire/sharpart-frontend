@@ -62,7 +62,7 @@ module.exports = {
       } ,
       colors: {
         gray: colors.coolGray,
-        lightblue: colors.lightBlue,
+        lightblue: colors.sky,
         blue: colors.blue,
         red: colors.rose,
         pink: colors.pink,
