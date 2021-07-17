@@ -4,13 +4,14 @@ import { CalendarIcon } from '@heroicons/react/outline'
 import { IArtist } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
-
-
+import Columns from '../../components/Columns'
+import ReactAudioPlayer from 'react-audio-player';
 
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
 
+      console.log(artist.nft[0].url)
 
       const updatedAt = new Date(artist.updatedAt).toDateString()
       const createdAt = new Date(artist.createdAt).toDateString()
@@ -43,13 +44,18 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
 
                   </PageLayout>
+                  <div className='flex flex-col border-2'>
+
+                        <ReactAudioPlayer src={`${artist.nft[0].url}`} controls />
+                  </div>
+
                   <div className='flex justify-center items-center
                   text-th-primary-light text-xs md:text-sm lg:text-lg
                   '>
                         <CalendarIcon className='w-5 h-5' />
                         <div className=' ml-2 lg:ml-4'>
                               <p>
-                                    Updated At 
+                                    Updated At
                                     <span className='text-th-primary-medium'> {updatedAt}</span>
                               </p>
                         </div>
@@ -84,6 +90,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             updatedAt
             artistDesc
             artistImage {
+                  url
+            }
+            nft {
                   url
             }
           }
