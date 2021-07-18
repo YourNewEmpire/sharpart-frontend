@@ -11,7 +11,6 @@ const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
 
-
       const updatedAt = new Date(artist.updatedAt).toDateString()
       const createdAt = new Date(artist.createdAt).toDateString()
       return (
@@ -43,12 +42,33 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
 
                   </PageLayout>
-                  
-                  {artist.nft.length !== 0 &&
-                        <div className='flex flex-col border-2'>
-                              <ReactAudioPlayer src={`${artist.nft[0].url}`} controls />
+                  <PageLayout>
+                        <div>
+                              <Heading title="Artist Posts" hScreen={false}/>
+                              {artist.nft.length !== 0 &&
+                                    <div className='flex flex-col border-2'>
+                                          <ReactAudioPlayer src={`${artist.nft[0].url}`} controls />
+                                    </div>
+                              }
+                              {
+                                    artist.artistPosts.length !== 0 &&
+
+                                    artist.artistPosts.reverse().map((post, index) =>
+                                          <div key={index} className='ring-6 mt-2 md:mt-4 lg:mt-8'>
+                                                <p className="text-center text-base sm:text-lg lg:text-2xl 
+                                          text-th-primary-light  subpixel-antialiased                 
+                                          max-w-xs md:max-w-xl lg:max-w-2xl break-words
+                                    ">
+                                                      {post}
+                                                </p>
+                                          </div>
+
+                                    )
+
+                              }
                         </div>
-                  }
+                  </PageLayout>
+
 
                   <div className='flex justify-center items-center
                   text-th-primary-light text-xs md:text-sm lg:text-lg
@@ -90,12 +110,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             createdAt
             updatedAt
             artistDesc
+            artistPosts
             artistImage {
                   url
             }
             nft {
                   url
             }
+           
           }
         }
       `;

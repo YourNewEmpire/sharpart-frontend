@@ -35,4 +35,5 @@ export interface IArtist {
       updatedAt?: string;
       artistImage: asset;
       nft: asset[]
+      artistPosts: string[]
 }
