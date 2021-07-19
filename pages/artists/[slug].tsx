@@ -1,16 +1,17 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { GraphQLClient, gql } from "graphql-request";
 import { CalendarIcon } from '@heroicons/react/outline'
+import ReactAudioPlayer from 'react-audio-player';
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote, MDXRemoteSerializeResult, } from "next-mdx-remote";
 import { IArtist } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
-import Columns from '../../components/Columns'
-import ReactAudioPlayer from 'react-audio-player';
 
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
-
+      console.log(artist.source)
       const updatedAt = new Date(artist.updatedAt).toDateString()
       const createdAt = new Date(artist.createdAt).toDateString()
       return (
@@ -42,14 +43,15 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
 
                   </PageLayout>
+             
+                        <div>
+                              <MDXRemote {...artist.source} />
+                        </div>
+              
                   <PageLayout>
                         <div>
-                              <Heading title="Artist Posts" hScreen={false}/>
-                              {artist.nft.length !== 0 &&
-                                    <div className='flex flex-col border-2'>
-                                          <ReactAudioPlayer src={`${artist.nft[0].url}`} controls />
-                                    </div>
-                              }
+                              <Heading title="Artist Posts" hScreen={false} />
+
                               {
                                     artist.artistPosts.length !== 0 &&
 
@@ -65,6 +67,15 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
                                     )
 
+                              }
+                        </div>
+                        <div>
+                              <Heading title="Artist NFTs" hScreen={false} />
+
+                              {artist.nft.length !== 0 &&
+                                    <div className='flex flex-col border-2'>
+                                          <ReactAudioPlayer src={`${artist.nft[0].url}`} controls />
+                                    </div>
                               }
                         </div>
                   </PageLayout>
@@ -101,6 +112,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
 //* Secondly, get info about each path.
 export const getStaticProps: GetStaticProps = async ({ params }) => {
       const slug = params.slug as string;
+      let i: number;
 
       const query = gql`
         query Artist($slug: String!) {
@@ -111,6 +123,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             updatedAt
             artistDesc
             artistPosts
+            artistMarkdown
             artistImage {
                   url
             }
@@ -129,9 +142,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                   notFound: true,
             };
       }
+      const source = await serialize(data.artist.artistMarkdown[0])
+
 
       return {
-            props: { artist: { ...data.artist } },
+            props: { artist: { ...data.artist, source } },
             revalidate: 60 * 60,
       };
 };
