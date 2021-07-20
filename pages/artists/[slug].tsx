@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown'
 import { IArtist } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
-
+import gfm from 'remark-gfm'
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
@@ -45,19 +45,15 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
                   </PageLayout>
 
-            <Heading title='WIP zone' hScreen={false}/>
-<p className='text-th-accent-moralis'>
-none of this stuff works as expected. currently asking stack overflow 
-
-</p>
-                  <div className='border-2 border-red-500'>
+                  <Heading title='WIP zone' hScreen={false} />
+                  <p className='text-th-accent-moralis'>
+                        Arrays of markdown posts are not working yet, so just one markdown field for now.
+                        Also, the hyperlinks in the markdown arent working.
+                  </p>
+                  <article className='prose text-th-primary-light text-center bg-th-foreground border-2 border-red-500'>
                         <MDXRemote {...artist.source} />
-                  </div>
-                  <div className=' border-2 border-blue-500'>
-                        <ReactMarkdown>
-                              {artist.artistLinks}
-                        </ReactMarkdown>
-                  </div>
+                  </article>
+            
 
                   <PageLayout>
                         <div>
@@ -77,7 +73,6 @@ none of this stuff works as expected. currently asking stack overflow
                                           </div>
 
                                     )
-
                               }
                         </div>
                         <div>
@@ -154,10 +149,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             };
       }
 
-      const joined = data.artist.artistMarkdown.join(' ');
-      const source = await serialize(data.artist.artistMarkdown.join(' '))
-      console.log(source)
-
+      const source = await serialize(data.artist.artistMarkdown)
 
       return {
             props: { artist: { ...data.artist, source } },

@@ -34,7 +34,7 @@ export interface IArtist {
       createdAt?: string;
       updatedAt?: string;
       artistImage: asset;
-      artistMarkdown: string[]
+      artistMarkdown: string
       artistLinks: string
       nft: asset[]
       artistPosts: string[]
