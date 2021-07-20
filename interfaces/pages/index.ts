@@ -35,6 +35,7 @@ export interface IArtist {
       updatedAt?: string;
       artistImage: asset;
       artistMarkdown: string[]
+      artistLinks: string
       nft: asset[]
       artistPosts: string[]
       source: { compiledSource: string };

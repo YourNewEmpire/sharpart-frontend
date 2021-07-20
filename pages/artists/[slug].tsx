@@ -3,7 +3,8 @@ import { GraphQLClient, gql } from "graphql-request";
 import { CalendarIcon } from '@heroicons/react/outline'
 import ReactAudioPlayer from 'react-audio-player';
 import { serialize } from "next-mdx-remote/serialize";
-import { MDXRemote, MDXRemoteSerializeResult, } from "next-mdx-remote";
+import { MDXRemote } from "next-mdx-remote";
+import ReactMarkdown from 'react-markdown'
 import { IArtist } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
@@ -43,11 +44,21 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
 
                   </PageLayout>
-             
-                        <div>
-                              <MDXRemote {...artist.source} />
-                        </div>
-              
+
+            <Heading title='WIP zone' hScreen={false}/>
+<p className='text-th-accent-moralis'>
+none of this stuff works as expected. currently asking stack overflow 
+
+</p>
+                  <div className='border-2 border-red-500'>
+                        <MDXRemote {...artist.source} />
+                  </div>
+                  <div className=' border-2 border-blue-500'>
+                        <ReactMarkdown>
+                              {artist.artistLinks}
+                        </ReactMarkdown>
+                  </div>
+
                   <PageLayout>
                         <div>
                               <Heading title="Artist Posts" hScreen={false} />
@@ -112,7 +123,6 @@ export default function Artist({ artist }: { artist: IArtist }) {
 //* Secondly, get info about each path.
 export const getStaticProps: GetStaticProps = async ({ params }) => {
       const slug = params.slug as string;
-      let i: number;
 
       const query = gql`
         query Artist($slug: String!) {
@@ -122,6 +132,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             createdAt
             updatedAt
             artistDesc
+            artistLinks
             artistPosts
             artistMarkdown
             artistImage {
@@ -142,7 +153,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                   notFound: true,
             };
       }
-      const source = await serialize(data.artist.artistMarkdown[0])
+
+      const joined = data.artist.artistMarkdown.join(' ');
+      const source = await serialize(data.artist.artistMarkdown.join(' '))
+      console.log(source)
 
 
       return {
