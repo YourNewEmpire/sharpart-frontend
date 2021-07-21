@@ -118,7 +118,6 @@ export default function Artist({ artist }: { artist: IArtist }) {
 //* Secondly, get info about each path.
 export const getStaticProps: GetStaticProps = async ({ params }) => {
       const slug = params.slug as string;
-
       const query = gql`
         query Artist($slug: String!) {
           artist(where: { artistSlug: $slug }) {
@@ -148,7 +147,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                   notFound: true,
             };
       }
-
       const source = await serialize(data.artist.artistMarkdown)
 
       return {
