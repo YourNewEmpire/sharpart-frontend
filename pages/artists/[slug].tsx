@@ -4,11 +4,9 @@ import { CalendarIcon } from '@heroicons/react/outline'
 import ReactAudioPlayer from 'react-audio-player';
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-import ReactMarkdown from 'react-markdown'
 import { IArtist } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
-import gfm from 'remark-gfm'
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
