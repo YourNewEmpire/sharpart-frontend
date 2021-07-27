@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from 'axios'
 import { useInterval } from '../hooks/useInterval'
 import { gameTips } from "../lib/game/gameLib";
 import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
-import { priceLabels, historicLabels } from '../lib/charts/labels'
+import { priceLabels } from '../lib/charts/labels'
 import {
       selectGameWin,
       setError,
@@ -22,9 +22,9 @@ import Heading from '../components/Typography/Heading'
 import LineChart from '../components/Charts/LineChart'
 import NodeCard from '../components/Cards/NodeCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
-import Example from '../components/menu'
 import GameButtons from '../components/Game/Buttons/GameButtons'
 import Columns from '../components/Columns'
+import { toast, Zoom } from 'react-toastify'
 
 export const getServerSideProps: GetServerSideProps = async () => {
       const res = await fetch('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
@@ -84,13 +84,26 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                         console.log(res)
                   })
             }
-            */
+          
             // todo - Play around with moralis session object. 
             await axios.post('/api/playGame', {
                   user: address,
                   gameChoice: choice
             }).then(res => {
                   console.log(res)
+            })
+              */
+
+            toast.error('Just a preview', {
+                  position: "top-right",
+                  autoClose: 5000,
+                  transition: Zoom,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+
             })
       }
 
