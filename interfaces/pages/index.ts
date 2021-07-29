@@ -37,6 +37,6 @@ export interface IArtist {
       artistMarkdown: string
       artistLinks: string
       nft: asset[]
-      artistPosts: string[]
-      source: { compiledSource: string };
+      posts: { compiledSource: string };
+      links: { compiledSource: string };
 }

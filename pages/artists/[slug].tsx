@@ -4,13 +4,15 @@ import { CalendarIcon } from '@heroicons/react/outline'
 import ReactAudioPlayer from 'react-audio-player';
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
+import ReactMarkdown from 'react-markdown'
 import { IArtist } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
+import gfm from 'remark-gfm'
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
-      console.log(artist.source)
+      console.log(artist.posts)
       const updatedAt = new Date(artist.updatedAt).toDateString()
       const createdAt = new Date(artist.createdAt).toDateString()
       return (
@@ -49,30 +51,14 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         Also, the hyperlinks in the markdown arent working.
                   </p>
                   <article className='prose text-th-primary-light text-center bg-th-foreground border-2 border-red-500'>
-                        <MDXRemote {...artist.source} />
+                        <MDXRemote {...artist.posts} />
                   </article>
-            
 
+                  <article className='prose text-th-primary-light text-center bg-th-foreground border-2 border-green-500'>
+                        <MDXRemote {...artist.links} />
+
+                  </article>
                   <PageLayout>
-                        <div>
-                              <Heading title="Artist Posts" hScreen={false} />
-
-                              {
-                                    artist.artistPosts.length !== 0 &&
-
-                                    artist.artistPosts.reverse().map((post, index) =>
-                                          <div key={index} className='ring-6 mt-2 md:mt-4 lg:mt-8'>
-                                                <p className="text-center text-base sm:text-lg lg:text-2xl 
-                                          text-th-primary-light  subpixel-antialiased                 
-                                          max-w-xs md:max-w-xl lg:max-w-2xl break-words
-                                    ">
-                                                      {post}
-                                                </p>
-                                          </div>
-
-                                    )
-                              }
-                        </div>
                         <div>
                               <Heading title="Artist NFTs" hScreen={false} />
 
@@ -145,10 +131,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                   notFound: true,
             };
       }
-      const source = await serialize(data.artist.artistMarkdown)
+
+      const posts = await serialize(data.artist.artistMarkdown)
+      const links = await serialize(data.artist.artistLinks)
 
       return {
-            props: { artist: { ...data.artist, source } },
+            props: { artist: { ...data.artist, posts, links } },
             revalidate: 60 * 60,
       };
 };
