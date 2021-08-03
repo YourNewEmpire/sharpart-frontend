@@ -17,7 +17,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const currentPrice = getPrice.data.market_data.current_price.usd;
 
 
-      if(oldPrice)
       Moralis.initialize(APP_ID);
       Moralis.serverURL = SERVER_ID;
 
