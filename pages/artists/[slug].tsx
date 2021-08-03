@@ -54,7 +54,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         <MDXRemote {...artist.posts} />
                   </article>
 
-                  <article className='prose text-th-primary-light text-center bg-th-foreground border-2 border-green-500'>
+                  <article className='prose text-th-primary-light text-center bg-th-foreground border-2 border-blue-500'>
                         <MDXRemote {...artist.links} />
 
                   </article>
@@ -62,11 +62,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         <div>
                               <Heading title="Artist NFTs" hScreen={false} />
 
-                              {artist.nft.length !== 0 &&
-                                    <div className='flex flex-col border-2'>
-                                          <ReactAudioPlayer src={`${artist.nft[0].url}`} controls />
-                                    </div>
-                              }
+                        
                         </div>
                   </PageLayout>
 
@@ -114,9 +110,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             artistPosts
             artistMarkdown
             artistImage {
-                  url
-            }
-            nft {
                   url
             }
            
