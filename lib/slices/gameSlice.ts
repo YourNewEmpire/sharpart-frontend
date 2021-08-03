@@ -165,7 +165,7 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
 
 
 //? Game Action
-export const ethOrb = (user: string, price: number, gameChoice: boolean, userSign: string) => async (dispatch: Dispatch) => {
+export const ethOrb = (user: string, price: number, gameChoice: boolean) => async (dispatch: Dispatch) => {
       const APP_ID = process.env.NEXT_PUBLIC_MORALIS_APP_ID;
       const SERVER_ID = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
       Moralis.initialize(APP_ID);
@@ -183,12 +183,9 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean, userSig
 
 
       if (!user || price == 0 || gameChoice === null) {
-            console.log('no addres or what')
             dispatch(setError('no address, eth price, choice was found'))
       }
-      else if (!userSign) {
-            dispatch(setError('no user signature was passed into the fetch before posting'))
-      }
+
       dispatch(setLoading())
       setTimeout(async () => {
             //* new price fetch

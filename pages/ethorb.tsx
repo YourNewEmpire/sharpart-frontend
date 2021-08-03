@@ -131,7 +131,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
             }
             else {
                   //todo I should check this eth param works.
-                  dispatch(ethOrb(address, eth[eth.length - 1], choice, userSign))
+                  dispatch(ethOrb(address, eth[eth.length - 1], choice))
             }
       }
 
