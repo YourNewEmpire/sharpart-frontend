@@ -1,15 +1,14 @@
 
 import AlertCard from '../components/Cards/AlertCard'
 import Link from 'next/link';
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+
 import {
       selectAccount,
       setAccount,
       resetAccount,
 } from '../lib/slices/accountSlice';
 import { useMoralis } from "react-moralis";
-
 
 
 export default function EtherDapps() {
@@ -42,12 +41,13 @@ export default function EtherDapps() {
                                     text-center text-lg lg:text-4xl
                                     text-th-primary-light
                                     border-b-4 border-th-primary-medium
-                                    hover:border-transparent text-shadow-lg
+                                    hover:border-transparent text-shadow-md
                                     transition duration-300 ease-in-out hover:text-th-primary-medium
                                     transform hover:scale-110 
                                     ">
                                     Eth Orb Test - Play without MetaMask in a construction site.
                               </a>
+                              
                         </Link>
                   </div>
             )
@@ -63,7 +63,7 @@ export default function EtherDapps() {
                                     text-center text-lg lg:text-4xl
                                     text-th-primary-light
                                     border-b-4 border-th-primary-medium
-                                    hover:border-transparent text-shadow-lg
+                                    hover:border-transparent text-shadow-md
                                     transition duration-300 ease-in-out hover:text-th-primary-medium 
                                     transform scale hover:scale-110
                                     ">
@@ -76,7 +76,7 @@ export default function EtherDapps() {
                                     text-center text-lg lg:text-4xl
                                     text-th-primary-light
                                     border-b-4 border-th-primary-medium
-                                    hover:border-transparent text-shadow-lg
+                                    hover:border-transparent text-shadow-md
                                     transition duration-300 ease-in-out hover:text-th-primary-medium 
                                     transform  scale hover:scale-110
                                     
