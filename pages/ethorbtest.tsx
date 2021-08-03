@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMoralis } from 'react-moralis'
-import axios, { AxiosResponse } from 'axios'
+
 import { useInterval } from '../hooks/useInterval'
 import { gameTips } from "../lib/game/gameLib";
 import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
@@ -24,7 +24,6 @@ import NodeCard from '../components/Cards/NodeCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
 import GameButtons from '../components/Game/Buttons/GameButtons'
 import Columns from '../components/Columns'
-import { toast, Zoom } from 'react-toastify'
 
 export const getServerSideProps: GetServerSideProps = async () => {
       const res = await fetch('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
@@ -59,54 +58,15 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   console.log('no addres or what')
                   dispatch(setError('no address, eth price, choice was found'))
             }
-            else {
-                  await axios.post('/api/playGame', {
-                        user: address,
-                        gameChoice: choice
-                  }).then(res => {
-                        console.log(res)
-                  })
-            }
-      }
-
-      async function testGame() {
-
-            /*
-            if (!address || eth[eth.length - 1] == 0 || choice === null) {
-                  console.log('no addres or what')
-                  dispatch(setError('no address, eth price, choice was found'))
+            else if (!isAuthenticated) {
+                  //this shouldnt happen because the markup should be re-rendered.
+                  console.log('no auth data foound')
+                  dispatch(setError('User not authenticated'))
             }
             else {
-                  await axios.post('/api/playGame', {
-                        user: address,
-                        gameChoice: choice
-                  }).then(res => {
-                        console.log(res)
-                  })
+                  dispatch(ethOrb(address, eth[eth.length - 1], choice))
             }
-          
-            // todo - Play around with moralis session object. 
-            await axios.post('/api/playGame', {
-                  user: address,
-                  gameChoice: choice
-            }).then(res => {
-                  console.log(res)
-            })
-              */
-
-            toast.error('Just a preview', {
-                  position: "top-right",
-                  autoClose: 5000,
-                  transition: Zoom,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: false,
-                  draggable: true,
-                  progress: undefined,
-
-            })
       }
-
 
       const fetchEth = () => {
             dispatch(setPriceThunk())
@@ -115,8 +75,9 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       return (
             <PageLayout>
-                  <Columns cols='3'>
-                        <NodeCard >
+
+                  <Columns >
+                        <NodeCard>
                               <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
                               <ol className='list-roman break-words p-8 
                              text-left text-th-primary-light text:sm lg:text-lg 
@@ -129,13 +90,11 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
                               </ol>
                         </NodeCard>
-
                         <Heading
                               title='Test page.'
                               hScreen={false}
                               fontSize='text-xs md:text-lg lg:text-4xl'
                         />
-
                         <NodeCard>
                               <Heading
                                     title={`welcome 0xCH4D69...error`}
@@ -145,8 +104,44 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                         </NodeCard>
                   </Columns>
 
-                  <LineChart data={eth} labels={priceLabels}  />
-                  <GameButtons clickHandler={testGame} />
+                  <div className={`grid grid-cols-12 grid-flow-col gap-4 md:gap-8 lg:gap-12 mx-auto m-4 md:m-10 lg:m-16`}>
+                        <div className='col-span-2'>
+                              <NodeCard>
+                                    <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
+                                    <ol className='list-roman break-words p-8 
+                                          text-left text-th-primary-light text:sm lg:text-lg 
+                                    '>
+                                          {gameTips.map((tip, index) =>
+                                                <li key={index}>
+                                                      {tip}
+                                                </li>
+                                          )}
+
+                                    </ol>
+                              </NodeCard>
+                        </div>
+
+                        <div className='col-span-8'>
+                              <Heading
+                                    title='Test page.'
+                                    hScreen={false}
+                                    fontSize='text-xs md:text-lg lg:text-4xl'
+                              />
+                        </div>
+
+                        <div className='col-span-2'>
+                              <NodeCard>
+                                    <Heading
+                                          title={`welcome 0xCH4D69...error`}
+                                          fontSize='text-xs md:text-lg lg:text-3xl'
+                                          hScreen={false}
+                                    />
+                              </NodeCard>
+                        </div>
+                  </div>
+
+                  <LineChart data={eth} labels={priceLabels} />
+                  <GameButtons clickHandler={playGame} />
                   <UserScoreTable address={address} />
             </PageLayout>
       );
