@@ -105,7 +105,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   </Columns>
 
                   <div className={`grid grid-cols-12 grid-flow-col gap-4 md:gap-8 lg:gap-12 mx-auto m-4 md:m-10 lg:m-16`}>
-                        <div className='col-span-2'>
+                        <div className='col-span-3'>
                               <NodeCard>
                                     <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
                                     <ol className='list-roman break-words p-8 
@@ -121,21 +121,30 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                               </NodeCard>
                         </div>
 
-                        <div className='col-span-8'>
+                        <div className='col-span-6 '>
                               <Heading
                                     title='Test page.'
                                     hScreen={false}
-                                    fontSize='text-xs md:text-lg lg:text-4xl'
+                                    fontSize='text-xs md:text-lg lg:text-6xl'
                               />
                         </div>
 
-                        <div className='col-span-2'>
+                        <div className='col-span-3'>
                               <NodeCard>
                                     <Heading
                                           title={`welcome 0xCH4D69...error`}
                                           fontSize='text-xs md:text-lg lg:text-3xl'
                                           hScreen={false}
                                     />
+                                    <p className='text-th-primary-light text:sm lg:text-lg '>
+                                          wins
+                                    </p>
+                                    <p className='text-th-primary-light text:sm lg:text-lg '>
+                                          losses
+                                    </p>
+                                    <p className='text-th-primary-light text:sm lg:text-lg '>
+                                          win/loss ratio etc.
+                                    </p>
                               </NodeCard>
                         </div>
                   </div>

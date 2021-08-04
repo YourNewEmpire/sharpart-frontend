@@ -1,21 +1,12 @@
 
 import AlertCard from '../components/Cards/AlertCard'
 import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux'
-
-import {
-      selectAccount,
-      setAccount,
-      resetAccount,
-} from '../lib/slices/accountSlice';
 import { useMoralis } from "react-moralis";
 
 
 export default function EtherDapps() {
       //@ts-ignore
       const { authenticate, isAuthenticated, user } = useMoralis();
-      const dispatch = useDispatch();
-      const ethUser = useSelector(selectAccount)
       const ethAddress = user?.get('ethAddress')
 
 
@@ -47,8 +38,9 @@ export default function EtherDapps() {
                                     ">
                                     Eth Orb Test - Play without MetaMask in a construction site.
                               </a>
-                              
+
                         </Link>
+                  
                   </div>
             )
       }
@@ -71,19 +63,20 @@ export default function EtherDapps() {
                         </a>
                   </Link>
                   <Link href="/ethorbtest">
-                        <a className=" 
+                        <a className="
                                     subpixel-antialiased  rounded-md
                                     text-center text-lg lg:text-4xl
                                     text-th-primary-light
                                     border-b-4 border-th-primary-medium
                                     hover:border-transparent text-shadow-md
                                     transition duration-300 ease-in-out hover:text-th-primary-medium 
-                                    transform  scale hover:scale-110
+                                    transform scale hover:scale-110
                                     
                                     ">
-                              Eth Orb Test - Play without MetaMask.
+                              Eth Orb Test - Play without MetaMask
                         </a>
                   </Link>
+                  
             </div>
       );
 }
