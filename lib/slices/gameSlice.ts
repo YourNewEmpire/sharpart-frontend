@@ -2,7 +2,7 @@ import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
 import Moralis from 'moralis'
 import axios from 'axios';
-import { toast, Slide, Zoom } from "react-toastify";
+import { toast, Zoom } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { GameObject } from '../../interfaces/game';
 
@@ -193,11 +193,8 @@ export const ethOrb = (user: string, price: number, gameChoice: boolean) => asyn
             const newPrice = coinData.data.market_data.current_price.usd;
             console.log(newPrice, " newPrice log, now starting game logic")
 
-
             //? New idea
             //? Post api with oldPrice, gameChoice, user
-            //?
-
 
             //* GAME LOGIC
 

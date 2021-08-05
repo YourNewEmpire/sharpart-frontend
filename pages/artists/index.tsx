@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
+import { GraphQLClient, gql } from "graphql-request";
 import ImageLinkCard from '../../components/Cards/ImageLinkCard';
 import PageLayout from "../../components/Layouts/PageLayout";
-import { GraphQLClient, gql } from "graphql-request";
 import { IArtist } from '../../interfaces/pages';
 
 
