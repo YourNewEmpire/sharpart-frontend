@@ -11,9 +11,10 @@ import PageLayout from '../../components/Layouts/PageLayout';
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 export default function Artist({ artist }: { artist: IArtist }) {
-      console.log(artist.posts)
+
       const updatedAt = new Date(artist.updatedAt).toDateString()
       const createdAt = new Date(artist.createdAt).toDateString()
+      
       return (
             <>
                   <PageLayout>
