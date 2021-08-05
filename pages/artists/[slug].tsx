@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { GraphQLClient, gql } from "graphql-request";
 import { CalendarIcon } from '@heroicons/react/outline'
-import ReactAudioPlayer from 'react-audio-player';
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 import { IArtist } from '../../interfaces/pages'
@@ -112,11 +111,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             artistImage {
                   url
             }
+            nftAddress
            
           }
         }
       `;
 
+      //* fetch/serialize content from graphcms.
       const data: { artist: IArtist | null } = await client.request(query, { slug });
 
       if (!data.artist) {
@@ -128,6 +129,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const posts = await serialize(data.artist.artistMarkdown)
       const links = await serialize(data.artist.artistLinks)
 
+
+      //todo - Now I need to get the contract address array (data.artist.nftAddress) and .map
+      //todo - Copy the logic from accountSlice/setUris for help.
       return {
             props: { artist: { ...data.artist, posts, links } },
             revalidate: 60 * 60,
