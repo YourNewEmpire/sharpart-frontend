@@ -6,6 +6,8 @@ export type GasData = {
       fastest : number
       blockTime :number
       blockNumber :number
+      //? like standard but for eth.
+      average?: number
 }
 
 export interface EthHistoric {
