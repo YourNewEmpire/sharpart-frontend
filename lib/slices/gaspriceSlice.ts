@@ -4,12 +4,16 @@ import axios from 'axios';
 import { GasData } from '../../interfaces/pages'
 
 type GasDataState = {
-    polygon: GasData
+    matic: GasData
+    mumbai: GasData
+    eth: GasData
 
 }
 
 const initialState: GasDataState = {
-    polygon: null,
+    matic: null,
+    mumbai: null,
+    eth: null,
 }
 
 const gaspriceSlice = createSlice({
@@ -17,27 +21,61 @@ const gaspriceSlice = createSlice({
     initialState,
     reducers: {
         reset: (state) => {
-            state.polygon = null
+            state.matic = null
         },
-        setPolygon: (state, action) => {
-            return { ...state, polygon: action.payload }
+        setMatic: (state, action) => {
+            return { ...state, matic: action.payload }
         },
-
+        setMumbai: (state, action) => {
+            return { ...state, mumbai: action.payload }
+        },
+        setEth: (state, action) => {
+            return { ...state, eth: action.payload }
+        },
     },
 })
 
-export const selectGas = (state: CoreState) => state.gasprice.polygon
+export const selectMaticGas = (state: CoreState) => state.gasprice.matic
+export const selectMumbaiGas = (state: CoreState) => state.gasprice.mumbai
+export const selectEthGas = (state: CoreState) => state.gasprice.eth
 
 export const {
     reset,
-    setPolygon,
+    setMatic,
+    setMumbai,
+    setEth
 } = gaspriceSlice.actions
 
 
 export const setGasThunk = () => async (dispatch: Dispatch) => {
 
-    const coinData = await axios.get('https://gasstation-mainnet.matic.network');
-    dispatch(setPolygon(coinData.data))
+
+    async function getMatic() {
+        const coinData = await axios.get('https://gasstation-mainnet.matic.network');
+        return coinData.data
+    }
+    async function getEth() {
+        const coinData = await axios.get('https://ethgasstation.info/json/ethgasAPI.json');
+        const obj = {
+            safeLow: coinData.data.safeLow / 10,
+            fastest: coinData.data.fastest /10,
+            fast: coinData.data.fast /10,
+            average: coinData.data.average /10
+        }
+        return obj
+    }
+
+    /* //? Fetch Mumbai (cors error atm)
+        async function getMumbai() {
+            const coinData = await axios.get('https://gasstation-mumbai.matic.network');
+            return coinData.data
+        }
+    */
+    Promise.all([getMatic(), getEth()])
+        .then(function (results) {
+            dispatch(setMatic(results[0]));
+            dispatch(setEth(results[1]))
+        });
 }
 
 export default gaspriceSlice.reducer
