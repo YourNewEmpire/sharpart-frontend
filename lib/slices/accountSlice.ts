@@ -1,6 +1,5 @@
 import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
-import {abi}from '../../public/GameItem.json'
 import Web3 from 'web3';
 import { toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -125,7 +124,7 @@ export const setAccountThunk = () => async (dispatch: Dispatch) => {
       return 'done';
 
 }
-*/
+
 export const setUrisThunk = (user: string) => async (dispatch: Dispatch) => {
       //Array of URIs to be returned at end.
       let usersURIs: string[] = []
@@ -166,5 +165,5 @@ export const setUrisThunk = (user: string) => async (dispatch: Dispatch) => {
       dispatch(setUris(usersURIs))
 
 }
-
+*/
 export default accountSlice.reducer
