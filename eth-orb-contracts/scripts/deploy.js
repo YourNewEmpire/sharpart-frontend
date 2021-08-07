@@ -6,6 +6,7 @@
 const hre = require("hardhat");
 async function main() {
   const ethers = hre.ethers
+
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.
   //
