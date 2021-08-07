@@ -106,10 +106,16 @@ module.exports = {
 
       },
 
+      animation: {
+          bounce: 'bounce 3s infinite',
+          spin: 'spin 5s infinite linear'
+      }
     }
   },
   variants: {
-    extend: {},
+    extend: {
+     
+    },
   },
   plugins: [
     require('tailwindcss-textshadow'),
