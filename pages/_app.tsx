@@ -10,7 +10,6 @@ import Moralis from 'moralis'
 import { MoralisProvider } from "react-moralis";
 import store from '../src/store'
 import Layout from '../components/Layouts/Layout';
-
 import '../styles/globals.css'
 
 const moralisAppID = process.env.NEXT_PUBLIC_MORALIS_APP_ID

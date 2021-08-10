@@ -23,7 +23,7 @@ import LineChart from '../components/Charts/LineChart'
 import NodeCard from '../components/Cards/NodeCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
 import GameButtons from '../components/Game/Buttons/GameButtons'
-import Columns from '../components/Columns'
+import Columns from '../components/Layouts/Columns'
 
 export const getServerSideProps: GetServerSideProps = async () => {
       const res = await fetch('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')

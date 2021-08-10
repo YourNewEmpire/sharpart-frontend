@@ -25,6 +25,7 @@ export default function Home() {
       useEffect(() => {
             fetchGas()
       }, [])
+      
       useInterval(fetchGas, 10000)
 
       return (

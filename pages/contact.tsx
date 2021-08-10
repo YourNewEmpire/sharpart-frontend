@@ -3,7 +3,7 @@ import { FaDiscord } from 'react-icons/fa';
 import { FiMail } from 'react-icons/fi'
 import PageLayout from '../components/Layouts/PageLayout';
 import Heading from '../components/Typography/Heading';
-import Columns from '../components/Columns';
+import Columns from '../components/Layouts/Columns';
 
 /*
 todo - Add links for mail and discord. 
