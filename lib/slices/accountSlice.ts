@@ -41,12 +41,7 @@ const accountSlice = createSlice({
       },
 })
 
-/**
- * Extract count from root state
- *
- * @param   {Object} state The root state
- * @returns {number} The current count
- */
+
 export const selectAccount = (state: CoreState) => state.account.value
 export const selectUris = (state: CoreState) => state.account.uris
 export const selectError = (state: CoreState) => state.account.error
