@@ -6,14 +6,29 @@ import { MDXRemote } from "next-mdx-remote";
 import { IArtist } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
+import Web3 from 'web3';
+import fs from 'fs'
+import serverPath from '../../lib/helpers/serverPath';
 
+//*define new gql client for cms.
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
+
+const NFT_CONTRACT_ADDRESS = '0xbb21662c2ba070db869c94d475f78b9fa7273b0e'
+const API_KEY = process.env.MATIC_API_KEY;
+const MUMBAI = `https://rpc-mumbai.maticvigil.com/v1/${API_KEY}`
+const MATIC = `https://rpc-mainnet.maticvigil.com/v1/${API_KEY}`
+
+//?  1 - This page starts at the bottom, L46, with 'getStaticPaths', finding the amount of artists to make paths for.
+//?  2 - Then 'getStaticProps'  will query for artist data for each of those paths(artists)
+//?  3 - render the Page with react function 'Artist'
 
 export default function Artist({ artist }: { artist: IArtist }) {
 
       const updatedAt = new Date(artist.updatedAt).toDateString()
       const createdAt = new Date(artist.createdAt).toDateString()
-      
+
+      // todo - Read the nft metadata format from string, to render different components depending on the file type
+
       return (
             <>
                   <PageLayout>
@@ -39,31 +54,42 @@ export default function Artist({ artist }: { artist: IArtist }) {
                                     </Heading>
                               </div>
                         </div>
-
-
-
                   </PageLayout>
 
-                  <Heading title='WIP zone' hScreen={false} />
-                  <p className='text-th-accent-moralis'>
-                        Arrays of markdown posts are not working yet, so just one markdown field for now.
-                        Also, the hyperlinks in the markdown arent working.
-                  </p>
-                  <article className='prose text-th-primary-light text-center bg-th-foreground border-2 border-red-500'>
-                        <MDXRemote {...artist.posts} />
-                  </article>
-
-                  <article className='prose text-th-primary-light text-center bg-th-foreground border-2 border-blue-500'>
-                        <MDXRemote {...artist.links} />
-
-                  </article>
                   <PageLayout>
                         <div>
                               <Heading title="Artist NFTs" hScreen={false} />
-
-                        
                         </div>
                   </PageLayout>
+
+                  <PageLayout>
+                        <Heading title='Artist Posts' hScreen={false} />
+                        <p className='text-th-accent-moralis'>
+                              Arrays of markdown posts are not working yet, so just one markdown field for now.
+                        </p>
+                        {artist.artistMarkdown !== null ?
+                              <article className='prose text-th-primary-light text-center bg-th-foreground border-2 '>
+                                    <MDXRemote {...artist.posts} />
+                              </article>
+                              :
+                              <p className="text-center text-base sm:text-lg lg:text-2xl 
+                              text-th-primary-light  subpixel-antialiased                 
+                              max-w-xs md:max-w-xl lg:max-w-2xl break-words
+                              ">
+                                    No posts yet
+                              </p>
+                        }
+
+
+                  </PageLayout>
+
+                  <PageLayout>
+                        <Heading title='Artist Links' hScreen={false} />
+                        <article className='prose text-th-primary-light text-center bg-th-foreground border-2 '>
+                              <MDXRemote {...artist.links} />
+                        </article>
+                  </PageLayout>
+
 
 
                   <div className='flex justify-center items-center
@@ -126,12 +152,40 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             };
       }
 
-      const posts = await serialize(data.artist.artistMarkdown)
-      const links = await serialize(data.artist.artistLinks)
+      const posts = await serialize(data.artist.artistMarkdown);
+      const links = await serialize(data.artist.artistLinks);
+
+      const addressArray = data.artist.nftAddress;
 
 
-      //todo - Now I need to get the contract address array (data.artist.nftAddress) and .map
-      //todo - Copy the logic from accountSlice/setUris for help.
+      let tokenURIs = []
+      let i: number = null
+      const web3 = new Web3(new Web3.providers.HttpProvider(MATIC))
+
+      const contractPath = serverPath('./public/GameItem.json')
+      console.log(contractPath)
+      var parsed = JSON.parse(fs.readFileSync(contractPath.toString(), 'utf-8'));
+      var abi = parsed.abi;
+
+      const nftContract = new web3.eth.Contract(
+            abi,
+            NFT_CONTRACT_ADDRESS,
+      );
+
+      async function pushURIs(total: number) {
+            for (i = 1; i <= total; i++) {
+                  await nftContract.methods.tokenURI(i).call().then(res => {
+                        //todo - add these hashes to graph cms 
+                        const jsons = `https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/<index>.json`
+                        tokenURIs.push(`https://ipfs.io/ipfs/QmZqEKP3B1viwwbrq17JMaKstLAn9WBujpG8pTU5Q7hk18/${i}.mp3`)
+                  }
+                  )
+            }
+      };
+      await nftContract.methods.totalSupply().call().then(res => pushURIs(res))
+            .catch(error => console.log(error))
+
+   
       return {
             props: { artist: { ...data.artist, posts, links } },
             revalidate: 60 * 60,
