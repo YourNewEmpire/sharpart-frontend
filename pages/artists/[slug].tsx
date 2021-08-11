@@ -67,7 +67,6 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         {artist.nftMetadata.map((nft, index) => 
                               <div key={index}>
                                     <NftCard nft={nft}/>
-
                               </div>
 
                         )}
@@ -200,6 +199,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                         axios.get(`https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/${i}.json`).then(obj => {
                               console.log(obj.data)      
                               nftMetadata.push(obj.data)
+                        }).catch(err => {
+                              console.log(err)
                         })
                   }     
                   )
