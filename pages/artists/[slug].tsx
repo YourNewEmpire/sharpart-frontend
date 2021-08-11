@@ -3,12 +3,14 @@ import { GraphQLClient, gql } from "graphql-request";
 import { CalendarIcon } from '@heroicons/react/outline'
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-import { IArtist } from '../../interfaces/pages'
+import { IArtist, NftMetadata } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
 import Web3 from 'web3';
 import fs from 'fs'
 import serverPath from '../../lib/helpers/serverPath';
+import axios from 'axios';
+import NftCard from '../../components/Cards/ NftCard';
 
 //*define new gql client for cms.
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
@@ -28,7 +30,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
       const createdAt = new Date(artist.createdAt).toDateString()
 
       // todo - Read the nft metadata format from string, to render different components depending on the file type
-
+      console.log(artist.nftMetadata)
       return (
             <>
                   <PageLayout>
@@ -60,6 +62,17 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         <div>
                               <Heading title="Artist NFTs" hScreen={false} />
                         </div>
+
+                        <div>
+                        {artist.nftMetadata.map((nft, index) => 
+                              <div key={index}>
+                                    <NftCard nft={nft}/>
+
+                              </div>
+
+                        )}
+                        </div>
+                        
                   </PageLayout>
 
                   <PageLayout>
@@ -152,42 +165,55 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             };
       }
 
+      //? serialize the markdown. splitted for the frontend arrangement
       const posts = await serialize(data.artist.artistMarkdown);
       const links = await serialize(data.artist.artistLinks);
 
+      //?
       const addressArray = data.artist.nftAddress;
 
-
-      let tokenURIs = []
+      //? array of objects for token metadata for mapping in frontend.
+      //? number is for the for loop in pushURIs.
+      let nftMetadata: NftMetadata[] = []
       let i: number = null
+      
+      //* New web3 instance with matic provider
       const web3 = new Web3(new Web3.providers.HttpProvider(MATIC))
 
+      //* Parse ABI
       const contractPath = serverPath('./public/GameItem.json')
-      console.log(contractPath)
       var parsed = JSON.parse(fs.readFileSync(contractPath.toString(), 'utf-8'));
       var abi = parsed.abi;
-
+      
+      //* New contract from instance, passing the abi and address
       const nftContract = new web3.eth.Contract(
             abi,
             NFT_CONTRACT_ADDRESS,
       );
 
+      //todo - put json metadata in the cms?
+      //* Take the number and concatenate with the json metadata
       async function pushURIs(total: number) {
             for (i = 1; i <= total; i++) {
                   await nftContract.methods.tokenURI(i).call().then(res => {
                         //todo - add these hashes to graph cms 
-                        const jsons = `https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/<index>.json`
-                        tokenURIs.push(`https://ipfs.io/ipfs/QmZqEKP3B1viwwbrq17JMaKstLAn9WBujpG8pTU5Q7hk18/${i}.mp3`)
-                  }
+                        axios.get(`https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/${i}.json`).then(obj => {
+                              console.log(obj.data)      
+                              nftMetadata.push(obj.data)
+                        })
+                  }     
                   )
             }
       };
-      await nftContract.methods.totalSupply().call().then(res => pushURIs(res))
+
+      //* Call for the totalSupply (number) and pass it to the async function
+      await nftContract.methods.totalSupply().call().then(res => {
+            pushURIs(res)
+      })
             .catch(error => console.log(error))
 
-   
       return {
-            props: { artist: { ...data.artist, posts, links } },
+            props: { artist: { ...data.artist, posts, links, nftMetadata } },
             revalidate: 60 * 60,
       };
 };

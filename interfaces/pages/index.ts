@@ -1,11 +1,11 @@
 
 export type GasData = {
-      safeLow : number
-      standard : number
-      fast : number
-      fastest : number
-      blockTime :number
-      blockNumber :number
+      safeLow: number
+      standard: number
+      fast: number
+      fastest: number
+      blockTime: number
+      blockNumber: number
       //? like standard but for eth.
       average?: number
 }
@@ -26,7 +26,13 @@ export interface EthOrbProps {
 
 export type asset = {
       url: string;
+}
 
+export interface NftMetadata  {
+      name: string
+      description: string
+      animation_url?: string
+      image?: string
 }
 
 export interface IArtist {
@@ -39,6 +45,7 @@ export interface IArtist {
       artistMarkdown: string;
       artistLinks: string;
       nftAddress: string[];
+      nftMetadata: NftMetadata[];
       posts: { compiledSource: string };
       links: { compiledSource: string };
 }
