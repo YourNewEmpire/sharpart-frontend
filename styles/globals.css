@@ -5,7 +5,7 @@
 :root {
       --background: theme('colors.blue.50');
       --background-secondary: theme('colors.lightblue.900');
-      --foreground: theme('colors.lightblue.100');
+      --foreground: theme('colors.coolGray.200');
 
       --primary-dark: theme('colors.blue.800');
       --primary-medium: theme('colors.blue.400');
