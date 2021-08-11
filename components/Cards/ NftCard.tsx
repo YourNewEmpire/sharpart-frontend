@@ -12,13 +12,13 @@ export default function NftCard({ nft }: Props): JSX.Element {
 
     //const trimmedAudio = nft.animation_url.includes('mp3')
     const trimmedVideo = nft.animation_url.includes('mp4')
-
+    console.log(nft)
     console.log(trimmedVideo)
     //console.log(trimmedAudio)
     const isPlaying = true;
     return (
         <div>
-            hello
+            {nft.animation_url}
         </div>
     )
 }
