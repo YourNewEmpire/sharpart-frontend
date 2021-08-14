@@ -8,8 +8,10 @@ type listItem = {
       text: string,
       link: string
 }
+
 export const Nav = () => {
-      //nav items for map
+      //* nav items for map
+      //todo - Put into CMS.
       const listItems: listItem[] = [
             {
                   id: 1,
