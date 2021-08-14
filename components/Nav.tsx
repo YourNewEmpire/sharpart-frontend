@@ -32,9 +32,6 @@ export const Nav = () => {
 
       const { theme, setTheme } = useTheme()
 
-
-
-
       return (
             <div className="">
                   <nav className='
@@ -49,7 +46,7 @@ export const Nav = () => {
                               </a>
                         </Link>
                         <Link href='/'>
-                              <a className=' 
+                              <a className='
                               xl:inline-flex  xl:invisible visible  xl:w-0  w-auto p-2  xl:p-0  
                               xl:mr-0  items-center justify-center 
                               antialiased focus:outline-none text-th-primary-light
@@ -64,11 +61,11 @@ export const Nav = () => {
 
                         {listItems.map((listItem) =>
                               <Link key={listItem.id} href={`/` + listItem.link}><a className=' 
-                                                subpixel-antialiased text-xs md:text-base  lg:text-2xl
+                                                subpixel-antialiased text-xs md:text-base lg:text-2xl
                                                 md:h-auto inline-flex  md:w-auto 
                                                 px-2 py-2 font-bold items-center justify-center
                                                 md:px-6 md:py-4 lg:mx-4 md:mx-2 mx-0  
-                                                focus:outline-none 
+                                                focus:outline-none
                                                 text-th-primary-light
                                                 hover:shadow-lg rounded-lg transition duration-100 ease-in-out transform  hover:scale-110
                                                 '>
