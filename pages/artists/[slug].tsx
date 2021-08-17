@@ -64,14 +64,13 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         </div>
 
                         <div>
-                        {artist.nftMetadata.map((nft, index) => 
-                              <div key={index}>
-                                    <NftCard nft={nft}/>
-                              </div>
-
-                        )}
+                              {artist.nftMetadata.map((nft, index) =>
+                                    <div className='border-2' key={index}>
+                                          {nft.animation_url}
+                                    </div>
+                              )}
                         </div>
-                        
+
                   </PageLayout>
 
                   <PageLayout>
@@ -96,10 +95,19 @@ export default function Artist({ artist }: { artist: IArtist }) {
                   </PageLayout>
 
                   <PageLayout>
-                        <Heading title='Artist Links' hScreen={false} />
+                  <Heading title='Artist Links' hScreen={false} />
+                        {artist.artistLinks !== null ?
                         <article className='prose text-th-primary-light text-center bg-th-foreground border-2 '>
                               <MDXRemote {...artist.links} />
                         </article>
+                        :
+                        <p className="text-center text-base sm:text-lg lg:text-2xl 
+                        text-th-primary-light  subpixel-antialiased                 
+                        max-w-xs md:max-w-xl lg:max-w-2xl break-words
+                        ">
+                              No links yet
+                        </p>
+                        }
                   </PageLayout>
 
 
@@ -173,9 +181,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
       //? array of objects for token metadata for mapping in frontend.
       //? number is for the for loop in pushURIs.
-      let nftMetadata: NftMetadata[] = []
+      let nftMetadata = []
       let i: number = null
-      
+
       //* New web3 instance with matic provider
       const web3 = new Web3(new Web3.providers.HttpProvider(MATIC))
 
@@ -183,7 +191,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const contractPath = serverPath('./public/GameItem.json')
       var parsed = JSON.parse(fs.readFileSync(contractPath.toString(), 'utf-8'));
       var abi = parsed.abi;
-      
+
       //* New contract from instance, passing the abi and address
       const nftContract = new web3.eth.Contract(
             abi,
@@ -197,12 +205,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                   await nftContract.methods.tokenURI(i).call().then(res => {
                         //todo - add these hashes to graph cms 
                         axios.get(`https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/${i}.json`).then(obj => {
-                              console.log(obj.data)      
+                              console.log(obj.data)
                               nftMetadata.push(obj.data)
                         }).catch(err => {
                               console.log(err)
                         })
-                  }     
+                  }
                   )
             }
       };
@@ -213,6 +221,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       })
             .catch(error => console.log(error))
 
+      console.log(nftMetadata.length)
       return {
             props: { artist: { ...data.artist, posts, links, nftMetadata } },
             revalidate: 60 * 60,
@@ -229,6 +238,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
           }
         }
       `;
+
       const data = await client.request(query);
 
       return {

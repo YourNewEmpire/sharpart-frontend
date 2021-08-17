@@ -2,6 +2,7 @@ import React from 'react'
 import { ArtistCardProps } from '../../interfaces/cards'
 import Link from 'next/link'
 import ReactPlayer from 'react-player'
+import ReactAudioPlayer from 'react-audio-player'
 import { NftMetadata } from '../../interfaces/pages';
 
 interface Props {
@@ -17,8 +18,11 @@ export default function NftCard({ nft }: Props): JSX.Element {
     //console.log(trimmedAudio)
     const isPlaying = true;
     return (
-        <div>
-            {nft.animation_url}
+        <div className='border-2'>
+              <p className='text-th-accent-light'>
+              <ReactAudioPlayer src='https://ipfs.io/ipfs/QmZqEKP3B1viwwbrq17JMaKstLAn9WBujpG8pTU5Q7hk18/5.mp3'/>
+              </p>
+           
         </div>
     )
 }
