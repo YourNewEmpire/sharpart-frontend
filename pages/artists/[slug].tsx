@@ -10,8 +10,8 @@ import Web3 from 'web3';
 import fs from 'fs'
 import serverPath from '../../lib/helpers/serverPath';
 import axios from 'axios';
-import NftCard from '../../components/Cards/ NftCard';
-
+import NftCard from '../../components/Cards/NftCard';
+import NftCardCopy from "../../components/Cards/NftCardCopy";
 //*define new gql client for cms.
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
@@ -59,17 +59,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                   </PageLayout>
 
                   <PageLayout>
-                        <div>
                               <Heading title="Artist NFTs" hScreen={false} />
-                        </div>
-
-                        <div>
-                              {artist.nftMetadata.map((nft, index) =>
-                                    <div className='border-2' key={index}>
-                                          {nft.animation_url}
-                                    </div>
-                              )}
-                        </div>
 
                   </PageLayout>
 
@@ -79,7 +69,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                               Arrays of markdown posts are not working yet, so just one markdown field for now.
                         </p>
                         {artist.artistMarkdown !== null ?
-                              <article className='prose text-th-primary-light text-center bg-th-foreground border-2 '>
+                              <article className='prose text-th-primary-light text-center bg-th-foreground border-2 p-4'>
                                     <MDXRemote {...artist.posts} />
                               </article>
                               :
@@ -97,7 +87,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                   <PageLayout>
                   <Heading title='Artist Links' hScreen={false} />
                         {artist.artistLinks !== null ?
-                        <article className='prose text-th-primary-light text-center bg-th-foreground border-2 '>
+                        <article className='prose text-th-primary-light text-center bg-th-foreground border-2 p-4 '>
                               <MDXRemote {...artist.links} />
                         </article>
                         :
