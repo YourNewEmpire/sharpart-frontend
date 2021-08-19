@@ -11,7 +11,7 @@ import fs from 'fs'
 import serverPath from '../../lib/helpers/serverPath';
 import axios from 'axios';
 import NftCard from '../../components/Cards/NftCard';
-import NftCardCopy from "../../components/Cards/NftCardCopy";
+
 //*define new gql client for cms.
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
@@ -25,12 +25,10 @@ const MATIC = `https://rpc-mainnet.maticvigil.com/v1/${API_KEY}`
 //?  3 - render the Page with react function 'Artist'
 
 export default function Artist({ artist }: { artist: IArtist }) {
-
       const updatedAt = new Date(artist.updatedAt).toDateString()
       const createdAt = new Date(artist.createdAt).toDateString()
 
       // todo - Read the nft metadata format from string, to render different components depending on the file type
-      console.log(artist.nftMetadata)
       return (
             <>
                   <PageLayout>
@@ -59,8 +57,10 @@ export default function Artist({ artist }: { artist: IArtist }) {
                   </PageLayout>
 
                   <PageLayout>
-                              <Heading title="Artist NFTs" hScreen={false} />
+                        <Heading title="Artist NFTs" hScreen={false} />
+                        <div>
 
+                        </div>
                   </PageLayout>
 
                   <PageLayout>
@@ -85,18 +85,18 @@ export default function Artist({ artist }: { artist: IArtist }) {
                   </PageLayout>
 
                   <PageLayout>
-                  <Heading title='Artist Links' hScreen={false} />
+                        <Heading title='Artist Links' hScreen={false} />
                         {artist.artistLinks !== null ?
-                        <article className='prose text-th-primary-light text-center bg-th-foreground border-2 p-4 '>
-                              <MDXRemote {...artist.links} />
-                        </article>
-                        :
-                        <p className="text-center text-base sm:text-lg lg:text-2xl 
+                              <article className='prose text-th-primary-light text-center bg-th-foreground border-2 p-4 '>
+                                    <MDXRemote {...artist.links} />
+                              </article>
+                              :
+                              <p className="text-center text-base sm:text-lg lg:text-2xl 
                         text-th-primary-light  subpixel-antialiased                 
                         max-w-xs md:max-w-xl lg:max-w-2xl break-words
                         ">
-                              No links yet
-                        </p>
+                                    No links yet
+                              </p>
                         }
                   </PageLayout>
 
@@ -205,15 +205,19 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             }
       };
 
-      //* Call for the totalSupply (number) and pass it to the async function
-      await nftContract.methods.totalSupply().call().then(res => {
-            pushURIs(res)
-      })
-            .catch(error => console.log(error))
-
-      console.log(nftMetadata.length)
+      /* 
+        //* Call for the totalSupply (number) and pass it to the async function
+        
+        await nftContract.methods.totalSupply().call().then(res => {
+              pushURIs(res)
+        })
+              .catch(error => console.log(error))
+  
+  
+   console.log(nftMetadata.length)
+        */
       return {
-            props: { artist: { ...data.artist, posts, links, nftMetadata } },
+            props: { artist: { ...data.artist, posts, links } },
             revalidate: 60 * 60,
       };
 };
