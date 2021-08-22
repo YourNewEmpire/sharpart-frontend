@@ -4,7 +4,13 @@ import React from 'react'
 //? just data and labels for now.
 //? More options/props can be added down the pipeline
 
-function LineChart({ data, labels,}) {
+interface Props {
+      data: any
+      labels: string[]
+      steps?: number
+}
+
+function LineChart({ data, labels, steps}: Props) {
 
       const chartConfig = {
             labels: labels,
@@ -20,6 +26,11 @@ function LineChart({ data, labels,}) {
                   },
 
             ],
+            options: {
+                  y: {
+                        stepSize: steps
+                  }
+            }
       };
 
       return (

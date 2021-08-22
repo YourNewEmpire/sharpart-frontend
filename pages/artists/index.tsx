@@ -46,6 +46,6 @@ export default function Artists({ artists }: { artists: IArtist[] }) {
                               </div>
                         )}
                   </div>
-            </PageLayout >
+            </PageLayout>
       );
 }

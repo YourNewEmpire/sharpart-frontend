@@ -12,7 +12,7 @@ interface Props {
 export default function NftCard({ nft }: { nft: NftMetadata }): JSX.Element {
 
       //const trimmedAudio = nft.animation_url.includes('mp3')
-      console.log(nft)
+      console.log('NftCard log: ' +nft)
       //console.log(trimmedAudio)
       const isPlaying = true;
       return (

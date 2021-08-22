@@ -5,7 +5,6 @@ import axios from 'axios';
 
 type EtherPriceState = {
   value: number[]
-  
 }
 
 const initialState: EtherPriceState = {
