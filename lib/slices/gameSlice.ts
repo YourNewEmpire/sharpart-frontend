@@ -79,7 +79,7 @@ const gameSlice = createSlice({
                   return { ...state, choice: false }
             },
             resetChoice: (state) => {
-                  return {...state, choice: null }
+                  return { ...state, choice: null }
             },
             setGameSession: (state, action) => {
                   return { ...state, gameSession: action.payload }
@@ -126,17 +126,9 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
 
       let games: GameObject[] = []
 
-      if (!results) {
-            toast.info('No historic game results found', {
-                  position: "top-right",
-                  autoClose: 3000,
-                  transition: Zoom,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: false,
-                  draggable: true,
-                  progress: undefined,
-            })
+      if (results.length === 0) {
+            return dispatch(setError('No historic game results found'))
+            
       }
 
       for (let i = 0; i < results.length; i++) {
@@ -149,9 +141,9 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
             const date = object.get('createdAt').toDateString()
 
             let newGameObj: GameObject = {
-                  gameChoice: choice? 'Mooning' : 'Dropping',
+                  gameChoice: choice ? 'Mooning' : 'Dropping',
                   gameResult: result,
-                  gameWin: winOrLose? ' Victory' : 'Defeat ',
+                  gameWin: winOrLose ? ' Victory' : 'Defeat ',
                   oldPrice: oldPrice,
                   newPrice: newPrice,
                   gameDate: date
