@@ -1,11 +1,11 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMoralis } from 'react-moralis'
 
 import { useInterval } from '../hooks/useInterval'
 import { gameTips } from "../lib/game/gameLib";
 import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
-import { priceLabels } from '../lib/charts/labels'
+import { historicLabels, priceLabels } from '../lib/charts/labels'
 import {
       selectGameWin,
       setError,
@@ -24,16 +24,22 @@ import NodeCard from '../components/Cards/NodeCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
 import GameButtons from '../components/Game/Buttons/GameButtons'
 import Columns from '../components/Layouts/Columns'
+import axios from 'axios';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-      const res = await fetch('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
-      const ethHistoric = await res.json()
+export const getStaticProps: GetStaticProps = async () => {
+      const res = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
+      const ethHistoric = res.data.prices
 
       if (!ethHistoric) {
-            return null
+            return {
+                  props: {
+                        
+                  }
+            }
       }
       return {
             props: {
+                  revalidate: 86400,
                   ethHistoric,
             },
       }
@@ -49,8 +55,6 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const { isAuthenticated, user } = useMoralis()
       const address: string = user?.get('ethAddress')
       const authData = user?.get('authData')
-      const userSign = authData?.moralisEth.signature
-
 
       async function playGame() {
 
@@ -73,6 +77,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       }
       useInterval(fetchEth, 5000);
 
+     
       return (
             <PageLayout>
 
@@ -151,6 +156,9 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
                   <LineChart data={eth} labels={priceLabels} />
                   <GameButtons clickHandler={playGame} />
+                  <Heading title='Eth for 7 days' hScreen={false}/>
+                  <LineChart  data={ethHistoric} labels={historicLabels}/>
+
                   <UserScoreTable address={address} />
             </PageLayout>
       );
