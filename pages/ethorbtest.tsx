@@ -1,7 +1,8 @@
 import { GetStaticProps } from 'next'
+import {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMoralis } from 'react-moralis'
-
+import ProgressTimer from 'react-progress-timer';
 import { useInterval } from '../hooks/useInterval'
 import { gameTips } from "../lib/game/gameLib";
 import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
@@ -25,6 +26,7 @@ import UserScoreTable from "../components/Game/UserScoreTable";
 import GameButtons from '../components/Game/Buttons/GameButtons'
 import Columns from '../components/Layouts/Columns'
 import axios from 'axios';
+import { useEffect } from 'react';
 
 export const getStaticProps: GetStaticProps = async () => {
       const res = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
@@ -33,7 +35,7 @@ export const getStaticProps: GetStaticProps = async () => {
       if (!ethHistoric) {
             return {
                   props: {
-                        
+
                   }
             }
       }
@@ -55,7 +57,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const { isAuthenticated, user } = useMoralis()
       const address: string = user?.get('ethAddress')
       const authData = user?.get('authData')
-
+      const [percent, setPercent] = useState(0)
       async function playGame() {
 
             if (!address || eth[eth.length - 1] == 0 || choice === null) {
@@ -76,8 +78,10 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
             dispatch(setPriceThunk())
       }
       useInterval(fetchEth, 5000);
+useEffect(() => {
 
-     
+}, [gameLoading])
+      useInterval(() => setPercent(percent + 1), 1000)
       return (
             <PageLayout>
 
@@ -155,9 +159,13 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   </div>
 
                   <LineChart data={eth} labels={priceLabels} />
+                  <ProgressTimer
+                        percentage={percent}
+                  />
+
                   <GameButtons clickHandler={playGame} />
-                  <Heading title='Eth for 7 days' hScreen={false}/>
-                  <LineChart  data={ethHistoric} labels={historicLabels}/>
+                  <Heading title='Eth for 7 days' hScreen={false} />
+                  <LineChart data={ethHistoric} labels={historicLabels} />
 
                   <UserScoreTable address={address} />
             </PageLayout>
