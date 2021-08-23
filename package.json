@@ -17,7 +17,7 @@
     "framer-motion": "^4.1.17",
     "graphql": "^15.5.1",
     "graphql-request": "^3.4.0",
-    "moralis": "0.0.35",
+    "moralis": "0.0.30",
     "next": "^11.1.0",
     "next-images": "^1.7.0",
     "next-mdx-remote": "^3.0.4",

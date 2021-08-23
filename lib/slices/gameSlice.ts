@@ -1,6 +1,6 @@
 import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { CoreState } from '../../src/store'
-import Moralis from 'moralis'
+import Moralis from 'moralis/dist/moralis'
 import axios from 'axios';
 import { toast, Zoom } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';

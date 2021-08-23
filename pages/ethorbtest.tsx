@@ -1,19 +1,17 @@
 import { GetStaticProps } from 'next'
-import {useState} from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMoralis } from 'react-moralis'
-import ProgressTimer from 'react-progress-timer';
+import axios from 'axios';
 import { useInterval } from '../hooks/useInterval'
 import { gameTips } from "../lib/game/gameLib";
-import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
+import { selectPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
 import { historicLabels, priceLabels } from '../lib/charts/labels'
 import {
       selectGameWin,
       setError,
       selectChoice,
       ethOrb,
-      setChoiceUp,
-      setChoiceDown,
       selectLoading,
       selectGameResult,
 } from '../lib/slices/gameSlice';
@@ -25,9 +23,11 @@ import NodeCard from '../components/Cards/NodeCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
 import GameButtons from '../components/Game/Buttons/GameButtons'
 import Columns from '../components/Layouts/Columns'
-import axios from 'axios';
-import { useEffect } from 'react';
+import AlertCard from '../components/Cards/AlertCard'
+import MoralisAuth from '../components/Buttons/MoralisAuth'
 
+
+//* Here I am using GSP. This is because I want the daily ETH price for the last 7 days, including today. Revalidate every day.
 export const getStaticProps: GetStaticProps = async () => {
       const res = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
       const ethHistoric = res.data.prices
@@ -58,8 +58,8 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const address: string = user?.get('ethAddress')
       const authData = user?.get('authData')
       const [percent, setPercent] = useState(0)
-      async function playGame() {
 
+      async function playGame() {
             if (!address || eth[eth.length - 1] == 0 || choice === null) {
                   console.log('no addres or what')
                   dispatch(setError('no address, eth price, choice was found'))
@@ -74,14 +74,25 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
             }
       }
 
+      //*useInterval hook for calling the redux thunk, which fetchs the price with axios.
       const fetchEth = () => {
             dispatch(setPriceThunk())
       }
       useInterval(fetchEth, 5000);
-useEffect(() => {
 
-}, [gameLoading])
-      useInterval(() => setPercent(percent + 1), 1000)
+      //*Increment the bar
+      const incrementBar = () => {
+
+      }
+      /*
+      * prepping auth test
+      if (!isAuthenticated || !address) return (
+         <PageLayout>
+                  <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" failure />
+                  <MoralisAuth />
+</PageLayout>
+      )
+*/
       return (
             <PageLayout>
 
@@ -90,7 +101,7 @@ useEffect(() => {
                               <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
                               <ol className='list-roman break-words p-8 
                              text-left text-th-primary-light text:sm lg:text-lg 
-                             '>
+                              '>
                                     {gameTips.map((tip, index) =>
                                           <li key={index}>
                                                 {tip}
@@ -159,14 +170,9 @@ useEffect(() => {
                   </div>
 
                   <LineChart data={eth} labels={priceLabels} />
-                  <ProgressTimer
-                        percentage={percent}
-                  />
-
                   <GameButtons clickHandler={playGame} />
                   <Heading title='Eth for 7 days' hScreen={false} />
                   <LineChart data={ethHistoric} labels={historicLabels} />
-
                   <UserScoreTable address={address} />
             </PageLayout>
       );
