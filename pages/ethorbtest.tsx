@@ -80,9 +80,9 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       }
       useInterval(fetchEth, 5000);
 
-      //*Increment the bar
+      //* Increment the bar
       const incrementBar = () => {
-
+            //setBar +1
       }
       /*
       * prepping auth test
