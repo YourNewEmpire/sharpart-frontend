@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { FaDiscord } from 'react-icons/fa';
 import { RiMailOpenFill } from 'react-icons/ri'
+import copyToBoard from '../lib/helpers/copyToClipboard';
 import PageLayout from '../components/Layouts/PageLayout';
 import Heading from '../components/Typography/Heading';
 import Columns from '../components/Layouts/Columns';
-import copyToBoard from '../lib/helpers/copyToClipboard';
+import NodeCard from '../components/Cards/NodeCard';
+
 
 export default function Contact() {
       const [name, setName] = useState('')
@@ -22,6 +24,7 @@ export default function Contact() {
                   message
             }
 
+            //todo - I must validate the email. on server and client
             fetch('/api/contactApi', {
                   method: 'POST',
                   headers: {
@@ -73,18 +76,23 @@ export default function Contact() {
                                     </button>
                               </Columns>
                         </Heading>
-                        <form className=' flex flex-col space-y-4'>
+                        <NodeCard>
+                              <form className=' flex flex-col space-y-4 text-center'>
                                     < label htmlFor='name'>Name</label>
-                                    < input type='text' onChange={(e) => { setName(e.target.value) }} name='name'  />
+                                    < input type='text' onChange={(e) => { setName(e.target.value) }} name='name' />
 
                                     < label htmlFor='email'>Email</label>
-                                    < input type='email' onChange={(e) => { setEmail(e.target.value) }} name='email'  />
+                                    < input type='email' onChange={(e) => { setEmail(e.target.value) }} name='email' />
 
                                     < label htmlFor='message'>Message</label>
-                                    < input type='text' onChange={(e) => { setMessage(e.target.value) }} name='message'  />
+                                    < input type='text' onChange={(e) => { setMessage(e.target.value) }} name='message' />
 
-                              < input type='submit' onClick={(e) => { handleSubmit(e) }} />
-                        </form>
+                                    < input className='
+                                    outline-none focus:outline-none 
+                                    rounded-md
+                                    focus:ring-4 focus:ring-th-accent-info-light' type='submit' onClick={(e) => { handleSubmit(e) }} />
+                              </form>
+                        </NodeCard>
                   </PageLayout>
             </>
       );
