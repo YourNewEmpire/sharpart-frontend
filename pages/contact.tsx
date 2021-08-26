@@ -6,7 +6,8 @@ import PageLayout from '../components/Layouts/PageLayout';
 import Heading from '../components/Typography/Heading';
 import Columns from '../components/Layouts/Columns';
 import NodeCard from '../components/Cards/NodeCard';
-
+import { toast, Zoom } from 'react-toastify';
+import validateEmail from '../lib/helpers/validateEmail'
 
 export default function Contact() {
       const [name, setName] = useState('')
@@ -16,12 +17,34 @@ export default function Contact() {
 
       const handleSubmit = (e) => {
             e.preventDefault()
-            console.log('Sending')
-
             let data = {
                   name,
                   email,
                   message
+            }
+            if (!name || !email || !message) {
+                  return toast.error('missing creds', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        transition: Zoom,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                  })
+            }
+            if (!validateEmail(email)) {
+                  return toast.error('bad email', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        transition: Zoom,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                  })
             }
 
             //todo - I must validate the email. on server and client
@@ -33,9 +56,33 @@ export default function Contact() {
                   },
                   body: JSON.stringify(data)
             }).then((res) => {
-                  console.log('Response received')
                   if (res.status === 200) {
-                        console.log('Response succeeded!')
+                        toast.success('Success:' + res, {
+                              position: "top-right",
+                              autoClose: 3000,
+                              transition: Zoom,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: false,
+                              draggable: true,
+                              progress: undefined,
+                        })
+                        setSubmitted(true)
+                        setName('')
+                        setEmail('')
+                        setMessage('')
+                  }
+                  else {
+                        toast.info('failed with:' + res, {
+                              position: "top-right",
+                              autoClose: 3000,
+                              transition: Zoom,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: false,
+                              draggable: true,
+                              progress: undefined,
+                        })
                         setSubmitted(true)
                         setName('')
                         setEmail('')
@@ -76,23 +123,47 @@ export default function Contact() {
                                     </button>
                               </Columns>
                         </Heading>
-                        <NodeCard>
-                              <form className=' flex flex-col space-y-4 text-center'>
-                                    < label htmlFor='name'>Name</label>
-                                    < input type='text' onChange={(e) => { setName(e.target.value) }} name='name' />
+                        <div className='py-24 '>
+                              <NodeCard>
+                                    <form className=' flex flex-col space-y-4  text-center text-sm sm:text-base md:text-xl lg:text-2xl '>
+                                          < label className='text-th-primary-light' htmlFor='name'>Name</label>
+                                          < input
+                                                className='focus:outline-none 
+                                          text-th-primary-dark focus:bg-th-accent-light 
+                                          transition-colors duration-300 
+                                          ease-in-out bg-opacity-25 '
+                                                type='text' onChange={(e) => { setName(e.target.value) }} name='name' />
 
-                                    < label htmlFor='email'>Email</label>
-                                    < input type='email' onChange={(e) => { setEmail(e.target.value) }} name='email' />
+                                          < label className='text-th-primary-light' htmlFor='email'>Email</label>
+                                          < input
+                                                className='focus:outline-none 
+                                          text-th-primary-dark focus:bg-th-accent-light 
+                                          transition-colors duration-300 
+                                          ease-in-out bg-opacity-25 '
+                                                type='email' onChange={(e) => { setEmail(e.target.value) }} name='email' />
 
-                                    < label htmlFor='message'>Message</label>
-                                    < input type='text' onChange={(e) => { setMessage(e.target.value) }} name='message' />
+                                          < label className='text-th-primary-light' htmlFor='message'>Message</label>
+                                          < input
+                                                className='focus:outline-none 
+                                          text-th-primary-dark focus:bg-th-accent-light 
+                                          transition-colors duration-300 
+                                          ease-in-out bg-opacity-25 '
+                                                type='text' onChange={(e) => { setMessage(e.target.value) }} name='message' />
 
-                                    < input className='
-                                    outline-none focus:outline-none 
-                                    rounded-md
-                                    focus:ring-4 focus:ring-th-accent-info-light' type='submit' onClick={(e) => { handleSubmit(e) }} />
-                              </form>
-                        </NodeCard>
+                                          <button type='submit' onClick={(e) => { handleSubmit(e) }}
+                                                className='
+                                    bg-th-primary-light
+                                    hover:bg-th-accent-light
+                                    text-th-primary-dark
+                                    shadow-md hover:shadow-lg rounded-lg 
+                                    transition duration-300 ease-in-out
+                                    focus:outline-none 
+                                    focus:ring-2 ring-th-accent-light ' >
+                                                Submit
+                                          </button>
+                                    </form>
+                              </NodeCard>
+                        </div>
                   </PageLayout>
             </>
       );

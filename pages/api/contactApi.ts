@@ -1,10 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 let nodemailer = require('nodemailer')
+import validateEmail from '../../lib/helpers/validateEmail'
 
 const PASSWORD = process.env.MAIL_PW
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-console.log('started contact api')
+    console.log('started contact api')
+    if (!validateEmail(req.body.email)) {
+        return res.send('bad email')
+    }
     const transporter = nodemailer.createTransport({
         port: 465,
         host: "smtp.gmail.com",

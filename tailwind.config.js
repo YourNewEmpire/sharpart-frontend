@@ -108,7 +108,6 @@ module.exports = {
         'th-accent-moralis': 'var(--accent-moralis)',
 
       },
-
       animation: {
           bounce: 'bounce 3s infinite',
           spin: 'spin 5s infinite linear'
