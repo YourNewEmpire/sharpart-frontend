@@ -2,6 +2,7 @@
 import AlertCard from '../components/Cards/AlertCard'
 import Link from 'next/link';
 import { useMoralis } from "react-moralis";
+import MoralisAuth from '../components/Buttons/MoralisAuth';
 
 
 export default function EtherDapps() {
@@ -14,26 +15,16 @@ export default function EtherDapps() {
             return (
                   <div className="flex flex-col py-16 space-y-4 sm:space-y-10 lg:space-y-16 items-center justify-center ">
                         <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" failure />
-                        <button
-                              className=' 
-                              p-2 lg:p-4
-                              lg:text-3xl md:text-lg text-xs text-th-accent-moralis
-                              hover:shadow-lg rounded-lg transition duration-100 ease-in-out transform  hover:scale-110
-                              focus:outline-none '
-                              onClick={() => authenticate()}
-                        >
-                              Metamask/Moralis Authentication
-
-                        </button>
-
+                       <MoralisAuth/>
                         <Link href="/ethorbtest">
                               <a className=" 
                                     subpixel-antialiased  rounded-md
-                                    text-center text-lg lg:text-4xl
+                                    text-center text-xs md:text-base lg:text-3xl
                                     text-th-primary-light
                                     border-b-4 border-th-primary-medium
-                                    hover:border-transparent text-shadow-md
-                                    transition duration-300 ease-in-out hover:text-th-primary-medium
+                                    hover:border-transparent text-shadow-sm
+                                    transition duration-300 ease-in-out 
+                                    hover:text-th-primary-medium
                                     transform hover:scale-110 
                                     ">
                                     Eth Orb Test - Play without MetaMask in a construction site.
