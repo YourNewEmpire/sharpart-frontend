@@ -7,7 +7,6 @@ import {
 import Submit from './Submit'
 
 //TODO This totally needs optimising for more reusability.
-//? Just being introduced.
 
 export default function GameButtons({ clickHandler }): JSX.Element {
     const choice = useSelector(selectChoice)

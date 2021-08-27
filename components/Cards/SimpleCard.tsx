@@ -24,7 +24,7 @@ export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Elemen
             
             ">
                   <div className=" " >
-                        <p className=" text-center text-sm sm:text-base md:text-lg lg:text-3xl   text-th-primary-light text-shadow-md">
+                        <p className=" text-center text-sm sm:text-base md:text-lg lg:text-3xl text-th-primary-light text-shadow-md">
                               {title}
                         </p>
                   </div>
