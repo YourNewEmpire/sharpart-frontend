@@ -1,38 +1,47 @@
-import { useEffect } from 'react'
-import { GetServerSideProps } from 'next'
-import Moralis from 'moralis'
-import { useMoralis, } from 'react-moralis'
+
+import { GetStaticProps } from 'next'
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { Line } from 'react-chartjs-2'
+import { useMoralis, useMoralisQuery } from 'react-moralis'
+import Moralis from 'moralis/dist/moralis'
+import axios from 'axios';
+import Link from 'next/link';
 import { useInterval } from '../hooks/useInterval'
-import { selectPrice, setPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
+import { selectPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
 import {
       selectGameWin,
       setError,
       selectChoice,
       ethOrb,
-      setChoiceUp,
-      setChoiceDown,
       selectLoading,
       selectGameResult,
+      resetChoice,
 } from '../lib/slices/gameSlice';
+import { historicLabels, priceLabels } from '../lib/charts/labels'
+import { gameTips } from "../lib/game/gameLib";
 import { EthOrbProps } from '../interfaces/pages'
-import ModalCard from '../components/Cards/ModalCard';
-import SimpleCard from '../components/Cards/SimpleCard';
+import MoralisAuth from '../components/Buttons/MoralisAuth';
 import AlertCard from '../components/Cards/AlertCard'
 import UserScoreTable from "../components/Game/UserScoreTable";
 import PageLayout from "../components/Layouts/PageLayout";
 import Heading from '../components/Typography/Heading'
+import LineChart from '../components/Charts/LineChart'
+import NodeCard from '../components/Cards/NodeCard'
+import GameButtons from '../components/Game/Buttons/GameButtons'
+import { useState } from 'react';
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-      const res = await fetch('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
-      const ethHistoric = await res.json()
-
+//* Here I am using GSP. This is because I want the daily ETH price for the last 7 days, including today. Revalidate every day.
+export const getStaticProps: GetStaticProps = async () => {
+      const res = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
+      const ethHistoric = res.data.prices
       if (!ethHistoric) {
-            return null
+            return {
+                  props: {}
+            }
       }
       return {
             props: {
+                  revalidate: 86400,
                   ethHistoric,
             },
       }
@@ -45,80 +54,24 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const gameWin = useSelector(selectGameWin)
       const gameResult = useSelector(selectGameResult)
       const gameLoading = useSelector(selectLoading)
+      const MoralisResultsObj = Moralis.Object.extend("GameResults");
+      const query = new Moralis.Query(MoralisResultsObj)
 
-      //* object for Line chart from react-chartjs2
-      const ethPrices = {
-            labels: ['30 seconds ago', '25 seconds ago', '20 seconds ago', '15 seconds ago', '10 seconds ago', '5 seconds ago', 'Now'],
-            datasets: [
-                  {
-                        label: 'usd Price',
-                        data: eth,
-                        fill: false,
-                        backgroundColor: '#93C5FD',
-                        borderColor: '#3B82F6',
-                        pointBorderColor: '#93C5FD',
-                        yAxisID: 'y-axis-1',
-                  },
-
-            ],
-      };
-
-
-      const historicPrices = {
-            labels: ['5 days ago', '4 days ago', '3 days ago', '2 days ago', 'yesterday', 'today'],
-            datasets: [
-                  {
-                        label: 'Prices USD',
-                        data: ethHistoric?.prices,
-                        fill: false,
-                        backgroundColor: '#93C5FD',
-                        borderColor: '#3B82F6',
-                        pointBorderColor: '#93C5FD',
-                        yAxisID: 'y-axis-1',
-                  },
-
-            ],
-      };
-      const historicVolumes = {
-            labels: ['5 days ago', '4 days ago', '3 days ago', '2 days ago', 'yesterday', 'today'],
-            datasets: [
-                  {
-                        label: 'Volumes USD',
-                        data: ethHistoric?.total_volumes,
-                        fill: false,
-                        backgroundColor: '#93C5FD',
-                        borderColor: '#3B82F6',
-                        pointBorderColor: '#93C5FD',
-                        yAxisID: 'y-axis-1',
-                  },
-
-            ],
-      };
-      const historicMarketCaps = {
-            labels: ['5 days ago', '4 days ago', '3 days ago', '2 days ago', 'yesterday', 'today'],
-            datasets: [
-                  {
-                        label: 'Market Caps USD',
-                        data: ethHistoric?.market_caps,
-                        fill: false,
-                        backgroundColor: '#93C5FD',
-                        borderColor: '#3B82F6',
-                        pointBorderColor: '#93C5FD',
-                        yAxisID: 'y-axis-1',
-
-                  },
-
-            ],
-      };
+      //*test useState for testing moralis user query
+      const [gameLosses, setGameLosses] = useState()
       //* moralis state/hook
       const { isAuthenticated, user } = useMoralis()
+      /*
+      const { data: gameLosses, error, isLoading } = useMoralisQuery("GameResults", query =>
+            query
+                  .equalTo("ethAddress", user?.address)
+                  .equalTo("gameWin", false)
+
+      );
+      */
       const address: string = user?.get('ethAddress')
-      const authData = user?.get('authData')
-      const userSign = authData?.moralisEth.signature
 
       async function playGame() {
-
-            //todo - Post api route instead with same params
 
             if (!address || eth[eth.length - 1] == 0 || choice === null) {
                   console.log('no addres or what')
@@ -130,82 +83,95 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   dispatch(setError('User not authenticated'))
             }
             else {
-                  //todo I should check this eth param works.
+                  dispatch(resetChoice())
                   dispatch(ethOrb(address, eth[eth.length - 1], choice))
             }
       }
 
 
       const fetchEth = () => {
-
             dispatch(setPriceThunk())
       }
 
       useInterval(fetchEth, 5000);
 
 
-      /*
-      useEffect(() =>{
-            dispatch(setUrisThunk(address))
-      }, [user])
-*/
-      if (!isAuthenticated || !address) return (
-            <div className="flex items-center justify-center py-10">
+      if (!isAuthenticated ) return (
+            <PageLayout>
                   <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" failure />
-            </div>
+                  <MoralisAuth />
+                  <Link href="/ethorbtest">
+                        <a className=" 
+                                    subpixel-antialiased rounded-md
+                                    text-center text-xs md:text-base lg:text-3xl
+                                    text-th-primary-light
+                                    border-b-4 border-th-primary-medium
+                                    hover:border-transparent text-shadow-sm
+                                    transition duration-300 ease-in-out 
+                                    hover:text-th-primary-medium
+                                    transform hover:scale-110 
+                                    ">
+                              Eth Orb Test - {`(no results are saved, no metamask required)`}
+                        </a>
+
+                  </Link>
+            </PageLayout>
       )
 
-      //todo: rebuild layout
-      //todo: populate with game redux state neatly
       else return (
             <PageLayout>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-8 md:gap-16 lg:gap-32 ">
-                        <div className="flex flex-col items-center">
+                  <div className={`
+                  grid grid-cols-12 grid-flow-col gap-4 md:gap-8 lg:gap-12 
+                  justify-center items-center
+                  mx-auto m-4 md:m-10 lg:m-16
+                  `}>
+                        <div className='col-span-3'>
+                              <NodeCard>
+                                    <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
+                                    <ol className='list-roman break-words p-8 
+                                          text-left text-th-primary-light text:sm lg:text-lg 
+                                    '>
+                                          {gameTips.map((tip, index) =>
+                                                <li key={index}>
+                                                      {tip}
+                                                </li>
+                                          )}
 
-                              <SimpleCard title="Welcome" body={address} />
-
-
-
-                              {choice !== null && <button onClick={playGame} className='m-6 text-th-accent-success' >Play Game</button>}
-                              {gameLoading && <p className="text-th-primary-light" ><svg className="animate-spin h-5 w-5"> </svg> game is loading </p>}
-                              {gameResult && <AlertCard title={gameResult} body={gameWin ? 'Well Done Bro. You`re making a name for yourself now! :> ' : 'Unlucky chad...'} success={gameWin ? true : false} failure={!gameWin ? false : true} />}
+                                    </ol>
+                              </NodeCard>
                         </div>
-
-                        <ModalCard
-                              body="Where will the price (usd) of Eth be in 2 minutes? "
-                              action1={
-                                    <button
-                                          onClick={() => dispatch(setChoiceUp())}
-                                          className={choice === true ? ' p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-success  focus:outline-none   transition duration-300 ease-in-out'
-                                                : ' p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'}
-                                    >
-                                          Mooning
-                                    </button>
-                              }
-                              action2={
-                                    <button
-                                          onClick={() => dispatch(setChoiceDown())}
-                                          className={choice === false ? ' p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light rounded-lg bg-opacity-100 bg-th-accent-failure  focus:outline-none   transition duration-300 ease-in-out'
-                                                : ' p-2 text-center  text-xs md:text-sm lg:text-xl   text-th-primary-light  rounded-lg bg-opacity-0   focus:outline-none   transition duration-300 ease-in-out'}
-                                    >
-                                          Dropping
-                                    </button>
-                              }
-                        />
+                        <div className='col-span-6 '>
+                              <Heading
+                                    title='Test page.'
+                                    hScreen={false}
+                                    fontSize='text-xs md:text-lg lg:text-6xl'
+                              />
+                        </div>
+                        <div className='col-span-3'>
+                              <NodeCard>
+                                    <Heading
+                                          title={`Welcome ${address}`}
+                                          fontSize='text-xs md:text-lg lg:text-3xl'
+                                          hScreen={false}
+                                    />
+                                    <p className='text-th-primary-light text:sm lg:text-lg '>
+                                          wins
+                                    </p>
+                                    <p className='text-th-primary-light text:sm lg:text-lg '>
+                                          losses
+                                    </p>
+                                    <p className='text-th-primary-light text:sm lg:text-lg '>
+                                          win/loss ratio etc.
+                                    </p>
+                              </NodeCard>
+                        </div>
                   </div>
-                  <PageLayout>
-                        <Heading title="Ethereum Market Price in USD" hScreen={false} />
-                        <Line type="line" data={ethPrices} />
-                        <Heading title="Ethereum This Week" hScreen={false} />
-                        <p className="text-center text-base sm:text-xl lg:text-2xl text-th-primary-light text-shadow-md subpixel-antialiased ">
-                              This data is here to help you chad. Read.
-                        </p>
-                        <Line type="line" data={historicPrices} />
-                        <Line type="line" data={historicVolumes} />
-                        <Line type="line" data={historicMarketCaps} />
-                  </PageLayout>
+
+                  <LineChart data={eth} labels={priceLabels} />
+                  <GameButtons clickHandler={playGame} />
+                  <Heading title='Eth for 7 days' hScreen={false} />
+                  <LineChart data={ethHistoric} labels={historicLabels} />
                   <UserScoreTable address={address} />
             </PageLayout>
       );
-
 }

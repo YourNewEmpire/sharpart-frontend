@@ -25,6 +25,7 @@ import GameButtons from '../components/Game/Buttons/GameButtons'
 import Columns from '../components/Layouts/Columns'
 import AlertCard from '../components/Cards/AlertCard'
 import MoralisAuth from '../components/Buttons/MoralisAuth'
+import { toast, Zoom } from 'react-toastify';
 
 
 //* Here I am using GSP. This is because I want the daily ETH price for the last 7 days, including today. Revalidate every day.
@@ -70,7 +71,16 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   dispatch(setError('User not authenticated'))
             }
             else {
-                  dispatch(ethOrb(address, eth[eth.length - 1], choice))
+                  toast.info('Test Page', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        transition: Zoom,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                  })
             }
       }
 
@@ -95,36 +105,11 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 */
       return (
             <PageLayout>
-
-                  <Columns >
-                        <NodeCard>
-                              <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
-                              <ol className='list-roman break-words p-8 
-                             text-left text-th-primary-light text:sm lg:text-lg 
-                              '>
-                                    {gameTips.map((tip, index) =>
-                                          <li key={index}>
-                                                {tip}
-                                          </li>
-                                    )}
-
-                              </ol>
-                        </NodeCard>
-                        <Heading
-                              title='Test page.'
-                              hScreen={false}
-                              fontSize='text-xs md:text-lg lg:text-4xl'
-                        />
-                        <NodeCard>
-                              <Heading
-                                    title={`welcome 0xCH4D69...error`}
-                                    fontSize='text-xs md:text-lg lg:text-3xl'
-                                    hScreen={false}
-                              />
-                        </NodeCard>
-                  </Columns>
-
-                  <div className={`grid grid-cols-12 grid-flow-col gap-4 md:gap-8 lg:gap-12 mx-auto m-4 md:m-10 lg:m-16`}>
+                  <div className={`
+                  grid grid-cols-12 grid-flow-col gap-4 md:gap-8 lg:gap-12 
+                  justify-center items-center
+                  mx-auto m-4 md:m-10 lg:m-16
+                  `}>
                         <div className='col-span-3'>
                               <NodeCard>
                                     <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
