@@ -11,6 +11,7 @@ interface Props extends Childs {
 //? If there are NO children, just render a normal h1 with no margin and no subtitle('child')
 //? If there are children then yes, margin-bottom on the heading and children can be a subtitle or some react node
 
+//todo - change hScreen to optional prop. 
 export default function Heading({ title, hScreen, children, fontSize }: Props): JSX.Element {
 
   if (!children)
@@ -18,7 +19,7 @@ export default function Heading({ title, hScreen, children, fontSize }: Props): 
       <div className={`flex flex-col items-center justify-center ${hScreen ? 'h-screen' : 'h-auto'}  `}>
         <h1 className={`
         text-center ${fontSize? fontSize : 'text-xl sm:text-2xl lg:text-6xl '}
-        text-th-primary-medium text-shadow-md subpixel-antialiased 
+        text-th-primary-medium text-shadow-md subpixel-antialiased break-all
         `}>
           {title}
         </h1>
@@ -29,7 +30,7 @@ export default function Heading({ title, hScreen, children, fontSize }: Props): 
     <>
       <div className={`flex flex-col items-center justify-center ${hScreen ? 'h-screen' : 'h-auto'}  `}>
         <h1 className={`text-center ${fontSize? fontSize : 'text-xl sm:text-2xl lg:text-6xl '}
-        text-th-primary-medium text-shadow-md subpixel-antialiased mb-8 md:mb-14 lg:mb-20
+        text-th-primary-medium text-shadow-md subpixel-antialiased mb-8 md:mb-14 lg:mb-20 break-all
         `}>
           {title}
         </h1>
