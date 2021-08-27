@@ -7,10 +7,10 @@ import MoralisAuth from '../components/Buttons/MoralisAuth';
 
 export default function EtherDapps() {
       //@ts-ignore
-      const { authenticate, isAuthenticated, user } = useMoralis();
+      const { isAuthenticated, user } = useMoralis();
       const ethAddress = user?.get('ethAddress')
 
-
+      //? No Auth
       if (!isAuthenticated) {
             return (
                   <div className="flex flex-col py-16 space-y-4 sm:space-y-10 lg:space-y-16 items-center justify-center ">
@@ -27,7 +27,7 @@ export default function EtherDapps() {
                                     hover:text-th-primary-medium
                                     transform hover:scale-110 
                                     ">
-                                    Eth Orb Test - Play without MetaMask in a construction site.
+                                    Eth Orb Test - {`(no results are saved, no metamask required)`}
                               </a>
 
                         </Link>
@@ -35,36 +35,39 @@ export default function EtherDapps() {
                   </div>
             )
       }
+      //? Authed
       else return (
             <div className="flex flex-col py-16 space-y-4 sm:space-y-10 lg:space-y-16 items-center justify-center ">
 
-                  <AlertCard info title="You're all set" body={ethAddress}
+                  <AlertCard success title="You're all set" body={ethAddress}
                   />
                   <Link href="/ethorb">
                         <a className=" 
-                                    subpixel-antialiased  rounded-md
-                                    text-center text-lg lg:text-4xl
-                                    text-th-primary-light
-                                    border-b-4 border-th-primary-medium
-                                    hover:border-transparent text-shadow-md
-                                    transition duration-300 ease-in-out hover:text-th-primary-medium 
-                                    transform scale hover:scale-110
+                                subpixel-antialiased  rounded-md
+                                text-center text-xs md:text-base lg:text-3xl
+                                text-th-primary-light
+                                border-b-4 border-th-primary-medium
+                                hover:border-transparent text-shadow-sm
+                                transition duration-300 ease-in-out 
+                                hover:text-th-primary-medium
+                                transform hover:scale-110 
                                     ">
                               Eth Orb - Guess market movements.
                         </a>
                   </Link>
                   <Link href="/ethorbtest">
                         <a className="
-                                    subpixel-antialiased  rounded-md
-                                    text-center text-lg lg:text-4xl
-                                    text-th-primary-light
-                                    border-b-4 border-th-primary-medium
-                                    hover:border-transparent text-shadow-md
-                                    transition duration-300 ease-in-out hover:text-th-primary-medium 
-                                    transform scale hover:scale-110
+                             subpixel-antialiased  rounded-md
+                             text-center text-xs md:text-base lg:text-3xl
+                             text-th-primary-light
+                             border-b-4 border-th-primary-medium
+                             hover:border-transparent text-shadow-sm
+                             transition duration-300 ease-in-out 
+                             hover:text-th-primary-medium
+                             transform hover:scale-110 
                                     
                                     ">
-                              Eth Orb Test - Play without MetaMask
+                              Eth Orb Test - {`(no results are saved, no metamask required)`}
                         </a>
                   </Link>
                   
