@@ -1,6 +1,6 @@
 
 import { GetStaticProps } from 'next'
-import { useEffect } from 'react';
+import { useEffect , useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useMoralis, useMoralisQuery } from 'react-moralis'
 import Moralis from 'moralis/dist/moralis'
@@ -28,7 +28,6 @@ import Heading from '../components/Typography/Heading'
 import LineChart from '../components/Charts/LineChart'
 import NodeCard from '../components/Cards/NodeCard'
 import GameButtons from '../components/Game/Buttons/GameButtons'
-import { useState } from 'react';
 
 //* Here I am using GSP. This is because I want the daily ETH price for the last 7 days, including today. Revalidate every day.
 export const getStaticProps: GetStaticProps = async () => {
@@ -57,8 +56,6 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const MoralisResultsObj = Moralis.Object.extend("GameResults");
       const query = new Moralis.Query(MoralisResultsObj)
 
-      //*test useState for testing moralis user query
-      const [gameLosses, setGameLosses] = useState()
       //* moralis state/hook
       const { isAuthenticated, user } = useMoralis()
       /*
@@ -95,6 +92,8 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       useInterval(fetchEth, 5000);
 
+
+      //todo - Welcome 'address' needs styling work
 
       if (!isAuthenticated ) return (
             <PageLayout>
