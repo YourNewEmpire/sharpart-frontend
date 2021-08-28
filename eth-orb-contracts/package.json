@@ -11,10 +11,10 @@
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.4",
-    "hardhat": "^2.5.0"
+    "ethers": "^5.4.6",
+    "hardhat": "^2.6.1"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/contracts": "^4.0.0",
     "dotenv": "^10.0.0"
   }

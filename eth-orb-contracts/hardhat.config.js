@@ -14,7 +14,7 @@ const maticUrl = process.env.MATIC_API_KEY;
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-
+  defaultNetwork: "mumbai",
   solidity: {
     version: "0.8.0",
     settings: {
@@ -36,19 +36,14 @@ module.exports = {
     artifacts: "./artifacts"
   },
   networks: {
+
     mumbai: {
-      gas: 'auto',
-      gasPrice: 'auto',
-      chainId: 80001,
       url: `https://rpc-mumbai.maticvigil.com/v1/${maticUrl}`,
-      accounts: {mnemonic: privateKey}
+      accounts: [privateKey]
     },
     matic: {
-      gas: 'auto',
-      gasPrice: 'auto',
-      chainId: 137,
       url: `https://rpc-mainnet.maticvigil.com/v1/${maticUrl}`,
-      accounts: {mnemonic: privateKey}
+      accounts: [privateKey]
     },
   }
 };
