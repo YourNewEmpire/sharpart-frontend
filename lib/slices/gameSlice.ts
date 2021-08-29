@@ -11,6 +11,8 @@ type gameState = {
       gameWin: boolean
       gameResult: 'Mooned' | 'Dropped' | 'Held' | ''
       userResults: GameObject[]
+      userWins: GameObject[]
+      userLosses: GameObject[]
       loading: boolean
       error: string
       choice: boolean
@@ -20,6 +22,8 @@ type gameState = {
 const initialState: gameState = {
       gameWin: null,
       userResults: [],
+      userWins: [],
+      userLosses: [],
       loading: false,
       gameResult: '',
       error: '',
@@ -27,6 +31,7 @@ const initialState: gameState = {
       gameSession: null,
 }
 
+//todo - clean out this reducer. gameWin and gameSession and more are not used or old.
 const gameSlice = createSlice({
       name: 'game',
       initialState,
@@ -52,6 +57,12 @@ const gameSlice = createSlice({
                         progress: undefined,
                   })
                   return { ...state, userResults: action.payload }
+            },
+            setUserWins: (state, action) => {
+                  return { ...state, userWins: action.payload }
+            },
+            setUserLosses: (state, action) => {
+                  return { ...state, userLosses: action.payload }
             },
             setLoading: (state) => {
                   return { ...state, loading: true }
@@ -95,6 +106,8 @@ export const selectError = (state: CoreState) => state.game.error
 export const selectChoice = (state: CoreState) => state.game.choice
 export const selectLoading = (state: CoreState) => state.game.loading
 export const selectResults = (state: CoreState) => state.game.userResults
+export const selectWins = (state: CoreState) => state.game.userWins
+export const selectLosses = (state: CoreState) => state.game.userLosses
 
 //export actions
 export const {
@@ -107,30 +120,42 @@ export const {
       setChoiceDown,
       resetChoice,
       setUserResults,
+      setUserWins,
+      setUserLosses,
       setGameResult,
       setGameSession
 } = gameSlice.actions
 
-//* userScores please
+//? Fetch the users scores from Moralis db
 export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
-      //! must tidy up these vars
+      //todo - must tidy up these vars
       const APP_ID = process.env.NEXT_PUBLIC_MORALIS_APP_ID;
       const SERVER_ID = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL
       Moralis.initialize(APP_ID);
       Moralis.serverURL = SERVER_ID;
 
       const gameResultObj = Moralis.Object.extend("GameResults");
-      const query = new Moralis.Query(gameResultObj);
-      query.equalTo("ethAddress", user)
-      const results = await query.find()
+      const resultsQuery = new Moralis.Query(gameResultObj);
+      const winsQuery = new Moralis.Query(gameResultObj);
+      const lossesQuery = new Moralis.Query(gameResultObj);
+      resultsQuery.equalTo("ethAddress", user)
+      winsQuery.equalTo("ethAddress", user)
+      winsQuery.equalTo("gameWin", true)
+      lossesQuery.equalTo("ethAddress", user)
+      lossesQuery.equalTo("gameWin", false)
+      const results = await resultsQuery.find()
+      const wins = await winsQuery.find()
+      const losses = await lossesQuery.find()
 
+      //*Array to push results to 
       let games: GameObject[] = []
-
-      if (results.length === 0) {
+      let parsedWins: GameObject[] = []
+      let parsedLosses: GameObject[] = []
+      //* Check if it gets any results
+      if (results.length === 0 || wins.length === 0 || losses.length === 0) {
             return dispatch(setError('No historic game results found'))
-            
       }
-
+      //* For each result, process it and push it to games array.
       for (let i = 0; i < results.length; i++) {
             const object = results[i];
             const choice = object.get('gameChoice');
@@ -143,14 +168,30 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
             let newGameObj: GameObject = {
                   gameChoice: choice ? 'Mooning' : 'Dropping',
                   gameResult: result,
-                  gameWin: winOrLose ? ' Victory' : 'Defeat ',
+                  gameWin: winOrLose ,
                   oldPrice: oldPrice,
                   newPrice: newPrice,
                   gameDate: date
             }
+
+            //* Process the gameResult to save losses and wins into separate state.
+
+            //* Push res to array
             games.push(newGameObj)
+
       }
+   
+      //* Dispatch user results with games array.
+      const userWins = games.filter(game => game.gameWin == true)
+      const userLosses = games.filter(game => game.gameWin == false)
+      console.log('wins log' + userWins.length)
+      console.log('losses log' + userLosses.length)
+
       dispatch(setUserResults(games))
+      dispatch(setUserWins(userWins))
+      dispatch(setUserLosses(userLosses))
+console.log(userLosses)
+
 }
 
 

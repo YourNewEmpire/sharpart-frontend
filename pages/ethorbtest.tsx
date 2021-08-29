@@ -14,6 +14,7 @@ import {
       ethOrb,
       selectLoading,
       selectGameResult,
+      selectResults,
 } from '../lib/slices/gameSlice';
 import { EthOrbProps } from '../interfaces/pages'
 import PageLayout from "../components/Layouts/PageLayout";
@@ -52,12 +53,9 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const dispatch = useDispatch()
       const eth = useSelector(selectPrice)
       const choice = useSelector(selectChoice)
-      const gameWin = useSelector(selectGameWin)
-      const gameResult = useSelector(selectGameResult)
-      const gameLoading = useSelector(selectLoading)
+      const userResults = useSelector(selectResults)
       const { isAuthenticated, user } = useMoralis()
       const address: string = user?.get('ethAddress')
-      const authData = user?.get('authData')
       const [percent, setPercent] = useState(0)
 
       async function playGame() {
@@ -158,7 +156,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   <GameButtons clickHandler={playGame} />
                   <Heading title='Eth for 7 days' hScreen={false} />
                   <LineChart data={ethHistoric} labels={historicLabels} />
-                  <UserScoreTable address={address} />
+                  <UserScoreTable address={address}  />
             </PageLayout>
       );
 

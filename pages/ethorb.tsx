@@ -1,6 +1,6 @@
 
 import { GetStaticProps } from 'next'
-import { useEffect , useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useMoralis, useMoralisQuery } from 'react-moralis'
 import Moralis from 'moralis/dist/moralis'
@@ -16,6 +16,9 @@ import {
       selectLoading,
       selectGameResult,
       resetChoice,
+      selectResults,
+      selectWins,
+      selectLosses,
 } from '../lib/slices/gameSlice';
 import { historicLabels, priceLabels } from '../lib/charts/labels'
 import { gameTips } from "../lib/game/gameLib";
@@ -53,19 +56,15 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const gameWin = useSelector(selectGameWin)
       const gameResult = useSelector(selectGameResult)
       const gameLoading = useSelector(selectLoading)
-      const MoralisResultsObj = Moralis.Object.extend("GameResults");
-      const query = new Moralis.Query(MoralisResultsObj)
-
+      const userResults = useSelector(selectResults)
+      const userWins = useSelector(selectWins)
+      const winsLength = userWins.length + 1
+      const userLosses = useSelector(selectLosses)
+      const lossesLength = userLosses.length + 1
+      const winLossRatio = winsLength / lossesLength
       //* moralis state/hook
       const { isAuthenticated, user } = useMoralis()
-      /*
-      const { data: gameLosses, error, isLoading } = useMoralisQuery("GameResults", query =>
-            query
-                  .equalTo("ethAddress", user?.address)
-                  .equalTo("gameWin", false)
 
-      );
-      */
       const address: string = user?.get('ethAddress')
 
       async function playGame() {
@@ -95,7 +94,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
       //todo - Welcome 'address' needs styling work
 
-      if (!isAuthenticated ) return (
+      if (!isAuthenticated) return (
             <PageLayout>
                   <AlertCard title="Whoa There!" body="You require metamask to use these decentralised applications" failure />
                   <MoralisAuth />
@@ -154,13 +153,13 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                                           hScreen={false}
                                     />
                                     <p className='text-th-primary-light text:sm lg:text-lg '>
-                                          wins
+                                         Wins: {userWins.length + 1}
                                     </p>
                                     <p className='text-th-primary-light text:sm lg:text-lg '>
-                                          losses
+                                         Losses: {userLosses.length + 1}
                                     </p>
                                     <p className='text-th-primary-light text:sm lg:text-lg '>
-                                          win/loss ratio etc.
+                                         W/L Ratio: {winLossRatio.toFixed(3)}
                                     </p>
                               </NodeCard>
                         </div>
