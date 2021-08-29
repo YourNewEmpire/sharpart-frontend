@@ -28,20 +28,33 @@ module.exports = {
       },
       listStyleType: {
         none: 'none',
-  
+
         disc: 'disc',
-  
+
         decimal: 'decimal',
-  
+
         roman: 'upper-roman'
-      },  
+      },
+      scale: {
+        '25': '.25',
+        '50': '.5',
+        '75': '.75',
+        '90': '.9',
+        '95': '.95',
+        '100': '1',
+        '105': '1.05',
+        '110': '1.1',
+        '125': '1.25',
+        '150': '1.5',
+        '200': '2',
+      },
       borderRadius: {
         'none': '0',
         'sm': '0.125rem',
         DEFAULT: '0.25rem',
         DEFAULT: '4px',
         'md': '0.375rem',
-        '3xl' : '1rem' ,
+        '3xl': '1rem',
         '4xl': '2rem',
         'lg': '0.5rem',
         'full': '9999px',
@@ -55,10 +68,10 @@ module.exports = {
       backgroundImage: {
         'the-willy': "url('/head.png')",
         'bill': " url('https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg')",
-        'stygian' : "url('/stygian.png')",
+        'stygian': "url('/stygian.png')",
         'enso': "url('https://static.dezeen.com/uploads/2021/06/elon-musk-architect_dezeen_1704_col_0.jpg')",
-        'emerald-citizen' : "url('https://ipfs.io/ipfs/QmdpLLWDfgXJWvJyqydRwP6Dw8pFwrgn2ziZPAHosjWfCR')"
-      } ,
+        'emerald-citizen': "url('https://ipfs.io/ipfs/QmdpLLWDfgXJWvJyqydRwP6Dw8pFwrgn2ziZPAHosjWfCR')"
+      },
       colors: {
         coolGray: colors.coolGray,
         blueGray: colors.blueGray,
@@ -109,14 +122,14 @@ module.exports = {
 
       },
       animation: {
-          bounce: 'bounce 3s infinite',
-          spin: 'spin 5s infinite linear'
+        bounce: 'bounce 3s infinite',
+        spin: 'spin 5s infinite linear'
       }
     }
   },
   variants: {
     extend: {
-     
+
     },
   },
   plugins: [
