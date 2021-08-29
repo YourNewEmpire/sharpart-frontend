@@ -40,14 +40,11 @@ const MyApp = ({
       <ReduxContext store={store}>
         <ThemeProvider>
           <Layout>
-            <motion.div key={router.route} initial="pageInitial" animate="pageAnimate" variants={{
-              pageInitial: {
-                opacity: 0
-              },
-              pageAnimate: {
-                opacity: 1
-              },
-            }}>
+            <motion.div key={router.route} 
+            initial={{ opacity: 0 , translateX: -50 }}
+            animate={{ opacity: 1 , translateX: 0 }}
+            transition={{duration: 0.5}}
+            >
               <Component {...pageProps} />
             </motion.div>
             <ToastContainer />
