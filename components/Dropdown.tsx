@@ -10,12 +10,12 @@ export default function Dropdown({ title, options, clickHandler }) {
       return (
             <PageLayout styles='relative flex flex-col space-y-12
             justify-center items-center
-            p-2 md:p-4 lg:p-6 webkit-antialiased'>
+            p-6 webkit-antialiased'>
                   <Menu>
                         <Menu.Button className="
                         flex flex-row space-x-2
                         justify-center items-center
-                        lg:p-4 text-lg
+                        lg:p-4 text-xl
                         text-center text-th-primary-light 
                         bg-th-primary-medium rounded-md
                         shadow-md hover:shadow-lg
@@ -39,11 +39,11 @@ export default function Dropdown({ title, options, clickHandler }) {
                         >
 
                               <Menu.Items className="
-                              p-2 rounded-md
+                              p-2 rounded-md text-lg
                               absolute flex flex-col top-10 
                               bg-opacity-50 bg-th-primary-light 
                               text-center text-th-primary-dark
-                              text-xl
+                              
                               ">
                                     {options.map((item, index) =>
                                           <Menu.Item key={index}>
