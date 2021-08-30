@@ -49,7 +49,7 @@
       --background-secondary: theme('colors.blue.50');
       --foreground: theme('colors.blueGray.500');
 
-      --primary-dark: theme('colors.blue.600');
+      --primary-dark: theme('colors.blue.800');
       --primary-medium: theme('colors.blue.400');
       --primary-light: theme('colors.blue.200');
 
