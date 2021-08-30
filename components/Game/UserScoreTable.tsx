@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
+import { RefreshIcon } from '@heroicons/react/solid';
 import {
       selectResults,
       fetchUserScores,
@@ -8,7 +10,7 @@ import {
 } from '../../lib/slices/gameSlice';
 import Heading from "../Typography/Heading";
 import Dropdown from '../Dropdown'
-import { useState } from 'react';
+
 
 interface Props {
       address: string;
@@ -25,8 +27,8 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
       const userResults = useSelector(selectResults)
       const userWins = useSelector(selectWins)
       const userLosses = useSelector(selectLosses)
+      //* State and options for dropdown
       const [menuSelect, setMenu] = useState('Overall')
-      //todo - fix dropdown state issues
       const options = ['Overall', 'Wins' , 'Losses']
 
       
@@ -35,11 +37,12 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
       }
 
       return (
-            <div className="bg-th-background min-h-full">
+            <div className=" min-h-full">
                   <div className="
                         grid grid-flow-row gap-4 md:gap-12 lg:gap-20 
+                        p-2 md:p-4 lg:p-8
                         items-center justify-center
-                        bg-th-primary-dark rounded-lg p-2 md:p-4 lg:p-8">
+                        bg-th-primary-dark rounded-md">
                               
                         <Heading title="Trade Order History" hScreen={false} />
                         <div className='flex flex-row-reverse'>
@@ -58,15 +61,13 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
                                           <th className="text-center p-2 border-t-2 border-l-2 border-r-2 border-th-primary-light">date</th>
                                           <th className="text-center p-2 border-t-2 border-l-2 border-r-2 border-th-primary-light">
                                                 <button
-                                                      className='items-center lg:h-16 lg:w-16 w-6 h-6
+                                                      className=' flex justify-center items-center
                                           antialiased focus:outline-none text-th-primary-light
                                           hover:shadow-lg rounded-lg 
-                                          transition duration-100 ease-in-out transform  hover:scale-125 '
+                                          transition duration-200 ease-in-out transform hover:scale-125 '
                                                       onClick={() => fetchScores()}
                                                 >
-                                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                                      </svg>
+                                                     <RefreshIcon width={50} height={50} />
                                                 </button>
                                           </th>
                                     </tr>
