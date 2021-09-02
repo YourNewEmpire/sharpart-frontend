@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {
 
-      selectChoice,
+      selectChoice, selectLoading,
 
 } from '../../../lib/slices/gameSlice';
 
@@ -11,30 +11,32 @@ import {
 
 export default function Submit({ clickHandler }): JSX.Element {
       const choice = useSelector(selectChoice)
+      const loading = useSelector(selectLoading)
 
-      return (
+
+      if (choice === null) return (
+            <div className='flex items-center justify-center'>
+                  <button
+                        className={`
+                        p-4 lg:px-24 lg:py-12 text-center text-4xl text-th-primary-dark 
+                        bg-gradient-to-r from-th-primary-dark 
+                        via-th-primary-medium to-th-primary-light
+                        antialiased focus:outline-none opacity-20
+                        cursor-not-allowed
+                        ${loading ? 'animate-ping' : 'animate-none'}
+                        `}
+
+                  >
+                        Submit Order
+                  </button>
+            </div>
+      )
+      else return (
             <>
-                  {choice === null &&
-                        <div className='flex items-center justify-center'>
 
-                              <button
-                                    className={`
-                              p-4 lg:px-24 lg:py-12 text-center text-4xl text-th-primary-dark 
-                              bg-gradient-to-r from-th-primary-dark via-th-primary-medium to-th-primary-light
-                              antialiased focus:outline-none opacity-20
-                              `}
-
-                              >
-                                    Submit Order
-                              </button>
-
-                        </div>
-                  }
-                  {choice !== null &&
-                        <div className='flex items-center justify-center'>
-
-                              <button
-                                    className={`
+                  <div className='flex items-center justify-center'>
+                        <button
+                              className={`
                               p-4 lg:px-24 lg:py-12 text-center text-4xl 
                               text-th-primary-dark 
                               bg-gradient-to-r from-th-primary-dark via-th-primary-medium to-th-primary-light
@@ -42,14 +44,15 @@ export default function Submit({ clickHandler }): JSX.Element {
                               transform  hover:scale-110
                               transition duration-300 ease-in-out
                               antialiased focus:outline-none
+                              
+                              ${loading ? 'animate-ping' : 'animate-none'}
                               `}
-                                    onClick={clickHandler}
-                              >
-                                    Submit Order
-                              </button>
+                              onClick={clickHandler}
+                        >
+                              Submit Order
+                        </button>
+                  </div>
 
-                        </div>
-                  }
             </>
       )
 }
