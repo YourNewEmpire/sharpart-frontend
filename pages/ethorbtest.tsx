@@ -29,6 +29,11 @@ import MoralisAuth from '../components/Buttons/MoralisAuth'
 import { toast, Zoom } from 'react-toastify';
 
 
+
+/* 
+      todo: Create new moralis table for testing new game idea. Check how long since their guess 
+      todo: Test ssr with user address to 
+*/
 //* Here I am using GSP. This is because I want the daily ETH price for the last 7 days, including today. Revalidate every day.
 export const getStaticProps: GetStaticProps = async () => {
       const res = await axios.get('https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=6&interval=daily')
