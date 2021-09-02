@@ -31,10 +31,7 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
       const [menuSelect, setMenu] = useState('Overall')
       const options = ['Overall', 'Wins' , 'Losses']
 
-      
-      const fetchScores = () => {
-            dispatch(fetchUserScores(address))
-      }
+     
 
       return (
             <div className=" min-h-full">
@@ -65,7 +62,7 @@ export default function UserScoreTable({ address }: Props): JSX.Element {
                                           antialiased focus:outline-none text-th-primary-light
                                           hover:shadow-lg rounded-lg 
                                           transition duration-200 ease-in-out transform hover:scale-125 '
-                                                      onClick={() => fetchScores()}
+                                                      onClick={() => fetchUserScores(address)}
                                                 >
                                                      <RefreshIcon width={50} height={50} />
                                                 </button>
