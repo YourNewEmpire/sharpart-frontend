@@ -164,7 +164,7 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
             const oldPrice = object.get('oldEthPrice');
             const newPrice = object.get('newEthPrice');
             const date = object.get('createdAt').toDateString()
-
+            const unparsedDate = object.get('createdAt')
             let newGameObj: GameObject = {
                   gameChoice: choice ? 'Mooning' : 'Dropping',
                   gameResult: result,
@@ -190,7 +190,7 @@ export const fetchUserScores = (user: string) => async (dispatch: Dispatch) => {
       dispatch(setUserResults(games))
       dispatch(setUserWins(userWins))
       dispatch(setUserLosses(userLosses))
-console.log(userLosses)
+
 
 }
 
