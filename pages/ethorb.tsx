@@ -6,6 +6,7 @@ import { useMoralis, useMoralisQuery } from 'react-moralis'
 import Moralis from 'moralis/dist/moralis'
 import axios from 'axios';
 import Link from 'next/link';
+import { RefreshIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { useInterval } from '../hooks/useInterval'
 import { selectPrice, setPriceThunk } from '../lib/slices/ethpriceSlice'
 import {
@@ -13,6 +14,7 @@ import {
       setError,
       selectChoice,
       ethOrb,
+      fetchUserScores,
       selectLoading,
       selectGameResult,
       resetChoice,
@@ -58,10 +60,10 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
       const gameLoading = useSelector(selectLoading)
       const userResults = useSelector(selectResults)
       const userWins = useSelector(selectWins)
-      const winsLength = userWins.length + 1
+      const winsLength = userWins.length
       const userLosses = useSelector(selectLosses)
-      const lossesLength = userLosses.length + 1
-      const winLossRatio = winsLength / lossesLength
+      const lossesLength = userLosses.length
+      const winLossRatio = winsLength / lossesLength ? winsLength / lossesLength : 0
       //* moralis state/hook
       const { isAuthenticated, user } = useMoralis()
 
@@ -148,19 +150,41 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                         <div className='col-span-3'>
                               <NodeCard>
                                     <Heading
-                                          title={`Welcome ${address}`}
+                                          title='Welcome'
                                           fontSize='text-xs md:text-lg lg:text-3xl'
                                           hScreen={false}
                                     />
+                                          <a target='_blank' href={`https://etherscan.io/address/${address}`} className=' 
+                                          break-all text-base 
+                                          text-th-primary-light font-normal
+                                          subpixel-antialiased
+                                          transition duration-300 ease-in-out
+                                          hover:text-th-primary-medium
+                                          transform hover:scale-110
+                                          
+                                          '>
+                                                {address}
+                                                <ExternalLinkIcon className='inline-flex antialiased'  width={30} height={30}/>
+                                          </a>
+                                   
                                     <p className='text-th-primary-light text:sm lg:text-lg '>
-                                         Wins: {userWins.length + 1}
+                                          Wins: {userWins.length}
                                     </p>
                                     <p className='text-th-primary-light text:sm lg:text-lg '>
-                                         Losses: {userLosses.length + 1}
+                                          Losses: {userLosses.length}
                                     </p>
                                     <p className='text-th-primary-light text:sm lg:text-lg '>
-                                         W/L Ratio: {winLossRatio.toFixed(3)}
+                                          W/L Ratio: {winLossRatio.toFixed(2)}
                                     </p>
+                                    <button
+                                          className=' flex justify-center items-center
+                                          antialiased focus:outline-none text-th-primary-light
+                                          hover:shadow-lg rounded-lg 
+                                          transition duration-200 ease-in-out transform hover:scale-125 '
+                                          onClick={() => dispatch(fetchUserScores(address))}
+                                    >
+                                          <RefreshIcon width={50} height={50} />
+                                    </button>
                               </NodeCard>
                         </div>
                   </div>
