@@ -9,17 +9,24 @@ interface Props {
       nft: NftMetadata
 }
 
+
+
+//todo - Determine what file type the nft is to render the corresponding player comp.
+
+
+// Many ways to do this
+
 export default function NftCard({ nft }: { nft: NftMetadata }): JSX.Element {
 
-      //const trimmedAudio = nft.animation_url.includes('mp3')
-      console.log('NftCard log: ' +nft)
-      //console.log(trimmedAudio)
+//const trimmedAudio = nft.animation_url.includes('mp3')
+//console.log(trimmedAudio)
       const isPlaying = true;
       return (
             <div className='border-2'>
 
                   <ReactAudioPlayer
                         controls
+                        controlsList='nodownload'
                         src={nft.animation_url}
                   />
             </div>

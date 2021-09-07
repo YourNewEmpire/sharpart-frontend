@@ -19,6 +19,7 @@ export default function NftCardCopy(): JSX.Element {
 
                   <ReactAudioPlayer
                         controls
+                        controlsList='nodownload'
                         src='https://ipfs.io/ipfs/QmZqEKP3B1viwwbrq17JMaKstLAn9WBujpG8pTU5Q7hk18/5.mp3'
                   />
 

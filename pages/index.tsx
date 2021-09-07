@@ -12,6 +12,7 @@ import {
 } from '../lib/slices/gaspriceSlice';
 import PolygonImg from '../public/polygon-png.png'
 import EthImg from '../public/eth.png';
+import NftCardCopy from "../components/Cards/NftCardCopy";
 
 export default function Home() {
 
@@ -74,6 +75,7 @@ export default function Home() {
                               </p>
                         </Heading>
                   </div>
+
 
             </>
       );
