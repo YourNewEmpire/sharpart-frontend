@@ -15,6 +15,8 @@ import NftCard from '../../components/Cards/NftCard';
 //*define new gql client for cms.
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
+
+//todo - hard coded for now but i should be getting this from cms
 const NFT_CONTRACT_ADDRESS = '0xbb21662c2ba070db869c94d475f78b9fa7273b0e'
 const API_KEY = process.env.MATIC_API_KEY;
 const MUMBAI = `https://rpc-mumbai.maticvigil.com/v1/${API_KEY}`
@@ -28,7 +30,12 @@ export default function Artist({ artist }: { artist: IArtist }) {
       const updatedAt = new Date(artist.updatedAt).toDateString()
       const createdAt = new Date(artist.createdAt).toDateString()
 
-      // todo - Read the nft metadata format from string, to render different components depending on the file type
+
+      //* array of nfts for testing
+
+
+
+
       return (
             <>
                   <PageLayout>
@@ -59,7 +66,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                   <PageLayout>
                         <Heading title="Artist NFTs" hScreen={false} />
                         <div>
-
+                              
                         </div>
                   </PageLayout>
 
@@ -171,7 +178,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
       //? array of objects for token metadata for mapping in frontend.
       //? number is for the for loop in pushURIs.
-      let nftMetadata = []
+      let nftMetadata: NftMetadata[] = []
       let i: number = null
 
       //* New web3 instance with matic provider
@@ -185,18 +192,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       //* New contract from instance, passing the abi and address
       const nftContract = new web3.eth.Contract(
             abi,
-            NFT_CONTRACT_ADDRESS,
+            addressArray[0],
       );
 
-      //todo - put json metadata in the cms?
       //* Take the number and concatenate with the json metadata
       async function pushURIs(total: number) {
             for (i = 1; i <= total; i++) {
                   await nftContract.methods.tokenURI(i).call().then(res => {
                         //todo - add these hashes to graph cms 
                         axios.get(`https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/${i}.json`).then(obj => {
-                              console.log(obj.data)
                               nftMetadata.push(obj.data)
+                              console.log(obj.data)
                         }).catch(err => {
                               console.log(err)
                         })
@@ -205,21 +211,19 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             }
       };
 
-      /* 
-        //* Call for the totalSupply (number) and pass it to the async function
-        
-        await nftContract.methods.totalSupply().call().then(res => {
-              pushURIs(res)
-        })
-              .catch(error => console.log(error))
-  
-  
-   console.log(nftMetadata.length)
-        */
+/*
+      //* Call for the totalSupply ( returns number) and pass it to the async function
+      await nftContract.methods.totalSupply().call().then(res => {
+            pushURIs(res)
+      })
+            .catch(error => console.log(error))
+*/
+
       return {
             props: { artist: { ...data.artist, posts, links } },
             revalidate: 60 * 60,
       };
+
 };
 
 
