@@ -33,7 +33,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
       //* array of nfts for testing
 
-
+console.log(artist.nftMetadata)
 
 
       return (
@@ -66,7 +66,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                   <PageLayout>
                         <Heading title="Artist NFTs" hScreen={false} />
                         <div>
-                              
+
                         </div>
                   </PageLayout>
 
@@ -190,10 +190,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       var abi = parsed.abi;
 
       //* New contract from instance, passing the abi and address
-      const nftContract = new web3.eth.Contract(
+      const nftContract = isAddress ? new web3.eth.Contract(
             abi,
             addressArray[0],
-      );
+      ) : null;
 
       //* Take the number and concatenate with the json metadata
       async function pushURIs(total: number) {
@@ -201,6 +201,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                   await nftContract.methods.tokenURI(i).call().then(res => {
                         //todo - add these hashes to graph cms 
                         axios.get(`https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/${i}.json`).then(obj => {
+                              //todo - try json parse in next commit
                               nftMetadata.push(obj.data)
                               console.log(obj.data)
                         }).catch(err => {
@@ -211,13 +212,30 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             }
       };
 
-/*
-      //* Call for the totalSupply ( returns number) and pass it to the async function
-      await nftContract.methods.totalSupply().call().then(res => {
-            pushURIs(res)
-      })
-            .catch(error => console.log(error))
-*/
+
+      if (nftContract !== null) {
+
+            await nftContract.methods.totalSupply().call().then(res => {
+                  pushURIs(res)
+            })
+                  .catch(error => console.log(error))
+      }
+      else {
+            nftMetadata.push({
+                  name: 'fail',
+                  description: 'error - NFT address from CMS is not valid'
+            })
+             
+      }
+      /*
+            //* Call for the totalSupply ( returns number) and pass it to the async function
+      
+            
+            await nftContract.methods.totalSupply().call().then(res => {
+                  pushURIs(res)
+            })
+                  .catch(error => console.log(error))
+      */
 
       return {
             props: { artist: { ...data.artist, posts, links } },
