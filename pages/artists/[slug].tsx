@@ -206,7 +206,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                         //todo - add these hashes to graph cms 
                         axios.get(`https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/${i}.json`).then(obj => {
                               //todo - try json parse in next commit
-                              nftMetadata.push(JSON.parse(JSON.stringify(obj.data)))
+                              nftMetadata.push(obj.data)
                               console.log(obj.data)
                         }).catch(err => {
                               console.log(err)
