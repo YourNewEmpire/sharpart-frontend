@@ -180,9 +180,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       //? number is for the for loop in pushURIs.
       let nftMetadata: NftMetadata[] = []
       let i: number = null
-
       //* New web3 instance with matic provider
       const web3 = new Web3(new Web3.providers.HttpProvider(MATIC))
+      const isAddress = Web3.utils.isAddress(addressArray[0])
 
       //* Parse ABI
       const contractPath = serverPath('./public/GameItem.json')
