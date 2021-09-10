@@ -66,7 +66,11 @@ console.log(artist.nftMetadata)
                   <PageLayout>
                         <Heading title="Artist NFTs" hScreen={false} />
                         <div>
-
+                              {artist.nftMetadata.map((item, index) => {
+                                    <div key={index}>
+                                          <NftCard nft={item} />
+                                    </div>
+                              })}
                         </div>
                   </PageLayout>
 
@@ -202,7 +206,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                         //todo - add these hashes to graph cms 
                         axios.get(`https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/${i}.json`).then(obj => {
                               //todo - try json parse in next commit
-                              nftMetadata.push(obj.data)
+                              nftMetadata.push(JSON.parse(JSON.stringify(obj.data)))
                               console.log(obj.data)
                         }).catch(err => {
                               console.log(err)
@@ -223,8 +227,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       else {
             nftMetadata.push({
                   name: 'fail',
-                  description: 'error - NFT address from CMS is not valid'
-            })
+                        description: 'error - NFT address from CMS is not valid'
+                  })
              
       }
       /*
