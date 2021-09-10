@@ -242,7 +242,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       */
 
       return {
-            props: { artist: { ...data.artist, posts, links } },
+            props: { artist: { ...data.artist, posts, links, nftMetadata } },
             revalidate: 60 * 60,
       };
 
