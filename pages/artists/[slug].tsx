@@ -192,6 +192,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const contractPath = serverPath('./public/GameItem.json')
       var parsed = JSON.parse(fs.readFileSync(contractPath.toString(), 'utf-8'));
       var abi = parsed.abi;
+      const testObj = await axios.get('https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/1.json')
+      console.log(testObj.data)
 
       //* New contract from instance, passing the abi and address
       const nftContract = isAddress ? new web3.eth.Contract(
