@@ -11,6 +11,7 @@ import fs from 'fs'
 import serverPath from '../../lib/helpers/serverPath';
 import axios from 'axios';
 import NftCard from '../../components/Cards/NftCard';
+import ReactAudioPlayer from 'react-audio-player';
 
 //*define new gql client for cms.
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
@@ -33,17 +34,15 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
       //* array of nfts for testing
 
-console.log(artist.nftMetadata)
-
-
+      console.log(artist.nftMetadata)
       return (
-            <>
+            <PageLayout>
                   <PageLayout>
                         <div className="grid grid-flow-col
                               grid-cols-6
                               justify-center items-center 
                         ">
-                              <div className="rounded-full col-span-2 ">
+                              <div className=" col-span-2 ">
                                     <div className="flex justify-center items-center ">
                                           <img src={artist.artistImage.url} alt="" />
                                     </div>
@@ -63,16 +62,22 @@ console.log(artist.nftMetadata)
                         </div>
                   </PageLayout>
 
-                  <PageLayout>
+                  <div>
                         <Heading title="Artist NFTs" hScreen={false} />
                         <div>
-                              {artist.nftMetadata.map((item, index) => {
-                                    <div key={index}>
+                              {artist.nftMetadata? artist.nftMetadata.map((item, index) =>
+                                    <div className='' key={index}>
                                           <NftCard nft={item} />
+
                                     </div>
-                              })}
+                              ): 
+                                    <PageLayout>
+                                          <h1 className='text-th-primary-light'>Error</h1>
+                                          <p className='text-th-primary-light'>NFTs were not found from server side</p>
+                                    </PageLayout>
+                              }
                         </div>
-                  </PageLayout>
+                  </div>
 
                   <PageLayout>
                         <Heading title='Artist Posts' hScreen={false} />
@@ -136,7 +141,7 @@ console.log(artist.nftMetadata)
                               </p>
                         </div>
                   </div>
-            </>
+            </PageLayout>
 
       )
 }
@@ -177,8 +182,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const posts = await serialize(data.artist.artistMarkdown);
       const links = await serialize(data.artist.artistLinks);
 
-      //?
-      const addressArray = data.artist.nftAddress;
+      //? Get the address array from cms
+      const addressArray: string[] = data.artist.nftAddress;
 
       //? array of objects for token metadata for mapping in frontend.
       //? number is for the for loop in pushURIs.
@@ -186,67 +191,70 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       let i: number = null
       //* New web3 instance with matic provider
       const web3 = new Web3(new Web3.providers.HttpProvider(MATIC))
-      const isAddress = Web3.utils.isAddress(addressArray[0])
 
+      //* Validate contract address
+      const isAddress = Web3.utils.isAddress(addressArray[0])
       //* Parse ABI
       const contractPath = serverPath('./public/GameItem.json')
       var parsed = JSON.parse(fs.readFileSync(contractPath.toString(), 'utf-8'));
       var abi = parsed.abi;
-      const testObj = await axios.get('https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/1.json')
-      console.log(testObj.data)
 
+
+      if(!isAddress) {
+            return {
+                  props: { artist: { ...data.artist, posts, links } },
+                  revalidate: 60 * 60,
+            }
+
+      }
       //* New contract from instance, passing the abi and address
+      //todo - Map address' if there are multiple
       const nftContract = isAddress ? new web3.eth.Contract(
             abi,
             addressArray[0],
       ) : null;
 
+
+      const testSupply: number = await nftContract.methods.totalSupply().call();
+
       //* Take the number and concatenate with the json metadata
-      async function pushURIs(total: number) {
-            for (i = 1; i <= total; i++) {
-                  await nftContract.methods.tokenURI(i).call().then(res => {
-                        //todo - add these hashes to graph cms 
-                        axios.get(`https://ipfs.io/ipfs/QmZ13J2TyXTKjjyA46rYENRQYxEKjGtG6qyxUSXwhJZmZt/${i}.json`).then(obj => {
-                              //todo - try json parse in next commit
-                              nftMetadata.push(obj.data)
-                              console.log(obj.data)
-                        }).catch(err => {
-                              console.log(err)
-                        })
-                  }
-                  )
-            }
-      };
 
 
-      if (nftContract !== null) {
-
-            await nftContract.methods.totalSupply().call().then(res => {
-                  pushURIs(res)
-            })
-                  .catch(error => console.log(error))
-      }
-      else {
+      //* If the CMS didn't return a valid address, dont call with web3. Return a failed obj instead. Edge case
+      if (nftContract == null) {
             nftMetadata.push({
                   name: 'fail',
-                        description: 'error - NFT address from CMS is not valid'
-                  })
-             
-      }
-      /*
-            //* Call for the totalSupply ( returns number) and pass it to the async function
-      
-            
-            await nftContract.methods.totalSupply().call().then(res => {
-                  pushURIs(res)
+                  description: 'error - NFT address from CMS is not valid'
             })
-                  .catch(error => console.log(error))
-      */
+      }
+      else {
+            for (i = 1; i <= testSupply; i++) {
+                  await nftContract.methods.tokenURI(i).call()
+                        .then(async (res) => {
+                              await axios.get(res).then(obj => {
+                                    nftMetadata.push(obj.data)
+                              }).catch(err => {
+                                    
+                                    return err
+                              })
+                        })
+                        .catch((err) => {
+                              
+                              return err
+                        })
+            } 
+      }
 
-      return {
+      //? Edge case if fetches dont work but nftContract was not null
+      if(nftMetadata.length !== 0) return {
+
             props: { artist: { ...data.artist, posts, links, nftMetadata } },
             revalidate: 60 * 60,
       };
+      else return {
+            props: { artist: { ...data.artist, posts, links } },
+            revalidate: 60 * 60,
+      }
 
 };
 

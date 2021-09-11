@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ReactPlayer from 'react-player'
 import ReactAudioPlayer from 'react-audio-player'
 import { NftMetadata } from '../../interfaces/pages';
+import PageLayout from '../Layouts/PageLayout'
 
 
 //todo - Determine what file type the nft is to render the corresponding player comp.
@@ -12,15 +13,18 @@ import { NftMetadata } from '../../interfaces/pages';
 
 export default function NftCard({ nft }: { nft: NftMetadata }): JSX.Element {
 
+      //? Find out the extension of the nft
       const trimmedAudio = nft.animation_url.includes('mp3')
-      console.log(trimmedAudio)
-      const isPlaying = true;
+      const trimmedVideo = nft.animation_url.includes('mp4')
+      const trimmedImage = nft.animation_url.includes('jpg' || 'png')
+
       return (
-            <div className='border-2'>
+            <PageLayout>
                   
-                  <h1>{nft.name}</h1>
-                  <h3>{nft.description}</h3>
-            </div>
+                  <h1 className='text-th-primary-light'>{nft.name}</h1>
+                  <h3 className='text-th-primary-light'>{nft.description}</h3>
+                  <ReactAudioPlayer className='w-full'  src={nft.animation_url} controls controlsList='nodownload'/>
+            </PageLayout>
       )
 }
 
