@@ -34,7 +34,6 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
       //* array of nfts for testing
 
-      console.log(artist.nftMetadata)
       return (
             <PageLayout>
                   <PageLayout>
@@ -52,7 +51,7 @@ export default function Artist({ artist }: { artist: IArtist }) {
                                     <Heading title={artist.artistName} hScreen={false} fontSize='text-2xl sm:text-3xl lg:text-6xl'>
 
                                           <p className="text-center text-base sm:text-lg lg:text-2xl 
-                                          text-th-primary-light  subpixel-antialiased                 
+                                          text-th-primary-light subpixel-antialiased                 
                                           max-w-xs md:max-w-xl lg:max-w-2xl break-words
                                     ">
                                                 {artist.artistDesc}
@@ -62,22 +61,21 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         </div>
                   </PageLayout>
 
-                  <div>
+                  <PageLayout>
                         <Heading title="Artist NFTs" hScreen={false} />
-                        <div>
+                        <div className='grid grid-cols-3 gap-2 sm:gap-4 md:gap-14'>
                               {artist.nftMetadata? artist.nftMetadata.map((item, index) =>
                                     <div className='' key={index}>
-                                          <NftCard nft={item} />
-
+                                          <NftCard nft={item}  />
                                     </div>
-                              ): 
+                              ):
                                     <PageLayout>
                                           <h1 className='text-th-primary-light'>Error</h1>
                                           <p className='text-th-primary-light'>NFTs were not found from server side</p>
                                     </PageLayout>
                               }
                         </div>
-                  </div>
+                  </PageLayout>
 
                   <PageLayout>
                         <Heading title='Artist Posts' hScreen={false} />
@@ -234,7 +232,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                               await axios.get(res).then(obj => {
                                     nftMetadata.push(obj.data)
                               }).catch(err => {
-                                    
+                              
                                     return err
                               })
                         })

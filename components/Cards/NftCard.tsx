@@ -5,10 +5,12 @@ import ReactPlayer from 'react-player'
 import ReactAudioPlayer from 'react-audio-player'
 import { NftMetadata } from '../../interfaces/pages';
 import PageLayout from '../Layouts/PageLayout'
+import Heading from '../Typography/Heading'
 
 
 //todo - Determine what file type the nft is to render the corresponding player comp.
 // Many ways to do this
+ //todo - Pass nft address down, for button to opensea.
 
 
 export default function NftCard({ nft }: { nft: NftMetadata }): JSX.Element {
@@ -18,13 +20,18 @@ export default function NftCard({ nft }: { nft: NftMetadata }): JSX.Element {
       const trimmedVideo = nft.animation_url.includes('mp4')
       const trimmedImage = nft.animation_url.includes('jpg' || 'png')
 
+     
       return (
-            <PageLayout>
-                  
-                  <h1 className='text-th-primary-light'>{nft.name}</h1>
-                  <h3 className='text-th-primary-light'>{nft.description}</h3>
-                  <ReactAudioPlayer className='w-full'  src={nft.animation_url} controls controlsList='nodownload'/>
-            </PageLayout>
+            <div className='flex flex-col space-y-10 text'>
+                  <div>
+                        <Heading fontSize='text-base sm:text-xl lg:text-3xl' title={nft.name} hScreen={false} />
+
+                  </div>
+                  <p className='text-th-primary-light'>{nft.description}</p>
+                  <div className=''>
+                        <ReactAudioPlayer className='w-full' src={nft.animation_url} controls controlsList='nodownload' />
+                  </div>
+            </div>
       )
 }
 
