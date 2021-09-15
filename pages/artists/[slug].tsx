@@ -193,18 +193,19 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       //* Validate contract address
       const isAddress = Web3.utils.isAddress(addressArray[0])
       //* Parse ABI
+      //todo - perhaps add abi to cms
       const contractPath = serverPath('./public/GameItem.json')
       var parsed = JSON.parse(fs.readFileSync(contractPath.toString(), 'utf-8'));
       var abi = parsed.abi;
 
-
+      //* If the contract address is not valid, return props now excluding nftmetadata
       if(!isAddress) {
             return {
                   props: { artist: { ...data.artist, posts, links } },
                   revalidate: 60 * 60,
             }
-
       }
+
       //* New contract from instance, passing the abi and address
       //todo - Map address' if there are multiple
       const nftContract = isAddress ? new web3.eth.Contract(
@@ -213,20 +214,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       ) : null;
 
 
-      const testSupply: number = await nftContract.methods.totalSupply().call();
+      const totalSupply: number = await nftContract.methods.totalSupply().call();
 
       //* Take the number and concatenate with the json metadata
 
 
       //* If the CMS didn't return a valid address, dont call with web3. Return a failed obj instead. Edge case
       if (nftContract == null) {
-            nftMetadata.push({
-                  name: 'fail',
-                  description: 'error - NFT address from CMS is not valid'
-            })
+            return {
+                  props: { artist: { ...data.artist, posts, links } },
+                  revalidate: 60 * 60,
+            }
       }
+      //* Call blockchain for each token ID and axios.get each json metadata link
       else {
-            for (i = 1; i <= testSupply; i++) {
+            for (i = 1; i <= totalSupply; i++) {
                   await nftContract.methods.tokenURI(i).call()
                         .then(async (res) => {
                               await axios.get(res).then(obj => {
@@ -243,7 +245,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             } 
       }
 
-      //? Edge case if fetches dont work but nftContract was not null
+      //* Edge case if fetches dont work but nftContract was not null
       if(nftMetadata.length !== 0) return {
 
             props: { artist: { ...data.artist, posts, links, nftMetadata } },
