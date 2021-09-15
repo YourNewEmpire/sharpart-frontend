@@ -7,9 +7,9 @@ export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Elemen
             <div className=" 
             flex
             flex-col
-            space-y-2
+            space-y-1
             items-center justify-center 
-            md:space-y-4
+            md:space-y-2
             lg:space-y-8
             lg:py-6
             lg:px-6
@@ -24,7 +24,7 @@ export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Elemen
             
             ">
                   <div className=" " >
-                        <p className=" text-center text-sm sm:text-base md:text-lg lg:text-3xl text-th-primary-light text-shadow-md">
+                        <p className=" text-center text-sm sm:text-base md:text-lg lg:text-2xl text-th-primary-light text-shadow-md">
                               {title}
                         </p>
                   </div>
