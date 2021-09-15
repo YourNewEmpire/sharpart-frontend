@@ -7,7 +7,6 @@ type GasDataState = {
     matic: GasData
     mumbai: GasData
     eth: GasData
-
 }
 
 const initialState: GasDataState = {

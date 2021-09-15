@@ -127,7 +127,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                   `}>
                         <div className='col-span-3'>
                               <NodeCard>
-                                    <Heading title='Game Tips' hScreen={false} fontSize='text-sm md:text-xl lg:text-4xl' />
+                                    <Heading title='Game Tips'fontSize='text-sm md:text-xl lg:text-4xl' />
                                     <ol className='list-roman break-words p-8 
                                           text-left text-th-primary-light text:sm lg:text-lg 
                                     '>
@@ -143,7 +143,6 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                         <div className='col-span-6 '>
                               <Heading
                                     title='Test page.'
-                                    hScreen={false}
                                     fontSize='text-xs md:text-lg lg:text-6xl'
                               />
                         </div>
@@ -152,7 +151,6 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
                                     <Heading
                                           title='Welcome'
                                           fontSize='text-xs md:text-lg lg:text-3xl'
-                                          hScreen={false}
                                     />
                                           <a target='_blank' href={`https://etherscan.io/address/${address}`} className=' 
                                           break-all text-base 
@@ -191,7 +189,7 @@ export default function EthOrb({ ethHistoric }: EthOrbProps) {
 
                   <LineChart data={eth} labels={priceLabels} />
                   <GameButtons clickHandler={playGame} />
-                  <Heading title='Eth for 7 days' hScreen={false} />
+                  <Heading title='Eth for 7 days'/>
                   <LineChart data={ethHistoric} labels={historicLabels} />
                   <UserScoreTable address={address} />
             </PageLayout>
