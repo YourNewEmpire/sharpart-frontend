@@ -129,7 +129,7 @@ module.exports = {
   },
   variants: {
     extend: {
-
+      fontSize: ['hover', 'focus'],
     },
   },
   plugins: [
