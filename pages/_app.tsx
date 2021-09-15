@@ -25,12 +25,16 @@ const MyApp = ({
   router: router
 }) => {
   useEffect(() => {
-    Moralis.Web3.onAccountsChanged(async (accounts) => {
-      const confirmed = confirm("Link this address to your account?");
-      if (confirmed) {
-        await Moralis.Web3.link(accounts[0]);
-      }
-    });
+    if(window !== undefined) {
+      Moralis.Web3.onAccountsChanged(async (accounts) => {
+        const confirmed = confirm("Link this address to your account?");
+        if (confirmed) {
+          await Moralis.Web3.link(accounts[0]);
+        }
+      });
+
+    } 
+    else return () => {}
   }, [])
 
  const router = useRouter()
