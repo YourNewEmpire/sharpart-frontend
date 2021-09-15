@@ -3,7 +3,7 @@ import { Childs } from '../../../interfaces/childs'
 
 interface Props extends Childs {
   title: string
-  hScreen: boolean
+  hScreen?: boolean
   fontSize?: string
 }
 
@@ -11,7 +11,6 @@ interface Props extends Childs {
 //? If there are NO children, just render a normal h1 with no margin and no subtitle('child')
 //? If there are children then yes, margin-bottom on the heading and children can be a subtitle or some react node
 
-//todo - change hScreen to optional prop. 
 export default function Heading({ title, hScreen, children, fontSize }: Props): JSX.Element {
 
   if (!children)
