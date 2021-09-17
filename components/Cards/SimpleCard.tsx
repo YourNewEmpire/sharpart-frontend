@@ -29,7 +29,7 @@ export default function SimpleCard({ title, body }: SimpleCardProps): JSX.Elemen
                         </p>
                   </div>
                   <div className=""  >
-                        <p className="  text-center text-xs sm:text-sm lg:text-lg font-thin  text-th-primary-light  break-all">
+                        <p className="  text-center text-xs sm:text-sm lg:text-lg font-thin  text-th-primary-light  break-words">
                               {body}
                         </p>
                   </div>
