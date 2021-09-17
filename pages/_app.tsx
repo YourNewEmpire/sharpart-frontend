@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import router from "next/app"
 import { useRouter } from 'next/dist/client/router'
 import { ThemeProvider } from 'next-themes'
-import { Provider as ReduxContext } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { ToastContainer } from 'react-toastify'
 import { motion } from 'framer-motion';
 import Moralis from 'moralis'
@@ -41,7 +41,7 @@ const MyApp = ({
 
   return (
     <MoralisProvider appId={moralisAppID} serverUrl={moralisServerUrl} >
-      <ReduxContext store={store}>
+      <ReduxProvider store={store}>
         <ThemeProvider>
           <Layout>
             <motion.div key={router.route} 
@@ -54,7 +54,7 @@ const MyApp = ({
             <ToastContainer />
           </Layout>
         </ThemeProvider>
-      </ReduxContext>
+      </ReduxProvider>
     </MoralisProvider>
   )
 }
