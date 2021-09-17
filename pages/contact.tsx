@@ -1,28 +1,34 @@
 import { useState } from 'react';
+import { toast, Zoom } from 'react-toastify';
 import { FaDiscord } from 'react-icons/fa';
 import { RiMailOpenFill } from 'react-icons/ri'
 import copyToBoard from '../lib/helpers/copyToClipboard';
+import validateEmail from '../lib/helpers/validateEmail'
 import PageLayout from '../components/Layouts/PageLayout';
 import Heading from '../components/Typography/Heading';
 import Columns from '../components/Layouts/Columns';
 import NodeCard from '../components/Cards/NodeCard';
-import { toast, Zoom } from 'react-toastify';
-import validateEmail from '../lib/helpers/validateEmail'
 
 export default function Contact() {
-      const [name, setName] = useState('')
-      const [email, setEmail] = useState('')
-      const [message, setMessage] = useState('')
-      const [submitted, setSubmitted] = useState(false)
+      //todo - Create useForm hook?
+      const [formData, setFormData] = useState({
+            name: '',
+            email: '',
+            message: '',
+      })
+
+      const handleChange = (e) => {
+            const newFormData = {
+                  ...formData,
+                  [e.target.name]: e.target.value
+            };
+            setFormData(newFormData);
+      }
 
       const handleSubmit = (e) => {
             e.preventDefault()
-            let data = {
-                  name,
-                  email,
-                  message
-            }
-            if (!name || !email || !message) {
+            //* Validate
+            if (!formData.email || !formData.message || !formData.name) {
                   return toast.error('missing creds', {
                         position: "top-right",
                         autoClose: 3000,
@@ -34,7 +40,7 @@ export default function Contact() {
                         progress: undefined,
                   })
             }
-            if (!validateEmail(email)) {
+            else if (!validateEmail(formData.email)) {
                   return toast.error('bad email', {
                         position: "top-right",
                         autoClose: 3000,
@@ -46,18 +52,17 @@ export default function Contact() {
                         progress: undefined,
                   })
             }
-
-            //todo - I must validate the email. on server and client
+            //* Post api
             fetch('/api/contactApi', {
                   method: 'POST',
                   headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': 'application/json'
                   },
-                  body: JSON.stringify(data)
+                  body: JSON.stringify(formData)
             }).then((res) => {
                   if (res.status === 200) {
-                        toast.success('Success:' + res, {
+                        toast.success('Success:' + res.body, {
                               position: "top-right",
                               autoClose: 3000,
                               transition: Zoom,
@@ -67,13 +72,14 @@ export default function Contact() {
                               draggable: true,
                               progress: undefined,
                         })
-                        setSubmitted(true)
-                        setName('')
-                        setEmail('')
-                        setMessage('')
+                        setFormData({
+                              name: '',
+                              email: '',
+                              message: '',
+                        })
                   }
                   else {
-                        toast.info('failed with:' + res, {
+                        toast.info('failed with:' + res.body, {
                               position: "top-right",
                               autoClose: 3000,
                               transition: Zoom,
@@ -83,10 +89,6 @@ export default function Contact() {
                               draggable: true,
                               progress: undefined,
                         })
-                        setSubmitted(true)
-                        setName('')
-                        setEmail('')
-                        setMessage('')
                   }
             })
       }
@@ -107,7 +109,7 @@ export default function Contact() {
                                                       ease-in-out transform 
                                                       hover:scale-125'
                                           >
-                                                <FaDiscord  size={100} />
+                                                <FaDiscord size={100} />
                                           </button>
                                     </a>
                                     <button
@@ -125,7 +127,9 @@ export default function Contact() {
                                     </button>
                               </Columns>
                         </Heading>
-                        <div className='py-24 '>
+
+
+                        <div className='py-24'>
                               <NodeCard>
                                     <form className=' flex flex-col space-y-4  text-center text-sm sm:text-base md:text-xl lg:text-2xl '>
                                           < label className='text-th-primary-light' htmlFor='name'>Name</label>
@@ -134,7 +138,7 @@ export default function Contact() {
                                           text-th-primary-dark focus:bg-th-accent-light 
                                           transition-colors duration-300 
                                           ease-in-out bg-opacity-25 '
-                                                type='text' onChange={(e) => { setName(e.target.value) }} name='name' />
+                                                type='text' onChange={(e) => { handleChange(e) }} name='name' />
 
                                           < label className='text-th-primary-light' htmlFor='email'>Email</label>
                                           < input
@@ -142,7 +146,7 @@ export default function Contact() {
                                           text-th-primary-dark focus:bg-th-accent-light 
                                           transition-colors duration-300 
                                           ease-in-out bg-opacity-25 '
-                                                type='email' onChange={(e) => { setEmail(e.target.value) }} name='email' />
+                                                type='email' onChange={(e) => { handleChange(e) }} name='email' />
 
                                           < label className='text-th-primary-light' htmlFor='message'>Message</label>
                                           < input
@@ -150,7 +154,7 @@ export default function Contact() {
                                           text-th-primary-dark focus:bg-th-accent-light 
                                           transition-colors duration-300 
                                           ease-in-out bg-opacity-25 '
-                                                type='text' onChange={(e) => { setMessage(e.target.value) }} name='message' />
+                                                type='text' onChange={(e) => { handleChange(e) }} name='message' />
 
                                           <button type='submit' onClick={(e) => { handleSubmit(e) }}
                                                 className='
