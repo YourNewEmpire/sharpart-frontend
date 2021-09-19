@@ -18,7 +18,6 @@ const client = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 
 //todo - hard coded for now but i should be getting this from cms
-const NFT_CONTRACT_ADDRESS = '0xbb21662c2ba070db869c94d475f78b9fa7273b0e'
 const API_KEY = process.env.MATIC_API_KEY;
 const MUMBAI = `https://rpc-mumbai.maticvigil.com/v1/${API_KEY}`
 const MATIC = `https://rpc-mainnet.maticvigil.com/v1/${API_KEY}`
@@ -180,7 +179,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const posts = await serialize(data.artist.artistMarkdown);
       const links = await serialize(data.artist.artistLinks);
 
-      //? Get the address array from cms
+
+      //todo - Consider using moralis web3 api for contract fetches as oppose to my own code.
+      //? Get the nft contract address array from cms
       const addressArray: string[] = data.artist.nftAddress;
 
       //? array of objects for token metadata for mapping in frontend.
@@ -226,6 +227,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                   revalidate: 60 * 60,
             }
       }
+      
       //* Call blockchain for each token ID and axios.get each json metadata link
       else {
             for (i = 1; i <= totalSupply; i++) {
