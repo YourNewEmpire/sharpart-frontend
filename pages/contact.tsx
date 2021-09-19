@@ -134,37 +134,40 @@ export default function Contact() {
                                     <form className=' flex flex-col space-y-4  text-center text-sm sm:text-base md:text-xl lg:text-2xl '>
                                           < label className='text-th-primary-light' htmlFor='name'>Name</label>
                                           < input
-                                                className='focus:outline-none 
-                                          text-th-primary-dark focus:bg-th-accent-light 
-                                          transition-colors duration-300 
-                                          ease-in-out bg-opacity-25 '
+                                                className='
+                                                focus:outline-none 
+                                                text-th-primary-dark focus:bg-th-accent-light 
+                                                transition-colors duration-300 
+                                                ease-in-out bg-opacity-25 p-2'
                                                 type='text' onChange={(e) => { handleChange(e) }} name='name' />
 
                                           < label className='text-th-primary-light' htmlFor='email'>Email</label>
                                           < input
-                                                className='focus:outline-none 
-                                          text-th-primary-dark focus:bg-th-accent-light 
-                                          transition-colors duration-300 
-                                          ease-in-out bg-opacity-25 '
+                                                className='
+                                                focus:outline-none 
+                                                text-th-primary-dark focus:bg-th-accent-light 
+                                                transition-colors duration-300 
+                                                ease-in-out bg-opacity-25 p-2'
                                                 type='email' onChange={(e) => { handleChange(e) }} name='email' />
 
                                           < label className='text-th-primary-light' htmlFor='message'>Message</label>
-                                          < input
-                                                className='focus:outline-none 
-                                          text-th-primary-dark focus:bg-th-accent-light 
-                                          transition-colors duration-300 
-                                          ease-in-out bg-opacity-25 '
-                                                type='text' onChange={(e) => { handleChange(e) }} name='message' />
+                                          < textarea
+                                                className='
+                                                focus:outline-none 
+                                                text-th-primary-dark focus:bg-th-accent-light 
+                                                transition-colors duration-300 
+                                                ease-in-out bg-opacity-25 p-2'
+                                                 onChange={(e) => { handleChange(e) }} name='message' />
 
                                           <button type='submit' onClick={(e) => { handleSubmit(e) }}
                                                 className='
-                                    bg-th-primary-light
-                                    hover:bg-th-accent-light
-                                    text-th-primary-dark
-                                    shadow-md hover:shadow-lg rounded-lg 
-                                    transition duration-300 ease-in-out
-                                    focus:outline-none 
-                                    focus:ring-2 ring-th-accent-light ' >
+                                                bg-th-primary-light
+                                                hover:bg-th-accent-light
+                                                text-th-primary-dark
+                                                shadow-md hover:shadow-lg rounded-lg 
+                                                transition duration-300 ease-in-out
+                                                focus:outline-none 
+                                                focus:ring-2 ring-th-accent-light' >
                                                 Submit
                                           </button>
                                     </form>
