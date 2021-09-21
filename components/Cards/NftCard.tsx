@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import { ArtistCardProps } from '../../interfaces/cards'
 import Link from 'next/link'
 import ReactPlayer from 'react-player'
@@ -22,14 +23,16 @@ export default function NftCard({ nft }: { nft: NftMetadata }): JSX.Element {
 
      
       return (
-            <div className='flex flex-col space-y-10 text'>
+            <div className='flex flex-col space-y-10 '>
                   <div>
                         <Heading fontSize='text-base sm:text-xl lg:text-3xl' title={nft.name} hScreen={false} />
 
                   </div>
                   <p className='text-th-primary-light'>{nft.description}</p>
                   <div className=''>
-                        <ReactAudioPlayer className='w-full' src={nft.animation_url} controls controlsList='nodownload' />
+                        {trimmedAudio && <ReactAudioPlayer className='w-full' src={nft.animation_url} controls controlsList='nodownload' />}
+                        {trimmedVideo && <ReactPlayer controls url={nft.animation_url} />}
+                        {trimmedImage && <Image src={nft.image}/>}
                   </div>
             </div>
       )

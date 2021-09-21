@@ -51,7 +51,7 @@ export const setGasThunk = () => async (dispatch: Dispatch) => {
 
     async function getMatic() {
         const coinData = await axios.get('https://gasstation-mainnet.matic.network');
-        return coinData.data
+        return coinData.data? coinData.data : false
     }
     async function getEth() {
         const coinData = await axios.get('https://ethgasstation.info/json/ethgasAPI.json');
@@ -61,7 +61,7 @@ export const setGasThunk = () => async (dispatch: Dispatch) => {
             fast: coinData.data.fast /10,
             average: coinData.data.average /10
         }
-        return obj
+        return obj.safeLow? obj : false
     }
 
     /* //? Fetch Mumbai (cors error atm)
@@ -70,7 +70,7 @@ export const setGasThunk = () => async (dispatch: Dispatch) => {
             return coinData.data
         }
     */
-    Promise.all([getMatic(), getEth()])
+    Promise.allSettled([getMatic(), getEth()])
         .then(function (results) {
             dispatch(setMatic(results[0]));
             dispatch(setEth(results[1]))
