@@ -2,6 +2,7 @@ import Image from 'next/image'
 import useSWR from 'swr'
 import { fetcher } from "../lib/helpers/fetchers";
 import { motion } from 'framer-motion';
+import ethersBytes from '../lib/helpers/ethersBytes';
 import Heading from '../components/Typography/Heading';
 import SimpleCard from '../components/Cards/SimpleCard';
 import PolygonImg from '../public/polygon-png.png';
@@ -11,8 +12,8 @@ export default function Home() {
       const defiPulseKey = process.env.NEXT_PUBLIC_DEFI_PULSE_KEY
       const { data: maticGas, error: maticGasError } = useSWR('https://gasstation-mainnet.matic.network', fetcher, { refreshInterval: 10000 })
       const { data: ethGas, error: ethGasError } = useSWR(`https://data-api.defipulse.com/api/v1/egs/api/ethgasAPI.json?api-key=${defiPulseKey}`, fetcher, { refreshInterval: 10000 })
-
-
+      
+      
       if (!maticGas) return (
             <div id="div1" className="flex flex-col items-center justify-center ">
                   <Heading title="This is SharpArt" hScreen={true}>
@@ -66,6 +67,13 @@ export default function Home() {
                               </p>
                         </Heading>
                   </div>
+                  <button 
+                  className='
+                  p-2 
+                  text-th-primary-medium 
+                  bg-th-foreground'
+                  onClick={() => ethersBytes('name4')}
+                  >testbytes</button>
             </div >
       )
 }
