@@ -256,6 +256,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       else return {
             props: { artist: { ...data.artist, posts, links } },
             revalidate: 60 * 60,
+            
       }
 
 };

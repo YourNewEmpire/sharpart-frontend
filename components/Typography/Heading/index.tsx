@@ -18,7 +18,7 @@ export default function Heading({ title, hScreen, children, fontSize }: Props): 
       <div className={`flex flex-col items-center justify-center ${hScreen ? 'h-screen' : 'h-auto'}  `}>
         <h1 className={`
         text-center ${fontSize? fontSize : 'text-xl sm:text-2xl lg:text-6xl '}
-        text-th-primary-medium text-shadow-md subpixel-antialiased break-all
+        text-th-primary-medium text-shadow-md subpixel-antialiased break-words
         `}>
           {title}
         </h1>
@@ -29,7 +29,7 @@ export default function Heading({ title, hScreen, children, fontSize }: Props): 
     <>
       <div className={`flex flex-col items-center justify-center ${hScreen ? 'h-screen' : 'h-auto'}  `}>
         <h1 className={`text-center ${fontSize? fontSize : 'text-xl sm:text-2xl lg:text-6xl '}
-        text-th-primary-medium text-shadow-md subpixel-antialiased mb-8 md:mb-14 lg:mb-20 break-all
+        text-th-primary-medium text-shadow-md subpixel-antialiased mb-8 md:mb-14 lg:mb-20 break-words
         `}>
           {title}
         </h1>
