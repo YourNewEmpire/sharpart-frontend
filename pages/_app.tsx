@@ -1,13 +1,13 @@
-import React, { ComponentType, useEffect } from 'react'
 import type { AppProps } from 'next/app'
 import router from "next/app"
 import { useRouter } from 'next/dist/client/router'
 import { ThemeProvider } from 'next-themes'
+import React, { ComponentType, useEffect } from 'react'
 import { Provider as ReduxProvider } from 'react-redux';
+import Moralis from 'moralis/dist/moralis'
+import { MoralisProvider } from "react-moralis";
 import { ToastContainer } from 'react-toastify'
 import { motion } from 'framer-motion';
-import Moralis from 'moralis'
-import { MoralisProvider } from "react-moralis";
 import store from '../src/store'
 import Layout from '../components/Layouts/Layout';
 import '../styles/globals.css'
@@ -36,7 +36,6 @@ const MyApp = ({
     } 
     else return () => {}
   }, [])
-
  const router = useRouter()
 
   return (
@@ -47,7 +46,7 @@ const MyApp = ({
             <motion.div key={router.route} 
             initial={{ opacity: 0 , translateX: -50 }}
             animate={{ opacity: 1 , translateX: 0 }}
-            transition={{duration: 0.5}}
+            transition={{duration: 0.75}}
             >
               <Component {...pageProps} />
             </motion.div>
