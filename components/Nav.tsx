@@ -12,7 +12,8 @@ type listItem = {
       link: string
 }
 
-export const Nav = () => {
+
+const Nav = () => {
       //* nav items for map
       //todo - Put into CMS.
       const listItems: listItem[] = [
