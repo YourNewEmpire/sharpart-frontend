@@ -2,18 +2,38 @@ import Image from 'next/image'
 import useSWR from 'swr'
 import { fetcher } from "../lib/helpers/fetchers";
 import { motion } from 'framer-motion';
-import ethersBytes from '../lib/helpers/ethersBytes';
+import { useState } from 'react';
+import { ethers } from 'ethers'
 import Heading from '../components/Typography/Heading';
 import SimpleCard from '../components/Cards/SimpleCard';
 import PolygonImg from '../public/polygon-png.png';
 import EthImg from '../public/eth.png'
+import PageLayout from '../components/Layouts/PageLayout';
+import NodeCard from '../components/Cards/NodeCard';
 
 export default function Home() {
       const defiPulseKey = process.env.NEXT_PUBLIC_DEFI_PULSE_KEY
-      const { data: maticGas, error: maticGasError } = useSWR('https://gasstation-mainnet.matic.network', fetcher, { refreshInterval: 10000 })
-      const { data: ethGas, error: ethGasError } = useSWR(`https://data-api.defipulse.com/api/v1/egs/api/ethgasAPI.json?api-key=${defiPulseKey}`, fetcher, { refreshInterval: 10000 })
-      
-      
+
+      const { data: maticGas, error: maticGasError } = useSWR(
+            'https://gasstation-mainnet.matic.network',
+            fetcher, 
+            { refreshInterval: 10000 }
+      )
+      const { data: ethGas, error: ethGasError } = useSWR(
+            `https://data-api.defipulse.com/api/v1/egs/api/ethgasAPI.json?api-key=${defiPulseKey}`,
+            fetcher, 
+            { refreshInterval: 10000 }
+      )
+
+      //todo - move into its own ethers util hook?
+      //todo - add copyToClipboard button
+      const [ethersBytes, setEthersBytes] = useState('')
+      //* Set formatting input on change of text box
+      const handleChange = (e) => {
+            setEthersBytes(ethers.utils.formatBytes32String(e.target.value));
+      }
+
+
       if (!maticGas) return (
             <div id="div1" className="flex flex-col items-center justify-center ">
                   <Heading title="This is SharpArt" hScreen={true}>
@@ -28,8 +48,8 @@ export default function Home() {
       else return (
             <div>
                   <motion.div key={maticGas}
-                        initial={{ opacity: 0,  translateX: -50, }}
-                        animate={{ opacity: 1,  translateX: 0 }}
+                        initial={{ opacity: 0, translateX: -50, }}
+                        animate={{ opacity: 1, translateX: 0 }}
                         transition={{ duration: 0.75 }}
                   >
                         <div className="grid grid-cols-5 gap-4 md:gap-8 lg:gap-10 m-2 md:m-10 lg:m-16">
@@ -67,13 +87,25 @@ export default function Home() {
                               </p>
                         </Heading>
                   </div>
-                  <button 
-                  className='
-                  p-2 
-                  text-th-primary-medium 
-                  bg-th-foreground'
-                  onClick={() => ethersBytes('name4')}
-                  >testbytes</button>
+                  <PageLayout>
+                        <NodeCard>
+                              <Heading title='Convert String to bytes32' fontSize='text-base sm:text-1xl md:text-3xl '/>
+                              <div className='flex flex-col space-y-4 text-center'>
+                                    
+                                    < textarea
+                                          className='
+                              focus:outline-none text-xl 
+                              text-th-primary-dark focus:bg-th-accent-light 
+                              transition-colors duration-300 
+                              ease-in-out bg-opacity-25 p-2'
+                                          onChange={(e) => { handleChange(e) }} name='message' />
+                                    <p className='text-th-accent-light' >
+                                          <span className='font-extrabold text-th-primary-light'>Result: </span>{ethersBytes}
+
+                                    </p>
+                              </div>
+                        </NodeCard>
+                  </PageLayout>
             </div >
       )
 }
