@@ -63,11 +63,11 @@ export default function Artist({ artist }: { artist: IArtist }) {
                   <PageLayout>
                         <Heading title="Artist NFTs" hScreen={false} />
                         <div className='grid grid-cols-3 gap-2 sm:gap-4 md:gap-14'>
-                              {artist.nftMetadata? artist.nftMetadata.map((item, index) =>
+                              {artist.nftMetadata ? artist.nftMetadata.map((item, index) =>
                                     <div className='' key={index}>
-                                          <NftCard nft={item}  />
+                                          <NftCard nft={item} />
                                     </div>
-                              ):
+                              ) :
                                     <PageLayout>
                                           <h1 className='text-th-primary-light'>Error</h1>
                                           <p className='text-th-primary-light'>NFTs were not found from server side</p>
@@ -179,86 +179,92 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const posts = await serialize(data.artist.artistMarkdown);
       const links = await serialize(data.artist.artistLinks);
 
-
-      //todo - Consider using moralis web3 api for contract fetches as oppose to my own code.
-      //? Get the nft contract address array from cms
-      const addressArray: string[] = data.artist.nftAddress;
-
-      //? array of objects for token metadata for mapping in frontend.
-      //? number is for the for loop in pushURIs.
-      let nftMetadata: NftMetadata[] = []
-      let i: number = null
-      //* New web3 instance with matic provider
-      const web3 = new Web3(new Web3.providers.HttpProvider(MATIC))
-
-      //* Validate contract address
-      const isAddress = Web3.utils.isAddress(addressArray[0])
-      //* Parse ABI
-      //todo - perhaps add abi to cms
-      const contractPath = serverPath('./public/GameItem.json')
-      var parsed = JSON.parse(fs.readFileSync(contractPath.toString(), 'utf-8'));
-      var abi = parsed.abi;
-
-      //* If the contract address is not valid, return props now excluding nftmetadata
-      if(!isAddress) {
-            return {
-                  props: { artist: { ...data.artist, posts, links } },
-                  revalidate: 60 * 60,
-            }
-      }
-
-      //* New contract from instance, passing the abi and address
-      //todo - Map address' if there are multiple
-      const nftContract = isAddress ? new web3.eth.Contract(
-            abi,
-            addressArray[0],
-      ) : null;
-
-
-      const totalSupply: number = await nftContract.methods.totalSupply().call();
-
-      //* Take the number and concatenate with the json metadata
-
-
-      //* If the CMS didn't return a valid address, dont call with web3. Return a failed obj instead. Edge case
-      if (nftContract == null) {
-            return {
-                  props: { artist: { ...data.artist, posts, links } },
-                  revalidate: 60 * 60,
-            }
-      }
+      /*
+            //todo - Consider using moralis web3 api for contract fetches as oppose to my own code.
+            //? Get the nft contract address array from cms
+            const addressArray: string[] = data.artist.nftAddress;
       
-      //* Call blockchain for each token ID and axios.get each json metadata link
-      else {
-            for (i = 1; i <= totalSupply; i++) {
-                  await nftContract.methods.tokenURI(i).call()
-                        .then(async (res) => {
-                              await axios.get(res).then(obj => {
-                                    nftMetadata.push(obj.data)
-                              }).catch(err => {
-                              
+            //? array of objects for token metadata for mapping in frontend.
+            //? number is for the for loop in pushURIs.
+      
+      
+            let nftMetadata: NftMetadata[] = []
+            let i: number = null
+            //* New web3 instance with matic provider
+            const web3 = new Web3(new Web3.providers.HttpProvider(MATIC))
+      
+            //* Validate contract address
+            const isAddress = Web3.utils.isAddress(addressArray[0])
+            //* Parse ABI
+            //todo - perhaps add abi to cms
+            const contractPath = serverPath('./public/GameItem.json')
+            var parsed = JSON.parse(fs.readFileSync(contractPath.toString(), 'utf-8'));
+            var abi = parsed.abi;
+      
+            //* If the contract address is not valid, return props now excluding nftmetadata
+            if(!isAddress) {
+                  return {
+                        props: { artist: { ...data.artist, posts, links } },
+                        revalidate: 60 * 60,
+                  }
+            }
+      
+            //* New contract from instance, passing the abi and address
+            //todo - Map address' if there are multiple
+            const nftContract = isAddress ? new web3.eth.Contract(
+                  abi,
+                  addressArray[0],
+            ) : null;
+      
+      
+            const totalSupply: number = await nftContract.methods.totalSupply().call();
+      
+            //* Take the number and concatenate with the json metadata
+      
+      
+            //* If the CMS didn't return a valid address, dont call with web3. Return a failed obj instead. Edge case
+            if (nftContract == null) {
+                  return {
+                        props: { artist: { ...data.artist, posts, links } },
+                        revalidate: 60 * 60,
+                  }
+            }
+            
+            //* Call blockchain for each token ID and axios.get each json metadata link
+            else {
+                  for (i = 1; i <= totalSupply; i++) {
+                        await nftContract.methods.tokenURI(i).call()
+                              .then(async (res) => {
+                                    await axios.get(res).then(obj => {
+                                          nftMetadata.push(obj.data)
+                                    }).catch(err => {
+                                    
+                                          return err
+                                    })
+                              })
+                              .catch((err) => {
+                                    
                                     return err
                               })
-                        })
-                        .catch((err) => {
-                              
-                              return err
-                        })
-            } 
-      }
-
-      //* Edge case if fetches dont work but nftContract was not null
-      if(nftMetadata.length !== 0) return {
-
-            props: { artist: { ...data.artist, posts, links, nftMetadata } },
-            revalidate: 60 * 60,
-      };
-      else return {
+                  } 
+            }
+      
+            //* Edge case if fetches dont work but nftContract was not null
+            if(nftMetadata.length !== 0) return {
+      
+                  props: { artist: { ...data.artist, posts, links, nftMetadata } },
+                  revalidate: 60 * 60,
+            };
+            else return {
+                  props: { artist: { ...data.artist, posts, links } },
+                  revalidate: 60 * 60,
+                  
+            }
+      */
+      return {
             props: { artist: { ...data.artist, posts, links } },
             revalidate: 60 * 60,
-            
       }
-
 };
 
 
