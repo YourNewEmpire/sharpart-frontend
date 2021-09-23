@@ -10,18 +10,20 @@ import PolygonImg from '../public/polygon-png.png';
 import EthImg from '../public/eth.png'
 import PageLayout from '../components/Layouts/PageLayout';
 import NodeCard from '../components/Cards/NodeCard';
+import { ClipboardCopyIcon } from '@heroicons/react/solid';
+import copyToBoard from '../lib/helpers/copyToClipboard';
 
 export default function Home() {
       const defiPulseKey = process.env.NEXT_PUBLIC_DEFI_PULSE_KEY
 
       const { data: maticGas, error: maticGasError } = useSWR(
             'https://gasstation-mainnet.matic.network',
-            fetcher, 
+            fetcher,
             { refreshInterval: 10000 }
       )
       const { data: ethGas, error: ethGasError } = useSWR(
             `https://data-api.defipulse.com/api/v1/egs/api/ethgasAPI.json?api-key=${defiPulseKey}`,
-            fetcher, 
+            fetcher,
             { refreshInterval: 10000 }
       )
 
@@ -88,20 +90,33 @@ export default function Home() {
                         </Heading>
                   </div>
                   <PageLayout>
-                        <NodeCard>
-                              <Heading title='Convert String to bytes32' fontSize='text-base sm:text-1xl md:text-3xl '/>
-                              <div className='flex flex-col space-y-4 text-center'>
-                                    
-                                    < textarea
+                        <NodeCard wFull>
+                              <Heading title='Convert String to bytes32' fontSize='text-base sm:text-1xl md:text-3xl ' />
+                              <div className='w-full flex flex-col justify-center items-center space-y-4 text-center'>
+                                    < input
+                                          type='text'
+                                          onChange={(e) => { handleChange(e) }}
                                           className='
-                              focus:outline-none text-xl 
-                              text-th-primary-dark focus:bg-th-accent-light 
-                              transition-colors duration-300 
-                              ease-in-out bg-opacity-25 p-2'
-                                          onChange={(e) => { handleChange(e) }} name='message' />
-                                    <p className='text-th-accent-light' >
-                                          <span className='font-extrabold text-th-primary-light'>Result: </span>{ethersBytes}
-
+                                          focus:outline-none text-xl 
+                                          text-th-primary-dark focus:bg-th-accent-light 
+                                          transition-colors duration-300 
+                                          ease-in-out bg-opacity-25 p-2'/>
+                                    <p className='text-th-accent-light text-center ' >
+                                          <span className='font-extrabold text-th-primary-light'>
+                                                Result:
+                                          </span>
+                                          {' ' + ethersBytes}
+                                          <button 
+                                          onClick={() => copyToBoard(ethersBytes)} 
+                                          className='
+                                          focus:outline-none 
+                                          text-th-primary-light
+                                          transition duration-300 ease-in-out
+                                          hover:text-th-primary-medium
+                                          transform hover:scale-110
+                                          '>
+                                                <ClipboardCopyIcon className='inline-flex antialiased' width={30} height={30} />
+                                          </button>
                                     </p>
                               </div>
                         </NodeCard>
