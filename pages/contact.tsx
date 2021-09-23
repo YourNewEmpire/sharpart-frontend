@@ -131,7 +131,7 @@ export default function Contact() {
 
                         <div className='py-24'>
                               <NodeCard>
-                                    <form className=' flex flex-col space-y-4  text-center text-sm sm:text-base md:text-xl lg:text-2xl '>
+                                    <form className='flex flex-col space-y-4  text-center text-sm sm:text-base md:text-xl lg:text-2xl '>
                                           < label className='text-th-primary-light' htmlFor='name'>Name</label>
                                           < input
                                                 className='
