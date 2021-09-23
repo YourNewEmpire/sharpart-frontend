@@ -1,10 +1,14 @@
 import React from 'react'
 import { Childs } from '../../interfaces/childs'
 
-export default function NodeCard({ children }: Childs): JSX.Element {
+ 
+interface NodeCardProps extends Childs {
+      wFull?: boolean
+}
+export default function NodeCard({ children, wFull }: NodeCardProps): JSX.Element {
 
       return (
-            <div className=" 
+            <div className={`
             flex
             flex-col
             space-y-2
@@ -17,8 +21,8 @@ export default function NodeCard({ children }: Childs): JSX.Element {
             rounded-lg
             shadow-lg
             bg-th-primary-dark
-            
-            ">
+            ${wFull? `w-full` : `w-auto`}
+            `}>
                 {children}
             </div>
       )
