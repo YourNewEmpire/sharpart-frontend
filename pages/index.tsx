@@ -60,9 +60,8 @@ export default function Home() {
                                     <p className='text-center text-xs sm:text-sm lg:text-xl font-thin  text-th-primary-light break-all'>Mainnet</p>
                               </div>
                               <p className='col-span-4 text-base text-shadow-sm text-th-primary-light'>
-                                    Ethereum gas is gone! The api devs changed the rules, api keys only chads! Fetching it with API key is impossible from dev environment, as the dev environment cannot be whitelisted.
-                                    My knowledge of dev/prod environments is not up to it, therefore I dont know how to fix this right now. I could go into detail, but it's simpler to stop fetching and
-                                    look at it another day. ;_; At least we can cry rivers for the ones that are droughted.
+                                    Ethereum gas is gone! The api devs changed the rules, api keys only chads! 
+                                    Although, my api key does not work, sick! Even with the frontend added to white list. 
                               </p>
                         </div>
                         <div className="grid grid-cols-5 gap-4 md:gap-8 lg:gap-10 m-2 md:m-10 lg:m-16">
