@@ -60,8 +60,8 @@ export default function Home() {
                                     <p className='text-center text-xs sm:text-sm lg:text-xl font-thin  text-th-primary-light break-all'>Mainnet</p>
                               </div>
                               <p className='col-span-4 text-base text-shadow-sm text-th-primary-light'>
-                                    Ethereum gas is gone! The api devs changed the rules, api keys only chads! 
-                                    Although, my api key does not work, sick! Even with the frontend added to white list. 
+                                    Ethereum gas is gone! The api devs at 'Defi Pulse Data' changed the rules, api keys only chads! Still not allowed.
+                                    Moving to Etherscan api soon.
                               </p>
                         </div>
                         <div className="grid grid-cols-5 gap-4 md:gap-8 lg:gap-10 m-2 md:m-10 lg:m-16">
