@@ -37,6 +37,7 @@ export default function Home() {
       //* intersection observer hook
       const { inView, entry, ref } = useInView();
       const animationControl = useAnimation();
+
       useEffect(() => {
             if (inView) {
                   animationControl.start({
@@ -50,9 +51,6 @@ export default function Home() {
                   });
             }
       }, [inView])
-      useEffect(() => {
-            console.log(ethGas)
-      }, [ethGas])
 
       if (!maticGas) return (
             <div id="div1" className="flex flex-col items-center justify-center ">
@@ -72,18 +70,20 @@ export default function Home() {
                         initial={{ opacity: 0, translateX: -50, }}
                         animate={{ opacity: 1, translateX: 0 }}
                         transition={{ duration: 0.75 }}
-                        className=''
+                        className='flex flex-col space-y-8'
                   >
-                        <div className="grid grid-cols-5 gap-4 md:gap-8 lg:gap-10 m-2 md:m-10 lg:m-16 ">
-                              <div className='flex flex-col space-y-1 sm:space-y-4 lg:space-y-6 xl:space-y-10 items-center justify-center'>
-                                    <Image className='animate-spin ' src={EthImg} height={110} width={110} />
-                                    <p className='text-center text-xs sm:text-sm lg:text-2xl font-thin  text-th-primary-light break-all'>Mainnet</p>
+                        {ethGas &&
+                              <div className="grid grid-cols-5 gap-4 md:gap-8 lg:gap-10 m-2 md:m-10 lg:m-16 ">
+                                    <div className='flex flex-col space-y-1 sm:space-y-4 lg:space-y-6 xl:space-y-10 items-center justify-center'>
+                                          <Image className='animate-spin ' src={EthImg} height={110} width={110} />
+                                          <p className='text-center text-xs sm:text-sm lg:text-2xl font-thin  text-th-primary-light break-all'>Mainnet</p>
+                                    </div>
+                                    <SimpleCard title="Safe Low gas price" body={ethGas.safeLow + ' ' + 'Gwei'} />
+                                    <SimpleCard title="Standard gas price" body={ethGas.standard + ' ' + 'Gwei'} />
+                                    <SimpleCard title="Fast gas price" body={ethGas.fastest + ' ' + 'Gwei'} />
+                                    <SimpleCard title="Next block base" body={ethGas.nextBase + ' ' + 'Gwei'} />
                               </div>
-                              <SimpleCard title="Safe Low gas price" body={ethGas.safeLow + ' ' + 'Gwei'} />
-                              <SimpleCard title="Standard gas price" body={ethGas.standard + ' ' + 'Gwei'} />
-                              <SimpleCard title="Fast gas price" body={ethGas.fastest + ' ' + 'Gwei'} />
-                              <SimpleCard title="Next block base" body={ethGas.nextBase + ' ' + 'Gwei'} />
-                        </div>
+                        }
                         <div className="grid grid-cols-5 gap-4 md:gap-8 lg:gap-10 m-2 md:m-10 lg:m-16 ">
                               <div className='flex flex-col space-y-1 sm:space-y-4 lg:space-y-6 xl:space-y-10 items-center justify-center'>
                                     <Image className='animate-spin' src={PolygonImg} height={125} width={125} />
@@ -120,7 +120,7 @@ export default function Home() {
                         <NodeCard wFull>
                               <Heading
                                     title='Convert String to bytes32'
-                                    fontSize='text-base sm:text-1xl md:text-3xl '
+                                    fontSize='text-base sm:text-1xl md:text-4xl '
                               />
                               <div className='
                               w-full flex flex-col 
@@ -134,7 +134,7 @@ export default function Home() {
                                           text-th-primary-dark focus:bg-th-accent-light 
                                           transition-colors duration-300 
                                           ease-in-out bg-opacity-25 p-2'/>
-                                    <p className='text-th-accent-light text-center ' >
+                                    <p className='text-th-accent-light text-center text-lg' >
                                           <span className='
                                           uppercase tracking-wide 
                                           font-extrabold text-th-primary-light'>
