@@ -28,10 +28,19 @@ export default function Home() {
 
       //todo - move into its own ethers util hook?
       //todo - add copyToClipboard button
-      const [ethersBytes, setEthersBytes] = useState('')
+      const [ethersBytes, setEthersBytes] = useState({
+            stringed: '',
+            hexed: ''
+      })
       const handleChange = (e) => {
             //* Set formatting input on change of text box
-            setEthersBytes(ethers.utils.formatBytes32String(e.target.value));
+            if(e.target.name === 'stringed'){
+                  setEthersBytes({ ...ethersBytes, stringed: ethers.utils.formatBytes32String(e.target.value)});
+
+            }
+            else if (e.target.name === 'hexed'){
+                  setEthersBytes({...ethersBytes, hexed: ethers.utils.toUtf8String(e.target.value)})
+            }
       }
 
       //* intersection observer hook
@@ -119,15 +128,16 @@ export default function Home() {
                   <PageLayout>
                         <NodeCard wFull>
                               <Heading
-                                    title='Convert String to bytes32'
+                                    title='Convert String to Bytes32'
                                     fontSize='text-base sm:text-1xl md:text-4xl '
                               />
                               <div className='
-                              w-full flex flex-col 
+                              flex flex-col 
                               justify-center items-center 
                               space-y-4 text-center'>
                                     < input
                                           type='text'
+                                          name='stringed'
                                           onChange={(e) => { handleChange(e) }}
                                           className='
                                           focus:outline-none text-xl 
@@ -140,9 +150,48 @@ export default function Home() {
                                           font-extrabold text-th-primary-light'>
                                                 Result:
                                           </span>
-                                          {' ' + ethersBytes}
+                                          {' ' + ethersBytes.stringed}
                                           <button
-                                                onClick={() => copyToBoard(ethersBytes)}
+                                                onClick={() => copyToBoard(ethersBytes.stringed)}
+                                                className='
+                                          focus:outline-none 
+                                          text-th-primary-light
+                                          transition duration-300 ease-in-out
+                                          hover:text-th-primary-medium
+                                          transform hover:scale-110
+                                          '>
+                                                <ClipboardCopyIcon className='inline-flex antialiased' width={30} height={30} />
+                                          </button>
+                                    </p>
+                              </div>
+                        </NodeCard>
+                        <NodeCard wFull>
+                              <Heading
+                                    title='Convert Bytes32 to String'
+                                    fontSize='text-base sm:text-1xl md:text-4xl '
+                              />
+                              <div className='
+                              flex flex-col 
+                              justify-center items-center 
+                              space-y-4 text-center'>
+                                    < input
+                                          type='text'
+                                          name='hexed'
+                                          onChange={(e) => { handleChange(e) }}
+                                          className='
+                                          focus:outline-none text-xl 
+                                          text-th-primary-dark focus:bg-th-accent-light 
+                                          transition-colors duration-300 
+                                          ease-in-out bg-opacity-25 p-2'/>
+                                    <p className='text-th-accent-light text-center text-lg' >
+                                          <span className='
+                                          uppercase tracking-wide 
+                                          font-extrabold text-th-primary-light'>
+                                                Result:
+                                          </span>
+                                          {' ' + ethersBytes.hexed.trim()}
+                                          <button
+                                                onClick={() => copyToBoard(ethersBytes.hexed)}
                                                 className='
                                           focus:outline-none 
                                           text-th-primary-light
