@@ -6,12 +6,8 @@ import { MDXRemote } from "next-mdx-remote";
 import { IArtist, NftMetadata } from '../../interfaces/pages'
 import Heading from '../../components/Typography/Heading';
 import PageLayout from '../../components/Layouts/PageLayout';
-import Web3 from 'web3';
-import fs from 'fs'
-import serverPath from '../../lib/helpers/serverPath';
-import axios from 'axios';
-import NftCard from '../../components/Cards/NftCard';
-import ReactAudioPlayer from 'react-audio-player';
+import AlertCard from '../../components/Cards/AlertCard';
+import { StatusOfflineIcon } from '@heroicons/react/solid';
 
 //*define new gql client for cms.
 const client = new GraphQLClient(process.env.GRAPHCMS_URL);
@@ -62,18 +58,12 @@ export default function Artist({ artist }: { artist: IArtist }) {
 
                   <PageLayout>
                         <Heading title="Artist NFTs" hScreen={false} />
-                        <div className='grid grid-cols-3 gap-2 sm:gap-4 md:gap-14'>
-                              {artist.nftMetadata ? artist.nftMetadata.map((item, index) =>
-                                    <div className='' key={index}>
-                                          <NftCard nft={item} />
-                                    </div>
-                              ) :
-                                    <PageLayout>
-                                          <h1 className='text-th-primary-light'>Error</h1>
-                                          <p className='text-th-primary-light'>NFTs were not found from server side</p>
-                                    </PageLayout>
-                              }
-                        </div>
+                        <AlertCard
+                              title='Down For Maintenance'
+                              body='Currently reworking the fetching logic. Most likely using Moralis web3 api.'
+                              icon={<StatusOfflineIcon width={35} height={35} />}
+                              failure
+                        />
                   </PageLayout>
 
                   <PageLayout>
@@ -113,31 +103,33 @@ export default function Artist({ artist }: { artist: IArtist }) {
                         }
                   </PageLayout>
 
+                  <div className='grid grid-flow-row grid-rows-2'>
+                        <div className='flex justify-center items-center
+                        text-th-primary-light text-xs md:text-sm lg:text-lg
+                        '>
+                              <CalendarIcon className='w-5 h-5' />
+                              <div className=' ml-2 lg:ml-4'>
+                                    <p>
+                                          Updated At
+                                          <span className='text-th-primary-medium'> {updatedAt}</span>
+                                    </p>
+                              </div>
+                        </div>
 
-
-                  <div className='flex justify-center items-center
-                  text-th-primary-light text-xs md:text-sm lg:text-lg
-                  '>
-                        <CalendarIcon className='w-5 h-5' />
-                        <div className=' ml-2 lg:ml-4'>
-                              <p>
-                                    Updated At
-                                    <span className='text-th-primary-medium'> {updatedAt}</span>
-                              </p>
+                        <div className='flex justify-center items-center
+                        text-th-primary-light text-xs md:text-sm lg:text-lg
+                        '>
+                              <CalendarIcon className='w-5 h-5' />
+                              <div className=' ml-2 lg:ml-4'>
+                                    <p>
+                                          Created At
+                                          <span className='text-th-primary-medium'> {createdAt}</span>
+                                    </p>
+                              </div>
                         </div>
                   </div>
 
-                  <div className='flex justify-center items-center
-                  text-th-primary-light text-xs md:text-sm lg:text-lg
-                  '>
-                        <CalendarIcon className='w-5 h-5' />
-                        <div className=' ml-2 lg:ml-4'>
-                              <p>
-                                    Created At
-                                    <span className='text-th-primary-medium'> {createdAt}</span>
-                              </p>
-                        </div>
-                  </div>
+
             </PageLayout>
 
       )
